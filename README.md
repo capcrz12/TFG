@@ -1,27 +1,26 @@
-# SendaDigital
+# TFG: SendaDigital
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.3.
+![Badge en Desarrollo](https://img.shields.io/badge/STATUS-EN%20DESAROLLO-green)
 
-## Development server
+Repositorio que aloja documentación e implementación de mi Trabajo Fin de Grado de la ETSIIT, Universidad de Granada
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+![LOGO UGR](https://secretariageneral.ugr.es/sites/webugr/secretariageneral/public/inline-files/UGR-MARCA-02-negativo.png)
 
-## Code scaffolding
+***
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+## Índice
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+* [Objetivos](#objetivos)
+* [Recursos Externos](#recursos-externos)
 
-## Running unit tests
+***
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+## Objetivos
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Further help
+***
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## Recursos Externos
