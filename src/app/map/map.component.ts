@@ -34,11 +34,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     // Añadimos una capa nueva para introducir el raster 3D
     this.map.on('load', () => {
       // Add new sources and layers
-      this.map.addSource("terrain", {
+      this.map!.addSource("terrain", {
           "type": "raster-dem",
-          "url": `https://api.maptiler.com/tiles/terrain-rgb-v2/tiles.json?key=${API_KEY}`
+          "url": `https://api.maptiler.com/tiles/terrain-rgb-v2/tiles.json?key=${config.apiKey}`
           });
-      this.map.setTerrain({
+      this.map!.setTerrain({
           source: "terrain"
       });
   });
