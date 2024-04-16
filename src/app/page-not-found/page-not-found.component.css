@@ -1,0 +1,27 @@
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20vw;
+    text-align: center;
+}
+
+div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+}
+
+a {
+    text-decoration: none;
+    transition: 0.2s;
+    color: rgb(32, 0, 150);
+}
+
+a:hover {
+    font-size: 1.5vw;
+    transition: 0.2s;
+    color: rgb(32, 0, 150);
+}
