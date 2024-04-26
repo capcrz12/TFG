@@ -1,12 +1,12 @@
 <section>
     <div id="main-info">
-        <h2>NOMBRE DE PRUEBA</h2>
-        <p>Ubicación: Granada</p>
-        <p>Km: 17</p>
+        <h2>{{name}}</h2>
+        <p class="hide-info">Ubicación: Granada</p>
+        <p class="hide-info">Km: {{dataMap['km']}}</p>
     </div>
     <div class="seccion">
         <div id="map-secundarias">
-            <app-map></app-map>
+            <app-map (dataMapOut)="receiveDataMap($event)"></app-map>
             <div id="images-secundarias">
                 <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44 (2).jpeg" alt="Img1">
                 <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44 (1).jpeg" alt="Img2">
@@ -16,7 +16,44 @@
             <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44.jpeg" alt="Logotipo">
         </div>
     </div>
-    <div class="seccion">
-
+    <div id="main-info">
+        <h2>TABLA ESTADÍSTICA</h2>
+        <p class="hide-info">{{name}}</p>
+    </div>
+    <div class="seccion tabla" id="tabla-seccion">
+        <div class="column">
+            <div class="column">
+                @if (dataMap['km'] != -1) {
+                    <p class="statistics">KM: {{dataMap['km']}}</p>
+                }
+            </div>
+            <div class="column">
+                @if (dataMap['minAltitude'] != -1) {
+                    <p class="statistics">Altitud mínima: {{dataMap['minAltitude']}} metros</p>
+                }
+            </div>
+            <div class="column">
+                @if (dataMap['des_neg'] != -1) {
+                    <p class="statistics">Desnivel negativo: {{dataMap['des_neg']}} metros</p>
+                }
+            </div>
+        </div>
+        <div class="column">
+            <div class="column">
+                @if (dataMap['speed'] != -1) {
+                    <p class="statistics">Velocidad: {{dataMap['speed']}} km/h</p>
+                }
+            </div>
+            <div class="column">
+                @if (dataMap['maxAltitude'] != -1) {
+                    <p class="statistics">Altitud máxima: {{dataMap['maxAltitude']}} metros</p>
+                }
+            </div>
+            <div class="column">
+                @if (dataMap['des_pos'] != -1) {
+                    <p class="statistics">Desnivel positivo: {{dataMap['des_pos']}} metros</p>
+                }
+            </div>
+        </div>
     </div>
 </section>
