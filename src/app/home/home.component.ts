@@ -10,8 +10,10 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 })
 export class HomeComponent {
   name: string;
+  user: string;
 
   constructor() {
     this.name = 'Ruta de prueba'
+    this.user = 'Carlos Pérez'
   }
 }

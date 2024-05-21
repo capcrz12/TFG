@@ -131,6 +131,5 @@ a:hover {
 
 .perfil:hover {
     width: 6vw;
-    border: none;
     transition: 1s;
 }
