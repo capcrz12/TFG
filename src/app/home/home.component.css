@@ -1,3 +1,89 @@
+section {
+    width: 95vw;
+    margin: 0 auto;    
+    margin-top: 2vh;
+    display: flex;
+    flex-direction: column;
+    gap: 4vh;
+}
+
+#main-info {
+    width: 50vw;
+    display: flex;
+    flex-direction: row;
+    justify-self: center;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10%;
+}
+
+h2 {
+    font-size: 2vw;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 100;
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+#perfilUsuario {
+    display: flex;
+    flex-direction: row;
+    gap: 3vw;
+}
+
+#usuario {
+    width: 95vw;
+    height: 60vh;
+}
+
+h3 {
+    font-size: 1.25vw;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 100;
+    width: 60%;
+    margin-bottom: 4vh;
+    border-bottom: 1px solid black;
+}
+
+.perfil {
+    width: 5vw;
+    border: solid;
+    border-radius: 50%;
+    background-color: grey;
+    transition: 0.5s;
+}
+
+.perfil:hover {
+    width: 6vw;
+    transition: 1s;
+}
+
+#ruta {
+    display: flex;
+    flex-direction: row;
+    height: 80%;
+}
+
+#datos-texto {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin-left: 10vh;
+    justify-content: center;
+}
+
+#datos-texto > p {
+    margin-left: 5vh;
+}
+
+p {
+    font-size: 1.25vw;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 100;
+    width: 60%;
+}
+
 a {
     font-size: 1.25vw;
     text-decoration: none;
@@ -9,4 +95,20 @@ a:hover {
     font-size: 1.5vw;
     transition: 0.2s;
     color: black;
+}
+
+#image-primaria {
+    width: 50%;
+    height: 100%;
+    border: 1px solid black;
+    border-radius: 60px;
+    justify-self: center;
+    align-self: center;
+}
+
+#image-primaria > img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 60px;
 }

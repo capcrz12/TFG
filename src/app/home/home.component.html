@@ -1,1 +1,25 @@
-<a routerLink="/ruta">Ruta de prueba</a>
+<section>
+    <div id="main-info">
+        <h2>Siguiendo</h2>
+        <h2>Explorar</h2>
+    </div>
+
+    <div id="usuario">
+        <div id="perfilUsuario">
+            <a routerLink="">
+                <img class="perfil" src="../../assets/images/92938495.jpeg">
+            </a>
+            <h3><a routerLink="">{{user.toUpperCase()}}</a></h3>
+        </div>
+        <div id="ruta">
+            <div id='datos-texto'>
+                <a [routerLink]="['/ruta',1]">{{name}}</a>
+                <p>Lugar de la ruta</p>
+                <p>25 km</p>
+            </div>
+            <div id="image-primaria">
+                <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44.jpeg" alt="Logotipo">
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,12 +1,12 @@
 <nav>
     <div class="logotipo">
-        <div class="logo">
+        <a routerLink="myFeed" class="logo">
             <img src="../../assets/images/localizador-de-mapas.png" alt="Logotipo">
-        </div>
-        <div class="title-logo">
+        </a>
+        <a routerLink="myFeed" class="title-logo">
             <h1 class="title">{{title.toUpperCase()}}</h1>
-            <p>Comparte rutas con otros senderistas</p>
-        </div>
+            <p class="slogan">Comparte rutas con otros senderistas</p>
+        </a>
     </div>
     <ul class="menu">
         <div class="buscador">
@@ -16,9 +16,11 @@
             </div>
         </div>
         <li><a routerLink="myFeed">FEED</a></li>
-        <li><a routerLink="myFeed">PERFIL</a></li>
+        <li><a routerLink="myFeed">MIS RUTAS</a></li>
         <li>
-            <img class="perfil" src="../../assets/images/92938495.jpeg">
+            <a routerLink="myFeed">
+                <img class="perfil" src="../../assets/images/92938495.jpeg">
+            </a>
         </li>
     </ul>
 </nav>
