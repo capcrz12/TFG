@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Input, Output, EventEmitter, SimpleChange, SimpleChanges } from '@angular/core';
 import { Map, MapStyle, Marker, config, FullscreenControl, geolocation, GeolocateControl } from '@maptiler/sdk';
 import '@maptiler/sdk/dist/maptiler-sdk.css';
 import { gpx } from "@tmcw/togeojson";
@@ -19,7 +19,16 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   dataMap: Dictionary;
   speed: number | undefined;
   km: number | undefined;
+  elevationProfile: any;
+  pointExists: boolean = false;
+  point: any;
+
+  @Input() pointHovered = -1;
+
   @Output() dataMapOut = new EventEmitter<Dictionary>();
+  @Output() elevationProfileOut = new EventEmitter<any>();
+  @Output() mapHovered = new EventEmitter<number>();
+
 
 
   @ViewChild('map')
@@ -37,6 +46,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     
     this.speed = 0;
     this.km = 0;
+    this.elevationProfile = { kilometers: [] as number[], altitudes: [] as number[]};
   }
 
   ngOnInit(): void {
@@ -104,12 +114,47 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       [this.coordinates.maxLng + 0.02, this.coordinates.maxLat + 0.02]
     ]);    
   });
-
-
-    new Marker({color: "#FF0000"})
-      .setLngLat([-3.585342, 37.161356])
-      .addTo(this.map);
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['pointHovered'] && this.pointHovered !== -1 && this.elevationProfile) {
+      const index = this.elevationProfile.kilometers.indexOf(this.pointHovered);
+      if (index !== -1) {
+        let elev = parseFloat(this.elevationProfile.altitudes[index].toFixed(1));
+        let indice = -1;
+
+        for (let i = 0; i < this.gpxData.features[0].geometry.coordinates.length && indice == -1 ; i++) {
+          if (parseFloat(this.gpxData.features[0].geometry.coordinates[i][2].toFixed(1)) == elev) {
+            indice = i;
+          }  
+        }
+
+        const latitude = this.gpxData.features[0].geometry.coordinates[indice][0];
+        const longitude = this.gpxData.features[0].geometry.coordinates[indice][1];
+        this.addInteractivePoint(longitude, latitude);
+      }
+    }
+  }
+
+  addInteractivePoint(latitude: number, longitude: number): void {
+    if (this.map && !this.pointExists) {
+      this.point = new Marker()
+        .setLngLat([longitude, latitude])
+        .addTo(this.map);
+      
+        this.pointExists = true;
+    }
+    else if (this.pointExists) {
+      // Update the data to a new position based on the animation timestamp. The
+      // divisor in the expression `timestamp / 1000` controls the animation speed.
+      this.point.setLngLat([longitude, latitude]);
+
+        // Ensure it's added to the map. This is safe to call if it's already added.
+        this.point.addTo(this.map);
+    }
+  }
+  
+  
 
   // Método para cargar y convertir el archivo GPX
   loadGPX(filePath: string) {
@@ -134,7 +179,9 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         this.dataMap['km'] = parseFloat(this.calculateTotalDistance(this.gpxData).toFixed(2));
         this.dataMap['des_neg'] = this.calculateNegativeElevationLoss(this.gpxData);
         this.dataMap['des_pos'] = this.calculatePositiveElevationGain(this.gpxData);
+        this.elevationProfile = this.calculateElevationProfile(this.gpxData);
         this.dataMapOut.emit(this.dataMap);
+        this.elevationProfileOut.emit(this.elevationProfile);
       })
       .catch(error => {
         console.error('Error loading GPX:', error);
@@ -157,6 +204,38 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     return { minLat, maxLat, minLng, maxLng };
+  }
+
+  // Función para calcular la altitud acumulada a partir de los datos del GPX
+  calculateElevationProfile(gpxData: any): { kilometers: number[], altitudes: number[] } {
+    if (!gpxData || !gpxData.features || gpxData.features.length === 0) {
+      return { kilometers: [], altitudes: [] }; // Retorna listas vacías si no hay datos
+    }
+
+    const features = gpxData.features[0]; // Tomar la primera feature del geoJSON
+    const coords = features.geometry.coordinates; // Obtener las coordenadas de la ruta
+    const elevationProfile = { kilometers: [] as number[], altitudes: [] as number[]};
+
+    let totalDistance = 0; // Distancia total acumulada
+    let totalElevation = 0; // Altitud total acumulada
+
+    for (let i = 1; i < coords.length; i++) {
+      const [prevLng, prevLat, prevAlt] = coords[i - 1];
+      const [currLng, currLat, currAlt] = coords[i];
+
+      // Calcular la distancia entre los dos puntos utilizando la fórmula de Haversine
+      const distance = this.calculateDistance(prevLat, prevLng, currLat, currLng);
+      totalDistance += distance;
+
+      // Agregar la distancia acumulada y la altitud actual al perfil de elevación
+      elevationProfile.kilometers.push(parseFloat(totalDistance.toFixed(2)));
+      elevationProfile.altitudes.push(currAlt);
+
+      // Actualizar la altitud total acumulada
+      totalElevation += Math.abs(currAlt - prevAlt);
+    }
+
+    return elevationProfile;
   }
 
   // Calcular la velocidad promedio en kilómetros por hora (km/h)

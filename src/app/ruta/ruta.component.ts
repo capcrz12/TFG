@@ -1,25 +1,38 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MapComponent } from '../map/map.component';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { Dictionary } from '../dictionary';
+import { GraficaComponent } from '../grafica/grafica.component';
 
 @Component({
   selector: 'app-ruta',
   standalone: true,
-  imports: [RouterOutlet, MapComponent],
+  imports: [RouterOutlet, MapComponent, GraficaComponent],
   templateUrl: './ruta.component.html',
   styleUrl: './ruta.component.css'
 })
-export class RutaComponent {
+export class RutaComponent implements OnInit {
   @Input() name = '';
+  rutaId: number;
+  pointHovered: number;
 
   dataMap: Dictionary;
+  elevationProfile: any;
 
   observer: IntersectionObserver | undefined;
 
 
-  constructor() {
+  constructor(private route: ActivatedRoute) {
     this.dataMap = {}
+    this.rutaId = -1;
+    this.pointHovered = -1;
+    this.name = 'Ruta de prueba';
+  }
+
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.rutaId = params['id'];
+    })
   }
 
   setupIntersectionObserver(): void {
@@ -51,8 +64,16 @@ export class RutaComponent {
     });
   }
 
+  onPointHovered(kilometer: any) {
+    this.pointHovered = kilometer;
+  }
+
   receiveDataMap(dic:Dictionary) {
     this.dataMap = dic;
     this.setupIntersectionObserver();
+  }
+
+  receiveElevationProfile(elevationProfile: any) {
+    this.elevationProfile = elevationProfile;
   }
 }

@@ -5,12 +5,9 @@
         <p class="hide-info">Km: {{dataMap['km']}}</p>
     </div>
     <div class="seccion">
-        <div id="map-secundarias">
-            <app-map (dataMapOut)="receiveDataMap($event)"></app-map>
-            <div id="images-secundarias">
-                <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44 (2).jpeg" alt="Img1">
-                <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44 (1).jpeg" alt="Img2">
-            </div>
+        <div id="map-grafica">
+            <app-map (dataMapOut)="receiveDataMap($event)" (elevationProfileOut)="receiveElevationProfile($event)" [pointHovered]="pointHovered" id="map"></app-map>
+            <app-grafica id="grafica" [elevationProfile]="elevationProfile" (pointHovered)="onPointHovered($event)"></app-grafica>
         </div>
         <div id="image-primaria">
             <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44.jpeg" alt="Logotipo">
