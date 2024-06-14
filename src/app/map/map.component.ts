@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Input, Output, EventEmitter, SimpleChange, SimpleChanges } from '@angular/core';
-import { Map, MapStyle, Marker, config, FullscreenControl, geolocation, GeolocateControl } from '@maptiler/sdk';
+import { Map, MapStyle, Marker, config, FullscreenControl, geolocation, GeolocateControl, Popup } from '@maptiler/sdk';
 import '@maptiler/sdk/dist/maptiler-sdk.css';
 import { gpx } from "@tmcw/togeojson";
 import { Dictionary } from '../dictionary'; 
@@ -23,7 +23,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   pointExists: boolean = false;
   point: any;
 
+  @Input() type = -1; // type == 0 for rute maps / type == 1 for search maps
+  @Input() file = '';
   @Input() pointHovered = -1;
+
 
   @Output() dataMapOut = new EventEmitter<Dictionary>();
   @Output() elevationProfileOut = new EventEmitter<any>();
@@ -43,6 +46,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       'maxAltitude': -1,
       'minAltitude': -1,
     }
+
+
     
     this.speed = 0;
     this.km = 0;
@@ -52,11 +57,14 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     config.apiKey = 'xkstedU79vEq8uEaVE2A';
 
-    // Llama a convertGPX con la ruta correcta del archivo GPX
-    this.loadGPX('./assets/ruta.gpx');
+    if (this.file != '' && this.type == 0) {
+      // Llama a convertGPX con la ruta correcta del archivo GPX
+      this.loadGPX(this.file);
+    }
   }
 
   ngAfterViewInit() {
+    // Spain coordinates
     const initialState = { lng: -3.585342, lat: 37.161356, zoom: 5, pitch: 50, maxPitch: 85 };
   
     this.map = new Map({
@@ -75,11 +83,13 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Añadimos una capa nueva para introducir el raster 3D
     this.map.on('load', () => {
-      // Agregar capa para el archivo GPX
-      this.map!.addSource('gpx', {
-        type: 'geojson',
-        data: this.gpxData // Usar datos convertidos de GPX
-      });
+      if (this.type == 0) {
+        // Agregar capa para el archivo GPX
+        this.map!.addSource('gpx', {
+          type: 'geojson',
+          data: this.gpxData // Usar datos convertidos de GPX
+        });
+      }
 
       // Add new sources and layers
       this.map!.addSource("terrain", {
@@ -90,31 +100,120 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
           source: "terrain"
       });
 
-    this.map!.addLayer({
-      id: 'gpx-route',
-      type: 'line',
-      source: 'gpx',
-      layout: {
-        'line-join': 'round',
-        'line-cap': 'round'
-      },
-      paint: {
-        'line-color': '#FF0000',
-        'line-width': 3
+      if (this.type == 0) {
+        this.map!.addLayer({
+          id: 'gpx-route',
+          type: 'line',
+          source: 'gpx',
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          paint: {
+            'line-color': '#FF0000',
+            'line-width': 3
+          }
+        });
+      
+
+        this.map!.setMaxBounds([
+          [this.coordinates.minLng - 0.1, this.coordinates.minLat - 0.1],
+          [this.coordinates.maxLng + 0.1, this.coordinates.maxLat + 0.1]
+        ]);
+
+        this.map!.fitBounds([
+          [this.coordinates.minLng - 0.02, this.coordinates.minLat - 0.02],
+          [this.coordinates.maxLng + 0.02, this.coordinates.maxLat + 0.02]
+        ]);    
       }
-    });
 
-    this.map!.setMaxBounds([
-      [this.coordinates.minLng - 0.1, this.coordinates.minLat - 0.1],
-      [this.coordinates.maxLng + 0.1, this.coordinates.maxLat + 0.1]
-    ]);
+      if (this.type == 1) {
+        // Add a new source from our GeoJSON data and
+        // set the 'cluster' option to true. GL-JS will
+        // add the point_count property to your source data.
+        this.map!.addSource('rutes', {
+          type: 'geojson',
+          // Point to GeoJSON data. This example visualizes all M1.0+ rutes
+          // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
+          data: 'https://maplibre.org/maplibre-gl-js/docs/assets/earthquakes.geojson',
+          cluster: true,
+          clusterMaxZoom: 14, // Max zoom to cluster points on
+          clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+      });
 
-    this.map!.fitBounds([
-      [this.coordinates.minLng - 0.02, this.coordinates.minLat - 0.02],
-      [this.coordinates.maxLng + 0.02, this.coordinates.maxLat + 0.02]
-    ]);    
+      this.map!.addLayer({
+          id: 'clusters',
+          type: 'circle',
+          source: 'rutes',
+          filter: ['has', 'point_count'],
+          paint: {
+              // Use step expressions (https://maplibre.org/maplibre-style-spec/#expressions-step)
+              // with three steps to implement three types of circles:
+              //   * Blue, 20px circles when point count is less than 100
+              //   * Yellow, 30px circles when point count is between 100 and 750
+              //   * Pink, 40px circles when point count is greater than or equal to 750
+              'circle-color': [
+                  'step',
+                  ['get', 'point_count'],
+                  '#51bbd6',
+                  100,
+                  '#f1f075',
+                  750,
+                  '#f28cb1'
+              ],
+              'circle-radius': [
+                  'step',
+                  ['get', 'point_count'],
+                  20,
+                  100,
+                  30,
+                  750,
+                  40
+              ]
+          }
+      });
+
+      this.map!.addLayer({
+          id: 'cluster-count',
+          type: 'symbol',
+          source: 'rutes',
+          filter: ['has', 'point_count'],
+          layout: {
+              'text-field': '{point_count_abbreviated}',
+              'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+              'text-size': 12
+          }
+      });
+
+      this.map!.addLayer({
+          id: 'unclustered-point',
+          type: 'circle',
+          source: 'rutes',
+          filter: ['!', ['has', 'point_count']],
+          paint: {
+              'circle-color': '#11b4da',
+              'circle-radius': 4,
+              'circle-stroke-width': 1,
+              'circle-stroke-color': '#fff'
+          }
+      });
+
+      this.map!.on('mouseenter', 'clusters', () => {
+        this.map!.getCanvas().style.cursor = 'pointer';
+      });
+      this.map!.on('mouseleave', 'clusters', () => {
+        this.map!.getCanvas().style.cursor = '';
+      });
+
+      this.map!.on('mouseenter', 'unclustered-point', () => {
+        this.map!.getCanvas().style.cursor = 'pointer';
+      });
+      this.map!.on('mouseleave', 'unclustered-point', () => {
+        this.map!.getCanvas().style.cursor = '';
+      });
+    }
   });
-  }
+}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['pointHovered'] && this.pointHovered !== -1 && this.elevationProfile) {

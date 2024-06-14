@@ -1,25 +1,39 @@
 <section>
     <div id="main-info">
-        <h2>Siguiendo</h2>
-        <h2>Explorar</h2>
+        <h2 (click)="setSiguiendo(true)" [class.bold]="siguiendo">Siguiendo</h2>
+        <h2 (click)="setSiguiendo(false)" [class.bold]="!siguiendo">Explorar</h2>
     </div>
 
-    <div id="usuario">
-        <div id="perfilUsuario">
-            <a routerLink="">
-                <img class="perfil" src="../../assets/images/92938495.jpeg">
-            </a>
-            <h3><a routerLink="">{{user.toUpperCase()}}</a></h3>
-        </div>
-        <div id="ruta">
-            <div id='datos-texto'>
-                <a [routerLink]="['/ruta',1]">{{name}}</a>
-                <p>Lugar de la ruta</p>
-                <p>25 km</p>
+    @if (siguiendo) {
+        @for (route of routes; track route.id) {
+            <div id="usuario">
+                <div id="perfilUsuario">
+                    <a routerLink="">
+                        <img class="perfil" src="../../assets/images/92938495.jpeg">
+                    </a>
+                    <h3><a routerLink="">{{user.toUpperCase()}}</a></h3>
+                </div>
+
+                <div id="ruta">
+                    <div id='datos-texto'>
+                        <a [routerLink]="['/ruta',1]" (click)="scrollToTop()">{{ route.name }}</a>
+                        <p>{{ route.ubication }}</p>
+                        <p>{{ route.km }} km</p>
+                    </div>
+                    <div id="image-primaria">
+                        <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44.jpeg" alt="Logotipo">
+                    </div>
+                </div>
             </div>
-            <div id="image-primaria">
-                <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44.jpeg" alt="Logotipo">
+        } @empty {
+            <div id="ruta">
+                <div id='datos-texto'>
+                    <p>¡No existen rutas entre tus seguidores!</p>
+                </div>
             </div>
-        </div>
-    </div>
+        }
+    }
+    @else {
+        <app-map id="map" [type]="1"></app-map>
+    }
 </section>
