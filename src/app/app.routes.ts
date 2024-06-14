@@ -5,7 +5,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 
 export const routes: Routes = [
     {
-      path: 'myFeed/siguiendo',
+      path: 'myFeed',
       component: HomeComponent
     },
     {
@@ -13,14 +13,9 @@ export const routes: Routes = [
       component: RutaComponent
     },
     {
-      path: 'myFeed',
-      redirectTo: '/myFeed/siguiendo',
+      path: '',
+      redirectTo: '/myFeed',
       pathMatch: 'full'
-    },
-    {
-        path: '',
-        redirectTo: '/myFeed/siguiendo',
-        pathMatch: 'full'
     },
     {
         path: '**',
