@@ -3,15 +3,15 @@ import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { MapComponent } from '../map/map.component';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../environments/environment';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Dictionary } from '../dictionary'; 
-import { cargarGPX, getData } from '../utils/map';
+import { HomeService } from './home.service';
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, MapComponent, RouterLink, RouterModule, HttpClientModule],
+  imports: [RouterOutlet, CommonModule, MapComponent, RouterLink, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   bounds: any;
   dataMap:Dictionary[] = [];
 
-  constructor(private http:HttpClient) {
+  constructor(private homeService: HomeService) {
     this.name = 'Ruta de prueba'
     this.user = 'Carlos Pérez'
     this.siguiendo = true;
@@ -36,7 +36,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void{
-    this.getRoutes();
+    this.getData();
+
+    console.log(this.routes);
   }
 
   ngAfterViewInit() {
@@ -55,24 +57,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.siguiendo = value;
   }
 
-  getRoutes() {
-    this.http.get(environment.APIUrl+"get_routes").subscribe((res) => {
+  getData() {
+    this.homeService.getRoutes().subscribe((res) => {
       this.routes = res;
-
-      for (let i = 0; i < this.routes.length; i++) {
-        if (this.routes[i].gpx != '' && this.type == 0) {
-          cargarGPX("./assets/" + this.routes[i].gpx).then((gpxData) => {
-            this.gpxData = gpxData;
-            // Llama a convertGPX con la ruta correcta del archivo GPX
-            getData(this.gpxData, this.routes[i], i, this.dataMap);
-          }).catch(error => {
-            console.error('Error:', error);
-          });
-        }
-      }
-    })
+      this.homeService.getGPXData(this.routes).then((gpxData) => {
+        this.dataMap = this.homeService.getDataMap(this.routes, gpxData);
+      }).catch(error => {
+        console.error('Error:', error);
+      });
+    });
   }
-
-
-  
 }

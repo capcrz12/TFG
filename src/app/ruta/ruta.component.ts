@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MapComponent } from '../map/map.component';
 import { RouterOutlet, Router } from '@angular/router';
 import { Dictionary } from '../dictionary';
@@ -30,8 +30,8 @@ export class RutaComponent implements OnInit, OnChanges {
   observer: IntersectionObserver | undefined;
 
 
-  constructor(private route: Router, private http:HttpClient) {
-    this.dataMap = {}
+  constructor(private route: Router, private http:HttpClient, private cd:ChangeDetectorRef) {
+    this.dataMap = {};
     this.data = [];
     this.rutaId = -1;
     this.pointHovered = -1;
@@ -101,6 +101,7 @@ export class RutaComponent implements OnInit, OnChanges {
             // Llama a convertGPX con la ruta correcta del archivo GPX
             getData(this.gpxData, this.routeJSON, 0, this.data);
             this.dataMap = this.data['0'];
+            this.cd.markForCheck();
           }).catch(error => {
             console.error('Error:', error);
           });
