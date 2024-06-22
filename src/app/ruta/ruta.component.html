@@ -1,12 +1,19 @@
 <section>
     <div id="main-info">
-        <h2>{{name}}</h2>
-        <p class="hide-info">Ubicación: Granada</p>
+        <h2>{{dataMap['name']}}</h2>
+        <p class="hide-info">Ubicación: {{dataMap['ubication']}}</p>
         <p class="hide-info">Km: {{dataMap['km']}}</p>
     </div>
     <div class="seccion">
         <div id="map-grafica">
-            <app-map [file]="'./assets/ruta.gpx'" [type]="0" (dataMapOut)="receiveDataMap($event)" (elevationProfileOut)="receiveElevationProfile($event)" [pointHovered]="pointHovered" id="map"></app-map>
+            <app-map [file]="'./assets/'+routeJSON['gpx']" 
+                     [dataMap]="dataMap" 
+                     [gpxData]="gpxData" 
+                     [type]="0" 
+                     [pointHovered]="pointHovered"
+                     (dataMapOut)="receiveDataMap($event)" 
+                     (elevationProfileOut)="receiveElevationProfile($event)" id="map">
+            </app-map>
             <app-grafica id="grafica" [elevationProfile]="elevationProfile" (pointHovered)="onPointHovered($event)"></app-grafica>
         </div>
         <div id="image-primaria">
@@ -15,7 +22,7 @@
     </div>
     <div id="main-info">
         <h2>TABLA ESTADÍSTICA</h2>
-        <p class="hide-info">{{name}}</p>
+        <p class="hide-info">{{dataMap['name']}}</p>
     </div>
     <div class="seccion tabla" id="tabla-seccion">
         <div class="column">

@@ -5,7 +5,7 @@
     </div>
 
     @if (siguiendo) {
-        @for (route of routes; track route.id) {
+        @for (dato of dataMap; track dato['id']) {
             <div id="usuario">
                 <div id="perfilUsuario">
                     <a routerLink="">
@@ -16,9 +16,9 @@
 
                 <div id="ruta">
                     <div id='datos-texto'>
-                        <a [routerLink]="['/ruta',1]" (click)="scrollToTop()">{{ route.name }}</a>
-                        <p>{{ route.ubication }}</p>
-                        <p>{{ route.km }} km</p>
+                        <a [routerLink]="['/ruta',dato['id']]" (click)="scrollToTop()">{{ dato['name'] }}</a>
+                        <p>{{ dato['ubication'] }}</p>
+                        <p>{{ dato['km'] }} km</p>
                     </div>
                     <div id="image-primaria">
                         <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44.jpeg" alt="Logotipo">
