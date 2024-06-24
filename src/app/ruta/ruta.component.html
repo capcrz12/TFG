@@ -27,36 +27,24 @@
     <div class="seccion tabla" id="tabla-seccion">
         <div class="column">
             <div class="column">
-                @if (dataMap['km'] != -1) {
-                    <p class="statistics">KM: {{dataMap['km']}}</p>
-                }
+                <p class="statistics">KM: {{dataMap['km']}}</p>
             </div>
             <div class="column">
-                @if (dataMap['minAltitude'] != -1) {
-                    <p class="statistics">Altitud mínima: {{dataMap['minAltitude']}} metros</p>
-                }
+                <p class="statistics">Altitud mínima: {{dataMap['minAltitude']}} metros</p>
             </div>
             <div class="column">
-                @if (dataMap['des_neg'] != -1) {
-                    <p class="statistics">Desnivel negativo: {{dataMap['des_neg']}} metros</p>
-                }
+                <p class="statistics">Desnivel negativo: {{dataMap['des_neg']}} metros</p>
             </div>
         </div>
         <div class="column">
             <div class="column">
-                @if (dataMap['speed'] != -1) {
-                    <p class="statistics">Velocidad: {{dataMap['speed']}} km/h</p>
-                }
+                <p class="statistics">Velocidad: {{dataMap['speed']}} km/h</p>
             </div>
             <div class="column">
-                @if (dataMap['maxAltitude'] != -1) {
-                    <p class="statistics">Altitud máxima: {{dataMap['maxAltitude']}} metros</p>
-                }
+                <p class="statistics">Altitud máxima: {{dataMap['maxAltitude']}} metros</p>
             </div>
             <div class="column">
-                @if (dataMap['des_pos'] != -1) {
-                    <p class="statistics">Desnivel positivo: {{dataMap['des_pos']}} metros</p>
-                }
+                <p class="statistics">Desnivel positivo: {{dataMap['des_pos']}} metros</p>
             </div>
         </div>
     </div>

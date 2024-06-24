@@ -4,8 +4,7 @@ import { RouterOutlet, Router } from '@angular/router';
 import { Dictionary } from '../dictionary';
 import { GraficaComponent } from '../grafica/grafica.component';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { cargarGPX, getData } from '../utils/map';
-import { environment } from '../../environments/environment';
+import { RutaService } from './ruta.service';
 
 
 @Component({
@@ -30,7 +29,7 @@ export class RutaComponent implements OnInit, OnChanges {
   observer: IntersectionObserver | undefined;
 
 
-  constructor(private route: Router, private http:HttpClient, private cd:ChangeDetectorRef) {
+  constructor(private rutaService:RutaService) {
     this.dataMap = {};
     this.data = [];
     this.rutaId = -1;
@@ -89,23 +88,17 @@ export class RutaComponent implements OnInit, OnChanges {
     this.elevationProfile = elevationProfile;
   }
 
-  getRoute() {
-    this.http.get(environment.APIUrl+"get_route/"+this.id).subscribe((res) => {
-      this.routeJSON = res;
+  getRoute(): void {
+    this.rutaService.getData(this.id).subscribe({
+      next: (data) => {
+        this.routeJSON = data.routeJSON;
+        this.gpxData = data.gpxData;
+        this.dataMap = data.dataMap;
 
-      if (this.routeJSON.gpx != '') {
-          // Llama a convertGPX con la ruta correcta del archivo GPX
-          cargarGPX("./assets/" + this.routeJSON.gpx).then((gpxData) => {
-            this.gpxData = gpxData;
-
-            // Llama a convertGPX con la ruta correcta del archivo GPX
-            getData(this.gpxData, this.routeJSON, 0, this.data);
-            this.dataMap = this.data['0'];
-            this.cd.markForCheck();
-          }).catch(error => {
-            console.error('Error:', error);
-          });
+      },
+      error: (error) => {
+        console.error('Error:', error);
       }
-    })
+    });
   }
 }
