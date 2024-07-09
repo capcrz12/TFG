@@ -57,7 +57,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     config.apiKey = 'xkstedU79vEq8uEaVE2A';
-
     this.elevationProfile = calculateElevationProfile(this.gpxData);
     this.dataMapOut.emit(this.dataMap);
     this.elevationProfileOut.emit(this.elevationProfile);
@@ -66,7 +65,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     // Spain coordinates
     const initialState = { lng: -3.585342, lat: 37.161356, zoom: 5, pitch: 50, maxPitch: 85 };
-  
+     
     this.map = new Map({
       container: this.mapContainer.nativeElement,
       style: `https://api.maptiler.com/maps/winter-v2/style.json?key=${config.apiKey}`,
@@ -79,7 +78,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.map!.addControl(new FullscreenControl());
-
 
     // Añadimos una capa nueva para introducir el raster 3D
     this.map.on('load', () => {

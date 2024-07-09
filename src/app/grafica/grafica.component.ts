@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, Input, OnChanges, Output, SimpleChanges, EventEmitter } from '@angular/core';
-import { tick } from '@angular/core/testing';
-import { Chart, LinearScale, CategoryScale, LineController, LineElement, PointElement, Ticks } from 'chart.js';
+import { AfterViewInit, Component, Input, OnChanges, Output, SimpleChanges, EventEmitter, OnInit } from '@angular/core';
+import { Chart, LinearScale, CategoryScale, LineController, LineElement, PointElement } from 'chart.js';
+import { calculateElevationProfile } from '../utils/map';
 
 @Component({
   selector: 'app-grafica',
@@ -9,28 +9,34 @@ import { Chart, LinearScale, CategoryScale, LineController, LineElement, PointEl
   templateUrl: './grafica.component.html',
   styleUrl: './grafica.component.css'
 })
-export class GraficaComponent implements AfterViewInit, OnChanges {
+export class GraficaComponent implements AfterViewInit, OnChanges, OnInit {
   chart: Chart | undefined;
   ctx: any;
   intervalo: number = 0.5;
   ejeX: number[];
-
   @Input() elevationProfile: { kilometers: number[], altitudes: number[] } = { kilometers: [], altitudes: [] };
+
+
+  @Input() gpxData: { kilometers: number[], altitudes: number[] };
   @Output() pointHovered = new EventEmitter<number>();
 
   highlightedPoint: { x: number, y: number } | null = null;
 
   constructor() {
     Chart.register(CategoryScale, LinearScale, LineController, LineElement, PointElement);
-    this.elevationProfile.kilometers = [];
-    this.elevationProfile.altitudes = [];
     this.ejeX = [];
+    this.gpxData = { kilometers: [], altitudes: [] };
   }
+
+  ngOnInit(): void {
+  }
+
 
   ngAfterViewInit(): void {
     this.ctx = document.getElementById('myChart');
     this.initializeChart();
     this.setupMouseMoveListener();
+    this.updateChart();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

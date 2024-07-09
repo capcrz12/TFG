@@ -1,3 +1,4 @@
+import { from, Observable } from 'rxjs';
 import { Dictionary } from '../dictionary'; 
 import { gpx } from "@tmcw/togeojson";
 
@@ -18,7 +19,22 @@ import { gpx } from "@tmcw/togeojson";
         console.error('Error loading GPX:', error);
       });
   }
-  
+    export function cargarGPXObservable(filePath: string): Observable<any> {
+      return from(
+        fetch(filePath)
+          .then(response => response.text())
+          .then(xml => {
+            const gpxFile = new DOMParser().parseFromString(xml, 'text/xml');
+            const geoJson = gpx(gpxFile); // Convertir GPX a GeoJSON
+            return geoJson; // Devolver datos convertidos
+          })
+          .catch(error => {
+            console.error('Error loading GPX:', error);
+            throw error; // Propagar el error para manejarlo adecuadamente
+          })
+      );
+    }
+
 
   export function getData(gpxData: any, route: any, index: number, dataMap: any) {
         // Calcular coordenadas de los extremos
