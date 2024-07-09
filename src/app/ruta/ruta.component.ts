@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MapComponent } from '../map/map.component';
 import { RouterOutlet, Router } from '@angular/router';
 import { Dictionary } from '../dictionary';
 import { GraficaComponent } from '../grafica/grafica.component';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { RutaService } from './ruta.service';
+import { gpx } from '@maptiler/sdk';
 
 
 @Component({
@@ -38,8 +39,6 @@ export class RutaComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.getRoute();
-
-    console.log(this.dataMap);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -94,7 +93,6 @@ export class RutaComponent implements OnInit, OnChanges {
         this.routeJSON = data.routeJSON;
         this.gpxData = data.gpxData;
         this.dataMap = data.dataMap;
-
       },
       error: (error) => {
         console.error('Error:', error);

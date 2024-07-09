@@ -6,15 +6,18 @@
     </div>
     <div class="seccion">
         <div id="map-grafica">
-            <app-map [file]="'./assets/'+routeJSON['gpx']" 
-                     [dataMap]="dataMap" 
-                     [gpxData]="gpxData" 
-                     [type]="0" 
-                     [pointHovered]="pointHovered"
-                     (dataMapOut)="receiveDataMap($event)" 
-                     (elevationProfileOut)="receiveElevationProfile($event)" id="map">
-            </app-map>
-            <app-grafica id="grafica" [elevationProfile]="elevationProfile" (pointHovered)="onPointHovered($event)"></app-grafica>
+            @if (gpxData) {
+                <app-map [file]="'./assets/'+routeJSON['gpx']" 
+                        [dataMap]="dataMap" 
+                        [gpxData]="gpxData" 
+                        [type]="0" 
+                        [pointHovered]="pointHovered"
+                        (dataMapOut)="receiveDataMap($event)" 
+                        (elevationProfileOut)="receiveElevationProfile($event)" id="map">
+                </app-map>
+            
+                <app-grafica id="grafica" [gpxData]="gpxData" [elevationProfile]="elevationProfile"  (pointHovered)="onPointHovered($event)"></app-grafica>
+            }
         </div>
         <div id="image-primaria">
             <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44.jpeg" alt="Logotipo">
