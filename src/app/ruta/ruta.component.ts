@@ -92,7 +92,7 @@ export class RutaComponent implements OnInit, OnChanges {
       next: (data) => {
         this.routeJSON = data.routeJSON;
         this.gpxData = data.gpxData;
-        this.dataMap = data.dataMap;
+        this.dataMap = data.dataMap
       },
       error: (error) => {
         console.error('Error:', error);

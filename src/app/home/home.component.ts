@@ -2,8 +2,6 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { MapComponent } from '../map/map.component';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
 import { Dictionary } from '../dictionary'; 
 import { HomeService } from './home.service';
 
@@ -37,8 +35,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void{
     this.getData();
-
-    console.log(this.routes);
   }
 
   ngAfterViewInit() {
