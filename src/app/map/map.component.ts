@@ -60,7 +60,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.elevationProfile = calculateElevationProfile(this.gpxData);
     this.dataMapOut.emit(this.dataMap);
     this.elevationProfileOut.emit(this.elevationProfile);
-  }
+    }
 
   ngAfterViewInit() {
     // Spain coordinates
@@ -81,6 +81,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Añadimos una capa nueva para introducir el raster 3D
     this.map.on('load', () => {
+      // Para mapas de ruta
       if (this.type == 0) {
         // Agregar capa para el archivo GPX
         this.map!.addSource('gpx', {
@@ -98,6 +99,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
           source: "terrain"
       });
 
+      // Para mapas de ruta
       if (this.type == 0) {
         this.map!.addLayer({
           id: 'gpx-route',
@@ -127,6 +129,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         ]);    
       }
 
+      // Para mapa explorar
       if (this.type == 1) {
         // Add a new source from our GeoJSON data and
         // set the 'cluster' option to true. GL-JS will
@@ -139,81 +142,115 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
           cluster: true,
           clusterMaxZoom: 14, // Max zoom to cluster points on
           clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
-      });
+        });
 
-      this.map!.addLayer({
-          id: 'clusters',
-          type: 'circle',
-          source: 'rutes',
-          filter: ['has', 'point_count'],
-          paint: {
-              // Use step expressions (https://maplibre.org/maplibre-style-spec/#expressions-step)
-              // with three steps to implement three types of circles:
-              //   * Blue, 20px circles when point count is less than 100
-              //   * Yellow, 30px circles when point count is between 100 and 750
-              //   * Pink, 40px circles when point count is greater than or equal to 750
-              'circle-color': [
-                  'step',
-                  ['get', 'point_count'],
-                  '#51bbd6',
-                  100,
-                  '#f1f075',
-                  750,
-                  '#f28cb1'
-              ],
-              'circle-radius': [
-                  'step',
-                  ['get', 'point_count'],
-                  20,
-                  100,
-                  30,
-                  750,
-                  40
-              ]
+        this.map!.addLayer({
+            id: 'clusters',
+            type: 'circle',
+            source: 'rutes',
+            filter: ['has', 'point_count'],
+            paint: {
+                // Use step expressions (https://maplibre.org/maplibre-style-spec/#expressions-step)
+                // with three steps to implement three types of circles:
+                //   * Blue, 20px circles when point count is less than 100
+                //   * Yellow, 30px circles when point count is between 100 and 750
+                //   * Pink, 40px circles when point count is greater than or equal to 750
+                'circle-color': [
+                    'step',
+                    ['get', 'point_count'],
+                    '#51bbd6',
+                    100,
+                    '#f1f075',
+                    750,
+                    '#f28cb1'
+                ],
+                'circle-radius': [
+                    'step',
+                    ['get', 'point_count'],
+                    20,
+                    100,
+                    30,
+                    750,
+                    40
+                ]
+            }
+        });
+
+        this.map!.addLayer({
+            id: 'cluster-count',
+            type: 'symbol',
+            source: 'rutes',
+            filter: ['has', 'point_count'],
+            layout: {
+                'text-field': '{point_count_abbreviated}',
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 12
+            }
+        });
+
+        this.map!.addLayer({
+            id: 'unclustered-point',
+            type: 'circle',
+            source: 'rutes',
+            filter: ['!', ['has', 'point_count']],
+            paint: {
+                'circle-color': '#11b4da',
+                'circle-radius': 4,
+                'circle-stroke-width': 1,
+                'circle-stroke-color': '#fff'
+            }
+        });
+
+        // When a click event occurs on a feature in
+        // the unclustered-point layer, open a popup at
+        // the location of the feature, with
+        // description HTML from its properties.
+        /*
+        this.map!.on('click', 'unclustered-point', (e) => {
+          if (e && e.features) {
+            const coordinates = e.features[0].geometry.coordinates.slice();
+            const mag = e.features[0].properties.mag;
+            let tsunami;
+
+            if (e.features[0].properties.tsunami === 1) {
+                tsunami = 'yes';
+            } else {
+                tsunami = 'no';
+            }
           }
-      });
 
-      this.map!.addLayer({
-          id: 'cluster-count',
-          type: 'symbol',
-          source: 'rutes',
-          filter: ['has', 'point_count'],
-          layout: {
-              'text-field': '{point_count_abbreviated}',
-              'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-              'text-size': 12
+          // Ensure that if the map is zoomed out such that
+          // multiple copies of the feature are visible, the
+          // popup appears over the copy being pointed to.
+          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+              coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
           }
-      });
 
-      this.map!.addLayer({
-          id: 'unclustered-point',
-          type: 'circle',
-          source: 'rutes',
-          filter: ['!', ['has', 'point_count']],
-          paint: {
-              'circle-color': '#11b4da',
-              'circle-radius': 4,
-              'circle-stroke-width': 1,
-              'circle-stroke-color': '#fff'
-          }
+          new Popup()
+              .setLngLat(coordinates)
+              .setHTML(
+                  `magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`
+              )
+              .addTo(this.map!);
       });
+      */
 
-      this.map!.on('mouseenter', 'clusters', () => {
-        this.map!.getCanvas().style.cursor = 'pointer';
-      });
-      this.map!.on('mouseleave', 'clusters', () => {
-        this.map!.getCanvas().style.cursor = '';
-      });
+        this.map!.on('mouseenter', 'clusters', () => {
+          this.map!.getCanvas().style.cursor = 'pointer';
+        });
+        this.map!.on('mouseleave', 'clusters', () => {
+          this.map!.getCanvas().style.cursor = '';
+        });
 
-      this.map!.on('mouseenter', 'unclustered-point', () => {
-        this.map!.getCanvas().style.cursor = 'pointer';
-      });
-      this.map!.on('mouseleave', 'unclustered-point', () => {
-        this.map!.getCanvas().style.cursor = '';
-      });
-    }
-  });
-}
+        this.map!.on('mouseenter', 'unclustered-point', () => {
+          this.map!.getCanvas().style.cursor = 'pointer';
+        });
+        this.map!.on('mouseleave', 'unclustered-point', () => {
+          this.map!.getCanvas().style.cursor = '';
+        });
+      }
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['pointHovered'] && this.pointHovered !== -1 && this.elevationProfile) {
