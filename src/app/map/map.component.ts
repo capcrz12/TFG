@@ -4,6 +4,7 @@ import '@maptiler/sdk/dist/maptiler-sdk.css';
 import { gpx } from "@tmcw/togeojson";
 import { Dictionary } from '../dictionary'; 
 import { getExtremes, calculateElevationProfile } from '../utils/map';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-map',
@@ -15,6 +16,7 @@ import { getExtremes, calculateElevationProfile } from '../utils/map';
 export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   map: Map | undefined;
   @Input() gpxData: any; // Declaración de la propiedad gpxData para almacenar datos de GPX
+  routesGeoJson: any;
   coordinates: any;
   bounds: any;
   @Input() dataMap: Dictionary;
@@ -23,9 +25,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   elevationProfile: any;
   pointExists: boolean = false;
   point: any;
+  popup: Popup | any;
 
   @Input() type = -1; // type == 0 for rute maps / type == 1 for search maps
   @Input() file = '';
+  @Input() routes:Dictionary[] = [];
   @Input() pointHovered = -1;
 
 
@@ -38,7 +42,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('map')
   private mapContainer!: ElementRef<HTMLElement>;
 
-  constructor() {
+  constructor(private router:Router) {
     this.dataMap = {
       'speed': -1,
       'km': -1,
@@ -47,8 +51,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       'maxAltitude': -1,
       'minAltitude': -1,
     }
-
-
     
     this.speed = 0;
     this.km = 0;
@@ -60,6 +62,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.elevationProfile = calculateElevationProfile(this.gpxData);
     this.dataMapOut.emit(this.dataMap);
     this.elevationProfileOut.emit(this.elevationProfile);
+
+    this.routesGeoJson = convertRoutesToGeoJSON(this.routes);
     }
 
   ngAfterViewInit() {
@@ -134,11 +138,9 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         // Add a new source from our GeoJSON data and
         // set the 'cluster' option to true. GL-JS will
         // add the point_count property to your source data.
-        this.map!.addSource('rutes', {
+        this.map!.addSource('routes', {
           type: 'geojson',
-          // Point to GeoJSON data. This example visualizes all M1.0+ rutes
-          // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
-          data: 'https://maplibre.org/maplibre-gl-js/docs/assets/earthquakes.geojson',
+          data: this.routesGeoJson,
           cluster: true,
           clusterMaxZoom: 14, // Max zoom to cluster points on
           clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
@@ -147,7 +149,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         this.map!.addLayer({
             id: 'clusters',
             type: 'circle',
-            source: 'rutes',
+            source: 'routes',
             filter: ['has', 'point_count'],
             paint: {
                 // Use step expressions (https://maplibre.org/maplibre-style-spec/#expressions-step)
@@ -179,7 +181,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         this.map!.addLayer({
             id: 'cluster-count',
             type: 'symbol',
-            source: 'rutes',
+            source: 'routes',
             filter: ['has', 'point_count'],
             layout: {
                 'text-field': '{point_count_abbreviated}',
@@ -191,7 +193,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         this.map!.addLayer({
             id: 'unclustered-point',
             type: 'circle',
-            source: 'rutes',
+            source: 'routes',
             filter: ['!', ['has', 'point_count']],
             paint: {
                 'circle-color': '#11b4da',
@@ -201,23 +203,36 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         });
 
+        // inspect a cluster on click
+        this.map!.on('click', 'clusters', async (e) => {
+          const features = this.map!.queryRenderedFeatures(e.point, {
+              layers: ['clusters']
+          });
+          const clusterId = features[0].properties['cluster_id'];
+           // Type assertion to fix the TypeScript error
+          const source = this.map!.getSource('routes') as maplibregl.GeoJSONSource;
+
+          if (source && source.getClusterExpansionZoom) {
+              const zoom = await source.getClusterExpansionZoom(clusterId);
+              // Another type assertion for geometry.coordinates
+              const coordinates = (features[0].geometry as GeoJSON.Point).coordinates;
+              this.map!.easeTo({
+                  center: coordinates as maplibregl.LngLatLike,
+                  zoom: zoom
+              });
+          } else {
+              console.error("Source not found or doesn't support clustering.");
+          }
+      });
+
         // When a click event occurs on a feature in
         // the unclustered-point layer, open a popup at
         // the location of the feature, with
         // description HTML from its properties.
-        /*
-        this.map!.on('click', 'unclustered-point', (e) => {
-          if (e && e.features) {
-            const coordinates = e.features[0].geometry.coordinates.slice();
-            const mag = e.features[0].properties.mag;
-            let tsunami;
-
-            if (e.features[0].properties.tsunami === 1) {
-                tsunami = 'yes';
-            } else {
-                tsunami = 'no';
-            }
-          }
+        this.map!.on('mouseover', 'unclustered-point', (e) => {
+          const coordinates = (e!.features![0] as any).geometry.coordinates.slice();
+          const name = e!.features![0].properties['name'];
+          const km = e!.features![0].properties['km'];
 
           // Ensure that if the map is zoomed out such that
           // multiple copies of the feature are visible, the
@@ -226,14 +241,27 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
               coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
           }
 
-          new Popup()
+          this.popup = new Popup()
               .setLngLat(coordinates)
               .setHTML(
-                  `magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`
+                  `Ruta: ${name}<br>Km: ${km}`
               )
               .addTo(this.map!);
-      });
-      */
+        });
+
+        this.map!.on('mouseout', 'unclustered-point', (e) => {
+          if (this.popup) {
+            this.popup.remove();  // Elimina el popup del mapa
+            this.popup = null;    // Asegúrate de que la variable popup no apunte a un popup eliminado
+          }
+        })
+
+        this.map!.on('click', 'unclustered-point', (e) => {
+          const id = e!.features![0].properties['id'];
+
+          this.router.navigate([`/ruta/${id}`]);
+        })
+      
 
         this.map!.on('mouseenter', 'clusters', () => {
           this.map!.getCanvas().style.cursor = 'pointer';
@@ -289,10 +317,35 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         this.point.addTo(this.map);
     }
   }
-  
-  
+ 
   
   ngOnDestroy() {
     this.map?.remove();
   }
+}
+
+function convertRoutesToGeoJSON(routes: any[]): any {//GeoJSON.FeatureCollection<GeoJSON.Point> {
+  const features = routes.map(route => ({
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [route.lon, route.lat]
+    },
+    properties: {
+      id: route.id,
+      name: route.name,
+      des_pos: route.des_pos,
+      des_neg: route.des_neg,
+      km: route.km,
+      maxAltitude: route.maxAltitude,
+      minAltitude: route.minAltitude,
+      speed: route.speed,
+      ubication: route.ubication
+    }
+  }));
+
+  return {
+    type: 'FeatureCollection',
+    features: features
+  };
 }

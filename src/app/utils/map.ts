@@ -79,6 +79,8 @@ import { gpx } from "@tmcw/togeojson";
     dataMap[index]['km'] = route.km;
     dataMap[index]['des_neg'] = route.neg_desnivel;
     dataMap[index]['des_pos'] = route.pos_desnivel;
+    dataMap[index]['lat'] = route.lat;
+    dataMap[index]['lon'] = route.lon;
   }
 
   // Función para obtener las coordenadas de los extremos
