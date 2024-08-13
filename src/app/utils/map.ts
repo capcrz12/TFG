@@ -36,7 +36,7 @@ import { gpx } from "@tmcw/togeojson";
     }
 
 
-  export function getData(gpxData: any, route: any, index: number, dataMap: any) {
+  export function getData(gpxData: any, route: any, index: number/*, dataMap: any*/) {
         // Calcular coordenadas de los extremos
         let coordinates = getExtremes(gpxData.features[0].geometry.coordinates);
         
@@ -45,10 +45,14 @@ import { gpx } from "@tmcw/togeojson";
           [coordinates.maxLng + 0.02, coordinates.maxLat + 0.02]
         ];
 
+        /*
         if (!dataMap[index]) {
           dataMap[index] = {} as Dictionary;
         }
 
+         
+        dataMap no es necesario puesto que se guardan dichos datos en la base de datos
+        
         dataMap[index]['id'] = route.id;
         dataMap[index]['name'] = route.name;
         dataMap[index]['ubication'] = route.ubication;
@@ -58,6 +62,25 @@ import { gpx } from "@tmcw/togeojson";
         dataMap[index]['km'] = parseFloat(calculateTotalDistance(gpxData).toFixed(2));
         dataMap[index]['des_neg'] = calculateNegativeElevationLoss(gpxData);
         dataMap[index]['des_pos'] = calculatePositiveElevationGain(gpxData);
+        */
+  }
+
+  export function getStatistics(route: any, dataMap: any, index: number) {
+    if (!dataMap[index]) {
+      dataMap[index] = {} as Dictionary;
+    }
+
+    dataMap[index]['id'] = route.id;
+    dataMap[index]['name'] = route.name;
+    dataMap[index]['ubication'] = route.ubication;
+    dataMap[index]['speed'] = route.speed;
+    dataMap[index]['maxAltitude'] = route.max_alt;
+    dataMap[index]['minAltitude'] = route.min_alt;
+    dataMap[index]['km'] = route.km;
+    dataMap[index]['des_neg'] = route.neg_desnivel;
+    dataMap[index]['des_pos'] = route.pos_desnivel;
+    dataMap[index]['lat'] = route.lat;
+    dataMap[index]['lon'] = route.lon;
   }
 
   // Función para obtener las coordenadas de los extremos

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { cargarGPX, getData } from '../utils/map';
+import { cargarGPX, getData, getStatistics } from '../utils/map';
 import { environment } from '../../environments/environment';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Dictionary } from '../dictionary'; 
@@ -40,7 +40,9 @@ export class HomeService {
       if (routes[i].gpx != '') {
         this.gpxData = gpxData;
         // Llama a convertGPX con la ruta correcta del archivo GPX
-        getData(this.gpxData, routes[i], i, this.dataMap);
+        getData(this.gpxData, routes[i], i/*, this.dataMap*/);
+        
+        getStatistics(routes[i],this.dataMap, i);
       }
     }
 

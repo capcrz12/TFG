@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable, of } from 'rxjs';
 import { switchMap, catchError, map } from 'rxjs/operators';
-import { cargarGPXObservable, getData } from '../utils/map';
+import { cargarGPXObservable, getData, getStatistics } from '../utils/map';
 import { Dictionary } from '../dictionary';
 
 @Injectable({
@@ -18,22 +18,25 @@ export class RutaService {
         if (routeJSON.gpx !== '') {
           return cargarGPXObservable(`./assets/${routeJSON.gpx}`).pipe(
             map(gpxData => {
+              let dataMap: Dictionary = {};
               let data: Dictionary[] = [];
-              getData(gpxData, routeJSON, 0, data);
-              return { routeJSON, gpxData, dataMap: data[0] };
+              getData(gpxData, routeJSON, 0/*, data*/);
+              getStatistics(routeJSON, data, 0);
+              dataMap = data[0];
+              return { routeJSON, gpxData, dataMap };
             }),
             catchError(error => {
               console.error('Error:', error);
-              return of({ routeJSON, gpxData: null, dataMap: {} });
+              return of({ routeJSON, gpxData: null, dataMap: {}});
             })
           );
         } else {
-          return of({ routeJSON, gpxData: null, dataMap: {} });
+          return of({ routeJSON, gpxData: null, dataMap: {}});
         }
       }),
       catchError(error => {
         console.error('Error:', error);
-        return of({ routeJSON: null, gpxData: null, dataMap: {} });
+        return of({ routeJSON: null, gpxData: null, dataMap: {}});
       })
     );
   }
