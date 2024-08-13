@@ -31,6 +31,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() file = '';
   @Input() routes:Dictionary[] = [];
   @Input() pointHovered = -1;
+  @Input() filters: any = [];
 
 
   @Output() dataMapOut = new EventEmitter<Dictionary>();
@@ -160,10 +161,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
                 'circle-color': [
                     'step',
                     ['get', 'point_count'],
-                    '#51bbd6',
-                    100,
+                    '#60f073',
+                    10,
                     '#f1f075',
-                    750,
+                    50,
                     '#f28cb1'
                 ],
                 'circle-radius': [
@@ -196,10 +197,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
             source: 'routes',
             filter: ['!', ['has', 'point_count']],
             paint: {
-                'circle-color': '#11b4da',
-                'circle-radius': 4,
+                'circle-color': '#FFFFFF',
+                'circle-radius': 5,
                 'circle-stroke-width': 1,
-                'circle-stroke-color': '#fff'
+                'circle-stroke-color': '#000'
             }
         });
 
@@ -296,6 +297,21 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         const latitude = this.gpxData.features[0].geometry.coordinates[indice][0];
         const longitude = this.gpxData.features[0].geometry.coordinates[indice][1];
         this.addInteractivePoint(longitude, latitude);
+      }
+    }
+
+    if (changes['filters']) {
+      console.log(this.filters);
+
+      if (this.map) {
+        const source = this.map.getSource('routes') as maplibregl.GeoJSONSource;
+        if (source) {
+          // Verifica que la fuente existe antes de aplicar el filtro
+          this.map.setFilter('unclustered-point', this.filters);
+          this.map.setFilter('clusters', this.filters);
+        } else {
+          console.error("Source 'routes' no encontrado.");
+        }
       }
     }
   }
