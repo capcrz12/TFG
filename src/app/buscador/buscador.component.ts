@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { BuscadorService } from './buscador.service';
@@ -14,6 +14,8 @@ import { BuscadorService } from './buscador.service';
 export class BuscadorComponent implements OnInit {
   control = new FormControl();
   resultados: any = [];
+  
+  @Output() resultadosOut: any =  new EventEmitter<number>();
 
   constructor(private buscadorService : BuscadorService) {}
 
@@ -31,12 +33,10 @@ export class BuscadorComponent implements OnInit {
   }
 
   getData(busqueda: string) {
-    if (busqueda != "") {
-      this.buscadorService.getRoutes(busqueda)
-      .subscribe(res => {
-        this.resultados = res;
-        console.log(this.resultados);
-      })
-    }
+    this.buscadorService.getRoutes(busqueda)
+    .subscribe(res => {
+      (busqueda != '' ? this.resultados = res : this.resultados = [])
+      this.resultadosOut.emit(busqueda);
+    })
   }
 }

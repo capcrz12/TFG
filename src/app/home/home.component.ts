@@ -61,6 +61,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.isFilterOpen = !this.isFilterOpen;
   }
 
+  // Filtro que comprueba si el nombre de las rutas incluyen la cadena filter 
+  onFilterApplied(filter: any) {
+    this.filters = [
+      'all', // Todas las condiciones deben cumplirse
+      ['>', ['index-of', filter.toLowerCase(), ['downcase' , ['to-string', ['get', 'name']]]], -1]
+    ];
+  }
+  
+
   applyFilter() {
     // Lógica para obtener los filtros desde el HTML
     const kmCheckbox = (document.getElementById('km') as HTMLInputElement).checked;
@@ -82,7 +91,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       ...(posCheckbox ? [this.createFilterExpression('des_pos', posOperator, posValue)] : []),
       ...(negCheckbox ? [this.createFilterExpression('des_neg', negOperator, negValue)] : []),
     ];  
-      console.log(this.filters);
   }
 
   createFilterExpression(property: string, operator: string, value: number) {

@@ -87,6 +87,10 @@ h2 {
     border-radius: 60px;
 }
 
+.info {
+    height: 30vh;
+}
+
 .row {
     display: flex;
     flex-direction: row;

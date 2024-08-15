@@ -113,7 +113,7 @@
         </div>
     </div>
     <!--Buscador y lista de elementos buscados-->    
-    <app-buscador></app-buscador>
+    <app-buscador (resultadosOut)="onFilterApplied($event)"></app-buscador>
 
     }
 </section>
