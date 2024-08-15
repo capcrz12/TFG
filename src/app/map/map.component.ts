@@ -348,6 +348,7 @@ function convertRoutesToGeoJSON(routes: any[]): any {//GeoJSON.FeatureCollection
     properties: {
       id: route.id,
       name: route.name,
+      estimated_time: route.estimated_time,
       des_pos: route.des_pos,
       des_neg: route.des_neg,
       km: route.km,

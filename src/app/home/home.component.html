@@ -67,6 +67,27 @@
                     </fieldset>
                     
                     <fieldset>
+                        <legend>⏲️ TIEMPO MEDIO</legend>
+                        <div>
+                            <input id="time" type="checkbox" (change)="applyFilter()" />
+                            <label for="time">Activar/desactivar filtro</label>
+                            <div>
+                                <div>
+                                    <label for="operator-time">Operador:</label>
+                                    <select name="operator" id="operator-time" (change)="applyFilter()">
+                                        <option value=">">></option>
+                                        <option value="==" selected>==</option>
+                                        <option value="<"><</option>
+                                    </select>
+                                    <br>
+                                    <label for="range-time">Desnivel:</label>
+                                    <input type="number" id="range-time" name="range" value="1" min="0" max="24" (change)="applyFilter()" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
                         <legend>📈 DESNIVEL POSITIVO</legend>
                         <div>
                             <input id="pos" type="checkbox" (change)="applyFilter()" />

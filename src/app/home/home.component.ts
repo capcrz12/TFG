@@ -77,6 +77,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     const kmOperator = (document.getElementById('operator-km') as HTMLSelectElement).value;
     const kmValue = parseFloat((document.getElementById('range-km') as HTMLInputElement).value);
 
+    const timeCheckbox = (document.getElementById('time') as HTMLInputElement).checked;
+    const timeOperator = (document.getElementById('operator-time') as HTMLSelectElement).value;
+    const timeValue = parseFloat((document.getElementById('range-time') as HTMLInputElement).value);
+
     const posCheckbox = (document.getElementById('pos') as HTMLInputElement).checked;
     const posOperator = (document.getElementById('operator-pos') as HTMLSelectElement).value;
     const posValue = parseFloat((document.getElementById('range-pos') as HTMLInputElement).value);
@@ -89,6 +93,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.filters = [
       'all', // Esto indica que todas las condiciones deben cumplirse
       ...(kmCheckbox ? [this.createFilterExpression('km', kmOperator, kmValue)] : []),
+      ...(timeCheckbox ? [this.createFilterExpression('estimated_time', timeOperator, timeValue)] : []),
       ...(posCheckbox ? [this.createFilterExpression('des_pos', posOperator, posValue)] : []),
       ...(negCheckbox ? [this.createFilterExpression('des_neg', negOperator, negValue)] : []),
     ];  
