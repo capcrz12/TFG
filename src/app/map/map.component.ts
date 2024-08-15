@@ -301,8 +301,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (changes['filters']) {
-      console.log(this.filters);
-
       if (this.map) {
         const source = this.map.getSource('routes') as maplibregl.GeoJSONSource;
         if (source) {

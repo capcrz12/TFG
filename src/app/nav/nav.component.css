@@ -76,10 +76,12 @@ p {
     flex-direction: row;
     width: 60%;
     margin: 1rem;
+    margin-right: 10%;
     align-items: center;
     list-style: none;
     padding: 0;
-    justify-content: space-around;
+    justify-content: right;
+    gap: 20%;
 }
 
 .buscador {

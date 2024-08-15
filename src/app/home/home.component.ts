@@ -1,15 +1,16 @@
-import { Component, OnInit, AfterViewInit, Output } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, Input } from '@angular/core';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { MapComponent } from '../map/map.component';
 import { CommonModule } from '@angular/common';
 import { Dictionary } from '../dictionary'; 
 import { HomeService } from './home.service';
+import { BuscadorComponent } from '../buscador/buscador.component';
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, MapComponent, RouterLink, RouterModule],
+  imports: [RouterOutlet, CommonModule, MapComponent, RouterLink, RouterModule, BuscadorComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -31,7 +32,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(private homeService: HomeService) {
     this.name = 'Ruta de prueba'
     this.user = 'Carlos Pérez'
-    this.siguiendo = true;
+    this.siguiendo = false;
 
     this.type = 0;   
   }
