@@ -61,11 +61,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.isFilterOpen = !this.isFilterOpen;
   }
 
-  // Filtro que comprueba si el nombre de las rutas incluyen la cadena filter 
+  // Filtro que comprueba si el nombre o la ubicacion de las rutas incluyen la cadena filter 
   onFilterApplied(filter: any) {
     this.filters = [
-      'all', // Todas las condiciones deben cumplirse
-      ['>', ['index-of', filter.toLowerCase(), ['downcase' , ['to-string', ['get', 'name']]]], -1]
+      'any', // Al menos una de las condiciones debe cumplirse
+      ['>', ['index-of', filter.toLowerCase(), ['downcase' , ['to-string', ['get', 'name']]]], -1],
+      ['>', ['index-of', filter.toLowerCase(), ['downcase' , ['to-string', ['get', 'ubication']]]], -1],
     ];
   }
   
