@@ -73,7 +73,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
      
     this.map = new Map({
       container: this.mapContainer.nativeElement,
-      style: `https://api.maptiler.com/maps/winter-v2/style.json?key=${config.apiKey}`,
+      //style: `https://api.maptiler.com/maps/winter-v2/style.json?key=${config.apiKey}`,
+      style: `https://api.maptiler.com/maps/hybrid/style.json?key=${config.apiKey}`,
       center: [initialState.lng, initialState.lat],
       zoom: initialState.zoom,
       pitch: 50,
@@ -85,7 +86,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.map!.addControl(new FullscreenControl());
 
     // Añadimos una capa nueva para introducir el raster 3D
-    this.map.on('load', () => {
+    this.map.on('load', async () => {
       // Para mapas de ruta
       if (this.type == 0) {
         // Agregar capa para el archivo GPX
@@ -136,6 +137,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // Para mapa explorar
       if (this.type == 1) {
+
+        // Cargar la imagen del senderista
+        let image = await this.map!.loadImage('../../assets/images/senderismo.png');
+        this.map!.addImage('senderista', image.data);
+
         // Add a new source from our GeoJSON data and
         // set the 'cluster' option to true. GL-JS will
         // add the point_count property to your source data.
@@ -193,15 +199,21 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.map!.addLayer({
             id: 'unclustered-point',
-            type: 'circle',
+            type: 'symbol' /* 'circle' */,
             source: 'routes',
             filter: ['!', ['has', 'point_count']],
+            layout: {
+              'icon-image': 'senderista',   // Se añade al mapa mas arriba
+              'icon-size': 0.05
+            }
+            /*
             paint: {
                 'circle-color': '#FFFFFF',
                 'circle-radius': 5,
                 'circle-stroke-width': 1,
                 'circle-stroke-color': '#000'
             }
+            */
         });
 
         // inspect a cluster on click
