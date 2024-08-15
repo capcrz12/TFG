@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(private homeService: HomeService) {
     this.name = 'Ruta de prueba'
     this.user = 'Carlos Pérez'
-    this.siguiendo = false;
+    this.siguiendo = true;  // Al cargar home aparece en siguiendo si es true, y en explorar si es false
 
     this.type = 0;   
   }
