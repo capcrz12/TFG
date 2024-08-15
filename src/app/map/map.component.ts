@@ -301,8 +301,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (changes['filters']) {
-      console.log(this.filters);
-
       if (this.map) {
         const source = this.map.getSource('routes') as maplibregl.GeoJSONSource;
         if (source) {
@@ -350,6 +348,7 @@ function convertRoutesToGeoJSON(routes: any[]): any {//GeoJSON.FeatureCollection
     properties: {
       id: route.id,
       name: route.name,
+      estimated_time: route.estimated_time,
       des_pos: route.des_pos,
       des_neg: route.des_neg,
       km: route.km,

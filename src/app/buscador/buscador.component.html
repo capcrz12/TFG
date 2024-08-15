@@ -1,0 +1,22 @@
+<div class="contenedor">
+    <fieldset class="buscador">
+        <img class="lupa" src="../../assets/images/lupa.png">
+        <input 
+            class="buscador" 
+            [formControl]="control "
+            placeholder="Buscar caminos . . ."
+        />
+    </fieldset>
+</div>
+<div>
+    @for (res of resultados; track res['id']) {
+        <div class="resultados">
+            <div class="info">
+                <p id="name">{{res['name']}}</p>
+                <p id="km">{{res['km']}} Km</p>
+                <p id="ubication">{{res['ubication']}}</p>
+            </div>
+            <hr width="100%">
+        </div>
+    }
+</div>

@@ -26,6 +26,8 @@ export class RutaComponent implements OnInit, OnChanges {
   data: Dictionary [];
   gpxData: any;
   elevationProfile: any;
+  min: number;
+  hour: number;
 
   observer: IntersectionObserver | undefined;
 
@@ -35,6 +37,8 @@ export class RutaComponent implements OnInit, OnChanges {
     this.data = [];
     this.rutaId = -1;
     this.pointHovered = -1;
+    this.min = 0;
+    this.hour = 0;
   }
 
   ngOnInit(): void {
@@ -87,12 +91,18 @@ export class RutaComponent implements OnInit, OnChanges {
     this.elevationProfile = elevationProfile;
   }
 
+  formatTime() {
+    this.hour = Math.floor(this.dataMap['estimated_time'])
+    this.min = Math.round((this.dataMap['estimated_time'] - this.hour) * 60);
+  }
+
   getRoute(): void {
     this.rutaService.getData(this.id).subscribe({
       next: (data) => {
         this.routeJSON = data.routeJSON;
         this.gpxData = data.gpxData;
         this.dataMap = data.dataMap
+        this.formatTime();
       },
       error: (error) => {
         console.error('Error:', error);

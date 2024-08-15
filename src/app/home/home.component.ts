@@ -1,15 +1,16 @@
-import { Component, OnInit, AfterViewInit, Output } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, Input } from '@angular/core';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { MapComponent } from '../map/map.component';
 import { CommonModule } from '@angular/common';
 import { Dictionary } from '../dictionary'; 
 import { HomeService } from './home.service';
+import { BuscadorComponent } from '../buscador/buscador.component';
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, MapComponent, RouterLink, RouterModule],
+  imports: [RouterOutlet, CommonModule, MapComponent, RouterLink, RouterModule, BuscadorComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -31,7 +32,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(private homeService: HomeService) {
     this.name = 'Ruta de prueba'
     this.user = 'Carlos Pérez'
-    this.siguiendo = true;
+    this.siguiendo = false;
 
     this.type = 0;   
   }
@@ -60,11 +61,25 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.isFilterOpen = !this.isFilterOpen;
   }
 
+  // Filtro que comprueba si el nombre o la ubicacion de las rutas incluyen la cadena filter 
+  onFilterApplied(filter: any) {
+    this.filters = [
+      'any', // Al menos una de las condiciones debe cumplirse
+      ['>', ['index-of', filter.toLowerCase(), ['downcase' , ['to-string', ['get', 'name']]]], -1],
+      ['>', ['index-of', filter.toLowerCase(), ['downcase' , ['to-string', ['get', 'ubication']]]], -1],
+    ];
+  }
+  
+
   applyFilter() {
     // Lógica para obtener los filtros desde el HTML
     const kmCheckbox = (document.getElementById('km') as HTMLInputElement).checked;
     const kmOperator = (document.getElementById('operator-km') as HTMLSelectElement).value;
     const kmValue = parseFloat((document.getElementById('range-km') as HTMLInputElement).value);
+
+    const timeCheckbox = (document.getElementById('time') as HTMLInputElement).checked;
+    const timeOperator = (document.getElementById('operator-time') as HTMLSelectElement).value;
+    const timeValue = parseFloat((document.getElementById('range-time') as HTMLInputElement).value);
 
     const posCheckbox = (document.getElementById('pos') as HTMLInputElement).checked;
     const posOperator = (document.getElementById('operator-pos') as HTMLSelectElement).value;
@@ -78,10 +93,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.filters = [
       'all', // Esto indica que todas las condiciones deben cumplirse
       ...(kmCheckbox ? [this.createFilterExpression('km', kmOperator, kmValue)] : []),
+      ...(timeCheckbox ? [this.createFilterExpression('estimated_time', timeOperator, timeValue)] : []),
       ...(posCheckbox ? [this.createFilterExpression('des_pos', posOperator, posValue)] : []),
       ...(negCheckbox ? [this.createFilterExpression('des_neg', negOperator, negValue)] : []),
     ];  
-      console.log(this.filters);
   }
 
   createFilterExpression(property: string, operator: string, value: number) {

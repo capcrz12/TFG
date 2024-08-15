@@ -1,9 +1,11 @@
 <section>
+    <!--Botones del menu-->
     <div id="main-info">
         <h2 (click)="setSiguiendo(true)" [class.bold]="siguiendo">Siguiendo</h2>
         <h2 (click)="setSiguiendo(false)" [class.bold]="!siguiendo">Explorar</h2>
     </div>
 
+    <!--Página Siguiendo-->
     @if (siguiendo) {
     @for (dato of dataMap; track dato['id']) {
     <div id="usuario">
@@ -35,80 +37,104 @@
     }
     @else {
     <app-map id="map" [type]="1" [routes]="dataMap" [filters]="filters"></app-map>
-   <div class="map-overlay top">
-    <div class="map-overlay-inner">
-        <nav id="nav-filter">
-            <div (click)="toggleFilter()" class="filter-header">
-                <span>FILTRO DE BÚSQUEDA</span>
-                <span [class]="isFilterOpen ? 'arrow up' : 'arrow down'"></span>
-            </div>
-            <div [class.open]="isFilterOpen" class="filter-content">
-                <fieldset>
-                    <legend>🧎‍♂️ KM</legend>
-                    <div>
-                        <input id="km" type="checkbox" (change)="applyFilter()" />
-                        <label for="km">Activar/desactivar filtro</label>
+    <div class="map-overlay top">
+        <div class="map-overlay-inner">
+            <nav id="nav-filter">
+                <div (click)="toggleFilter()" class="filter-header">
+                    <span>FILTRO DE BÚSQUEDA</span>
+                    <span [class]="isFilterOpen ? 'arrow up' : 'arrow down'"></span>
+                </div>
+                <div [class.open]="isFilterOpen" class="filter-content">
+                    <fieldset>
+                        <legend>🧎‍♂️ KM</legend>
                         <div>
+                            <input id="km" type="checkbox" (change)="applyFilter()" />
+                            <label for="km">Activar/desactivar filtro</label>
                             <div>
-                                <label for="operator-km">Operador:</label>
-                                <select name="operator" id="operator-km" (change)="applyFilter()">
-                                    <option value=">">></option>
-                                    <option value="==" selected>==</option>
-                                    <option value="<"><</option>
-                                </select>
-                                <br>
-                                <label for="range-km">Cantidad:</label>
-                                <input type="number" id="range-km" name="range" value="10" min="0.1" max="100" (change)="applyFilter()" />
+                                <div>
+                                    <label for="operator-km">Operador:</label>
+                                    <select name="operator" id="operator-km" (change)="applyFilter()">
+                                        <option value=">">></option>
+                                        <option value="==" selected>==</option>
+                                        <option value="<"><</option>
+                                    </select>
+                                    <br>
+                                    <label for="range-km">Cantidad:</label>
+                                    <input type="number" id="range-km" name="range" value="10" min="0.1" max="100" (change)="applyFilter()" />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </fieldset>
-                
-                <fieldset>
-                    <legend>📈 DESNIVEL POSITIVO</legend>
-                    <div>
-                        <input id="pos" type="checkbox" (change)="applyFilter()" />
-                        <label for="pos">Activar/desactivar filtro</label>
+                    </fieldset>
+                    
+                    <fieldset>
+                        <legend>⏲️ TIEMPO MEDIO</legend>
                         <div>
+                            <input id="time" type="checkbox" (change)="applyFilter()" />
+                            <label for="time">Activar/desactivar filtro</label>
                             <div>
-                                <label for="operator-pos">Operador:</label>
-                                <select name="operator" id="operator-pos" (change)="applyFilter()">
-                                    <option value=">">></option>
-                                    <option value="==" selected>==</option>
-                                    <option value="<"><</option>
-                                </select>
-                                <br>
-                                <label for="range-pos">Desnivel:</label>
-                                <input type="number" id="range-pos" name="range" value="500" min="0.0" max="5000" (change)="applyFilter()" />
+                                <div>
+                                    <label for="operator-time">Operador:</label>
+                                    <select name="operator" id="operator-time" (change)="applyFilter()">
+                                        <option value=">">></option>
+                                        <option value="==" selected>==</option>
+                                        <option value="<"><</option>
+                                    </select>
+                                    <br>
+                                    <label for="range-time">Desnivel:</label>
+                                    <input type="number" id="range-time" name="range" value="1" min="0" max="24" (change)="applyFilter()" />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </fieldset>
-                
-                <fieldset>
-                    <legend>📉 DESNIVEL NEGATIVO</legend>
-                    <div>
-                        <input id="neg" type="checkbox" (change)="applyFilter()" />
-                        <label for="neg">Activar/desactivar filtro</label>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>📈 DESNIVEL POSITIVO</legend>
                         <div>
+                            <input id="pos" type="checkbox" (change)="applyFilter()" />
+                            <label for="pos">Activar/desactivar filtro</label>
                             <div>
-                                <label for="operator-neg">Operador:</label>
-                                <select name="operator" id="operator-neg" (change)="applyFilter()">
-                                    <option value=">">></option>
-                                    <option value="==" selected>==</option>
-                                    <option value="<"><</option>
-                                </select>
-                                <br>
-                                <label for="range-neg">Desnivel:</label>
-                                <input type="number" id="range-neg" name="range" value="500" min="0.0" max="5000" (change)="applyFilter()" />
+                                <div>
+                                    <label for="operator-pos">Operador:</label>
+                                    <select name="operator" id="operator-pos" (change)="applyFilter()">
+                                        <option value=">">></option>
+                                        <option value="==" selected>==</option>
+                                        <option value="<"><</option>
+                                    </select>
+                                    <br>
+                                    <label for="range-pos">Desnivel:</label>
+                                    <input type="number" id="range-pos" name="range" value="500" min="0.0" max="5000" (change)="applyFilter()" />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </fieldset>
-                
+                    </fieldset>
+                    
+                    <fieldset>
+                        <legend>📉 DESNIVEL NEGATIVO</legend>
+                        <div>
+                            <input id="neg" type="checkbox" (change)="applyFilter()" />
+                            <label for="neg">Activar/desactivar filtro</label>
+                            <div>
+                                <div>
+                                    <label for="operator-neg">Operador:</label>
+                                    <select name="operator" id="operator-neg" (change)="applyFilter()">
+                                        <option value=">">></option>
+                                        <option value="==" selected>==</option>
+                                        <option value="<"><</option>
+                                    </select>
+                                    <br>
+                                    <label for="range-neg">Desnivel:</label>
+                                    <input type="number" id="range-neg" name="range" value="500" min="0.0" max="5000" (change)="applyFilter()" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
                 </div>
             </nav>
         </div>
-    </div>    
+    </div>
+    <!--Buscador y lista de elementos buscados-->    
+    <app-buscador (resultadosOut)="onFilterApplied($event)"></app-buscador>
+
     }
 </section>

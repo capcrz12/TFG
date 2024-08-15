@@ -24,30 +24,57 @@
         </div>
     </div>
     <div id="main-info">
+        <h2>INFORMACIÓN</h2>
+    </div>
+    <!-- INFORMACION -->
+    <div class="seccion info">
+        <div class="column">
+            <p>Descripción: </p>
+            <p>{{dataMap['description']}}</p>
+        </div>
+        <div class="column">
+            <p>Ubicación: </p>
+            <p>{{dataMap['ubication']}}</p>
+        </div>
+        <!--Aqui se pueden añadir tantos bloques de información como sean necesarios, siguiendo el siguiente esquema-->
+        <!--
+        <div class="column">
+            <p>Valoración: </p>
+            <p>{{dataMap['description']}}</p>
+        </div>
+        -->
+    </div>
+    <!-- ESTADÍSTICAS -->
+    <div id="main-info">
         <h2>TABLA ESTADÍSTICA</h2>
         <p class="hide-info">{{dataMap['name']}}</p>
     </div>
     <div class="seccion tabla" id="tabla-seccion">
-        <div class="column">
+        <div class="row">
             <div class="column">
-                <p class="statistics">KM: {{dataMap['km']}}</p>
+                <p class="statistics">KM:<br> {{dataMap['km']}}</p>
             </div>
             <div class="column">
-                <p class="statistics">Altitud mínima: {{dataMap['minAltitude']}} metros</p>
+                <p class="statistics">Tiempo estimado:<br> {{hour}} h {{min}} min</p>
             </div>
             <div class="column">
-                <p class="statistics">Desnivel negativo: {{dataMap['des_neg']}} metros</p>
+                <p class="statistics">Velocidad media:<br> {{dataMap['speed']}} km/h</p>
             </div>
         </div>
-        <div class="column">
+        <div class="row">
             <div class="column">
-                <p class="statistics">Velocidad: {{dataMap['speed']}} km/h</p>
+                <p class="statisticsSecund">Altitud mínima: {{dataMap['minAltitude']}} metros</p>
             </div>
             <div class="column">
-                <p class="statistics">Altitud máxima: {{dataMap['maxAltitude']}} metros</p>
+                <p class="statisticsSecund">Altitud máxima: {{dataMap['maxAltitude']}} metros</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <p class="statisticsSecund">Desnivel negativo: {{dataMap['des_neg']}} metros</p>
             </div>
             <div class="column">
-                <p class="statistics">Desnivel positivo: {{dataMap['des_pos']}} metros</p>
+                <p class="statisticsSecund">Desnivel positivo: {{dataMap['des_pos']}} metros</p>
             </div>
         </div>
     </div>
