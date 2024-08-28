@@ -18,7 +18,7 @@ export class HomeService {
   constructor(private http:HttpClient) { }
 
   getRoutes(): Observable<any> {
-    return this.http.get(environment.APIUrl+"get_routes");
+    return this.http.get(environment.APIUrl+"routes/get_routes");
   }
 
   getGPXData(routes:any): Promise<any> {

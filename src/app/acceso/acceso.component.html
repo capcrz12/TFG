@@ -1,0 +1,21 @@
+<section>
+    <div id="main-info">
+        <h2>ACCESO</h2>
+    </div>
+    <div class="seccion">
+        <form class="contenedor">
+            <fieldset>
+                <p class="label">Correo electrónico</p>
+                <input type="email" name="email" [(ngModel)]="email" placeholder="Email"/>
+            </fieldset>
+            <fieldset>
+                <p class="label">Contraseña</p>
+                <input type="password" name="password" [(ngModel)]="password" placeholder="Contraseña"/>
+            </fieldset>
+            <div class="enviar">
+                <p>¿Ha olvidado su contraseña?</p>
+                <button type="submit" (click)="login()">Acceder</button>
+            </div>
+        </form>
+    </div>
+</section>

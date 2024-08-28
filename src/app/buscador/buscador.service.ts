@@ -10,6 +10,6 @@ export class BuscadorService {
   constructor(private http:HttpClient) { }
 
   getRoutes (busqueda:string) {
-    return this.http.get(`${environment.APIUrl}get_routes/${busqueda}`);
+    return this.http.get(`${environment.APIUrl}routes/get_routes/${busqueda}`);
   }  
 }

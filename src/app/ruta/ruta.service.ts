@@ -13,7 +13,7 @@ export class RutaService {
   constructor(private http: HttpClient) { }
 
   getData(id: string): Observable<any> {
-    return this.http.get(`${environment.APIUrl}get_route/${id}`).pipe(
+    return this.http.get(`${environment.APIUrl}routes/get_route/${id}`).pipe(
       switchMap((routeJSON: any) => {
         if (routeJSON.gpx !== '') {
           return cargarGPXObservable(`./assets/${routeJSON.gpx}`).pipe(
