@@ -3,6 +3,7 @@ import { HomeComponent } from './home/home.component';
 import { RutaComponent } from './ruta/ruta.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AccesoComponent } from './acceso/acceso.component';
+import { RegistroComponent } from './registro/registro.component';
 
 export const routes: Routes = [
     {
@@ -21,6 +22,10 @@ export const routes: Routes = [
     {
       path: 'acceso',
       component: AccesoComponent
+    },
+    {
+      path: 'registro',
+      component: RegistroComponent
     },
     {
         path: '**',

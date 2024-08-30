@@ -1,0 +1,40 @@
+<section>
+    <div id="main-info">
+        <h2>REGISTRO</h2>
+    </div>
+    <div class="seccion">
+        <form class="contenedor">
+            <fieldset>
+                <p class="label">Correo electrónico</p>
+                <input type="email" name="email" [(ngModel)]="email" placeholder="Email"/>
+            </fieldset>
+            <fieldset>
+                <p class="label">Contraseña</p>
+                <input [type]="passwordFieldType()"  name="password" [(ngModel)]="password" placeholder="Contraseña" [class.error]="errorMessage && password !== repPassword"/>
+                <i 
+                    class="fas" 
+                    [ngClass]="{'eye': !showPassword, 'eye-closed': showPassword}" 
+                    (click)="togglePasswordVisibility()"
+                ></i>
+            </fieldset>
+            <fieldset>
+                <p class="label">Repita la contraseña</p>
+                <i 
+                    class="refas" 
+                    [ngClass]="{'eye': !showPassword, 'eye-closed': showPassword}" 
+                    (click)="togglePasswordVisibility()"
+                ></i>
+                <input [type]="passwordFieldType()"  name="password" [(ngModel)]="repPassword" placeholder="Repita Contraseña" [class.error]="errorMessage && password !== repPassword"/>
+            </fieldset>
+            @if (successMessage !== '') {
+                <p class="success">{{ successMessage }}</p>
+            }
+            @if (password !== repPassword || errorMessage !== '') {
+                <p class="error">{{ errorMessage }}</p>
+            }
+            <div class="enviar">
+                <button type="submit" (click)="register()">Acceder</button>
+            </div>
+        </form>
+    </div>
+</section>
