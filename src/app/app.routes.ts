@@ -4,6 +4,7 @@ import { RutaComponent } from './ruta/ruta.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AccesoComponent } from './acceso/acceso.component';
 import { RegistroComponent } from './registro/registro.component';
+import { TerminosComponent } from './terminos/terminos.component';
 
 export const routes: Routes = [
     {
@@ -26,6 +27,18 @@ export const routes: Routes = [
     {
       path: 'registro',
       component: RegistroComponent
+    },
+    {
+      path: 'privacy-policy',
+      component: TerminosComponent
+    },
+    {
+      path: 'terms-of-service',
+      component: TerminosComponent
+    },
+    {
+      path: 'data-usage',
+      component: TerminosComponent
     },
     {
         path: '**',

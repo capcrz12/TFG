@@ -50,7 +50,7 @@ h2 {
 }
 
 fieldset:first-child {
-    margin-top: 8%;
+    margin-top: 5vh;
 }
 
 fieldset {
@@ -62,32 +62,92 @@ fieldset {
     gap: 5%;
     justify-content: center;
     align-items: center;
+
+    margin-bottom: 2vh;
 }
 
 
 .label {
     width: 47%;
     text-align: left;
+    font-size: x-larger;
+}
+
+.caja {
+    display: flex;
+    flex-direction: row;
+    
+    justify-content: space-between;
+    align-items: center;
+
+    width: 50%;
+    height: 2vh;
+    border: 1px solid black;
+    padding: 2vh;
+    border-radius: 60px;
+
+    background: white;
+    transition: 0.5s;
 }
 
 input {
-    width: 50%;
-    height: 30%;
+    width: 100%;
+    height: 100%;
     padding: 1%;
-    border: 1px solid black;
-    border-radius: 60px;
+    border: 0;
+    outline: none;
+    font-size: larger;   
+    background: white;
+    transition: 0.5s;
+}
+
+/* Restablecer el estilo de los campos de entrada cuando se autocompletan */
+input:-webkit-autofill {
+    background-color: white; /* Fondo que deseas para el input */
+    -webkit-box-shadow: 0 0 0 30px white inset; /* Fondo para todo el campo */
+    -webkit-text-fill-color: #000; /* Color del texto */
+}
+
+.caja:focus-within,
+.caja:hover,
+input:focus,
+.caja:hover input {
+    background-color: #D1E7A8; /* Color de fondo cuando el input dentro de la caja está enfocado */
+    outline: none;
+}
+
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+.caja:hover input:-webkit-autofill {
+    background-color: #D1E7A8; /* Fondo al hacer hover o focus */
+    -webkit-box-shadow: 0 0 0 30px #D1E7A8 inset;
+    -webkit-text-fill-color: #000;
+    outline: none;
+
 }
 
 /* Estilos cuando hay un error */
 input.error {
+    width: 100%;
+    height: 100%;
+    padding: 1%;
+    background-color: #fdd;
+}
+
+.caja-error,
+.caja-error:hover {
     border: 1px solid red;
     background-color: #fdd;
 }
 
+.caja-error:hover input,
+.caja-error input:focus,
+.caja-error:focus-within,
+input.error:focus {
+    background-color: #fdd;
+}
+
 .fas {
-    position: absolute;
-    right: 39vw; /* Ajusta según el diseño */
-    top: 66%;
     cursor: pointer;
     width: 24px; /* Ajusta según el tamaño de tus íconos */
     height: 24px; /* Ajusta según el tamaño de tus íconos */
@@ -97,9 +157,6 @@ input.error {
 }
 
 .refas {
-    position: absolute;
-    right: 39vw; /* Ajusta según el diseño */
-    top: 81%;
     cursor: pointer;
     width: 24px; /* Ajusta según el tamaño de tus íconos */
     height: 24px; /* Ajusta según el tamaño de tus íconos */
@@ -116,30 +173,46 @@ i.eye-closed {
     background-image: url('/assets/images/esconder.png');
 }
 
+.terminos {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    gap: 0;
+}
+
+.alertas {
+    position: absolute;
+    top: 89.5vh;
+    left: 54vw;
+}
+
 .success {
+    font-weight: bolder;
     color: rgb(47, 146, 22);
     margin-top: 10px;
 }
 
 .error {
+    font-weight: bolder;
     color: red;
     margin-top: 10px;
 }
 
 .enviar {
+    margin-bottom: 5vh;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-    margin-top: 5%;
-
-    width: 60%;
+    width: 70%;
 }
 
 .enviar > p {
     color: black;
     cursor: pointer;
     transition: 0.5s;
+    font-size: larger;
 }
 
 .enviar > p:hover {
@@ -161,4 +234,27 @@ button {
 button:hover {
     background-color: #D1E7A8;
     transition: 0.5s;
+}
+
+.boton {
+    background: white;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border-radius: 20px;
+    border: 1px solid black;
+    padding: 1% 2%;
+    cursor: pointer;
+    transition: 0.5s;
+
+}
+
+.boton:hover {
+    background-color: #D1E7A8;
+    transition: 0.5s;
+}
+
+.verify {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }

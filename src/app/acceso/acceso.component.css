@@ -62,22 +62,87 @@ fieldset {
     gap: 5%;
     justify-content: center;
     align-items: center;
+
+    margin-bottom: 2vh;
 }
 
 
 .label {
     width: 47%;
     text-align: left;
+    font-size: x-large;
+}
+
+.caja {
+    display: flex;
+    flex-direction: row;
+    
+    justify-content: space-between;
+    align-items: center;
+
+    width: 50%;
+    height: 2vh;
+    border: 1px solid black;
+    padding: 2vh;
+    border-radius: 60px;
+
+    background: white;
+    transition: 0.5s;
 }
 
 input {
-    width: 50%;
-    height: 30%;
+    width: 100%;
+    height: 100%;
     padding: 1%;
-    border: 1px solid black;
-    border-radius: 60px;
+    border: 0;
+    outline: none;
+    font-size: larger;   
+    background: white;
+    transition: 0.5s;
 }
 
+/* Restablecer el estilo de los campos de entrada cuando se autocompletan */
+input:-webkit-autofill {
+    background-color: white; /* Fondo que deseas para el input */
+    -webkit-box-shadow: 0 0 0 30px white inset; /* Fondo para todo el campo */
+    -webkit-text-fill-color: #000; /* Color del texto */
+}
+
+.caja:focus-within,
+.caja:hover,
+input:focus,
+.caja:hover input {
+    background-color: #D1E7A8; /* Color de fondo cuando el input dentro de la caja está enfocado */
+    outline: none;
+}
+
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+.caja:hover input:-webkit-autofill {
+    background-color: #D1E7A8; /* Fondo al hacer hover o focus */
+    -webkit-box-shadow: 0 0 0 30px #D1E7A8 inset;
+    -webkit-text-fill-color: #000;
+    outline: none;
+
+}
+
+
+.fas {
+    cursor: pointer;
+    width: 24px; /* Ajusta según el tamaño de tus íconos */
+    height: 24px; /* Ajusta según el tamaño de tus íconos */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+i.eye {
+    background-image: url('/assets/images/ver.png');
+}
+
+i.eye-closed {
+    background-image: url('/assets/images/esconder.png');
+}
 
 .enviar {
     display: flex;
@@ -92,6 +157,7 @@ input {
 .enviar > p {
     color: black;
     cursor: pointer;
+    font-size: large;
     transition: 0.5s;
 }
 
@@ -103,6 +169,7 @@ input {
 button {
     background: white;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: larger;
     border-radius: 20px;
     border: 1px solid black;
     padding: 1% 2%;

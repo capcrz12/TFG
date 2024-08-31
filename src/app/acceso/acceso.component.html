@@ -6,11 +6,20 @@
         <form class="contenedor">
             <fieldset>
                 <p class="label">Correo electrónico</p>
-                <input type="email" name="email" [(ngModel)]="email" placeholder="Email"/>
+                <div class="caja">
+                    <input type="email" name="email" [(ngModel)]="email" placeholder="Email"/>
+                </div>
             </fieldset>
             <fieldset>
                 <p class="label">Contraseña</p>
-                <input type="password" name="password" [(ngModel)]="password" placeholder="Contraseña"/>
+                <div class="caja">
+                    <input [type]="passwordFieldType()" name="password" [(ngModel)]="password" placeholder="Contraseña"/>
+                    <i 
+                        class="fas" 
+                        [ngClass]="{'eye': !showPassword, 'eye-closed': showPassword}" 
+                        (click)="togglePasswordVisibility()"
+                    ></i>
+                </div>
             </fieldset>
             <div class="enviar">
                 <p>¿Ha olvidado su contraseña?</p>

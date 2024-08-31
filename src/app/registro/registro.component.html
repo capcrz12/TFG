@@ -3,38 +3,63 @@
         <h2>REGISTRO</h2>
     </div>
     <div class="seccion">
-        <form class="contenedor">
-            <fieldset>
-                <p class="label">Correo electrónico</p>
-                <input type="email" name="email" [(ngModel)]="email" placeholder="Email"/>
-            </fieldset>
-            <fieldset>
-                <p class="label">Contraseña</p>
-                <input [type]="passwordFieldType()"  name="password" [(ngModel)]="password" placeholder="Contraseña" [class.error]="errorMessage && password !== repPassword"/>
-                <i 
-                    class="fas" 
-                    [ngClass]="{'eye': !showPassword, 'eye-closed': showPassword}" 
-                    (click)="togglePasswordVisibility()"
-                ></i>
-            </fieldset>
-            <fieldset>
-                <p class="label">Repita la contraseña</p>
-                <i 
-                    class="refas" 
-                    [ngClass]="{'eye': !showPassword, 'eye-closed': showPassword}" 
-                    (click)="togglePasswordVisibility()"
-                ></i>
-                <input [type]="passwordFieldType()"  name="password" [(ngModel)]="repPassword" placeholder="Repita Contraseña" [class.error]="errorMessage && password !== repPassword"/>
-            </fieldset>
-            @if (successMessage !== '') {
-                <p class="success">{{ successMessage }}</p>
-            }
-            @if (password !== repPassword || errorMessage !== '') {
-                <p class="error">{{ errorMessage }}</p>
-            }
-            <div class="enviar">
-                <button type="submit" (click)="register()">Acceder</button>
+        @if (!verifiying) {
+            <form class="contenedor">
+                <fieldset>
+                    <p class="label">Correo electrónico</p>
+                    <div class="caja">
+                        <input required type="email" name="email" [(ngModel)]="email" placeholder="Email"/>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <p class="label">Contraseña</p>
+                    <div [ngClass]="{'caja-error': errorMessage && password !== repPassword}" class="caja">
+                        <input required [type]="passwordFieldType()"  name="password" [(ngModel)]="password" placeholder="Contraseña" [class.error]="errorMessage && password !== repPassword"/>
+                        <i 
+                            class="fas" 
+                            [ngClass]="{'eye': !showPassword, 'eye-closed': showPassword}" 
+                            (click)="togglePasswordVisibility()"
+                        ></i>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <p class="label">Repita la contraseña</p>
+                    <div [ngClass]="{'caja-error': errorMessage && password !== repPassword}" class="caja">
+                    <input required [type]="passwordFieldType()"  name="password" [(ngModel)]="repPassword" placeholder="Repita Contraseña" [class.error]="errorMessage && password !== repPassword"/>
+                    <i 
+                        class="refas" 
+                        [ngClass]="{'eye': !showPassword, 'eye-closed': showPassword}" 
+                        (click)="togglePasswordVisibility()"
+                    ></i>
+                    </div>
+                </fieldset>
+                <label>
+                    <div class="terminos">
+                        <input type="checkbox" name="terms" [(ngModel)]="acceptedTerms" required/>
+                        <p>
+                            Acepto los <a href="/privacy-policy" target="_blank">términos de privacidad</a>, 
+                            <a href="/terms-of-service" target="_blank">términos de servicio</a>, y el manejo de mis datos conforme a la <a href="/data-usage" target="_blank">política de uso de datos</a>.
+                        </p>
+                    </div>
+                </label>
+                <div class="enviar">
+                    <button type="submit" (click)="register()">Registro</button>
+                </div>
+            </form>
+            <div class="alertas">
+                @if (successMessage !== '') {
+                    <p class="success">{{ successMessage }}</p>
+                }
+                @if (password !== repPassword || errorMessage !== '') {
+                    <p class="error">{{ errorMessage }}</p>
+                }
             </div>
-        </form>
+        }
+        @else {
+            <div class="verify">
+                <p>{{ successMessage }}</p>
+                <a routerLink="/acceso" id="boton">Iniciar sesión</a>
+            </div>
+        }
     </div>
 </section>
