@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { Observable, of } from 'rxjs';
 import { switchMap, catchError, map } from 'rxjs/operators';
-import { cargarGPXObservable, getData, getStatistics } from '../utils/map';
-import { Dictionary } from '../dictionary';
+import { cargarGPXObservable, getData, getStatistics } from '../../utils/map';
+import { Dictionary } from '../../dictionary';
 
 @Injectable({
   providedIn: 'root'

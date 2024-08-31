@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MapComponent } from '../map/map.component';
+import { MapComponent } from '../map/map.component'; 
 import { RouterOutlet, Router } from '@angular/router';
-import { Dictionary } from '../dictionary';
+import { Dictionary } from '../../dictionary';
 import { GraficaComponent } from '../grafica/grafica.component';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { RutaService } from './ruta.service';

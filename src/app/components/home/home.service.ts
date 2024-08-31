@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { cargarGPX, getData, getStatistics } from '../utils/map';
-import { environment } from '../../environments/environment';
+import { cargarGPX, getData, getStatistics } from '../../utils/map';
+import { environment } from '../../../environments/environment';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { Dictionary } from '../dictionary'; 
+import { Dictionary } from '../../dictionary'; 
 import { Observable } from 'rxjs';
 
 

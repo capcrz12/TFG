@@ -1,10 +1,10 @@
 import { Component, OnInit, AfterViewInit, Output, Input } from '@angular/core';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
-import { MapComponent } from '../map/map.component';
+import { MapComponent } from '../map/map.component'; 
 import { CommonModule } from '@angular/common';
-import { Dictionary } from '../dictionary'; 
+import { Dictionary } from '../../dictionary'; 
 import { HomeService } from './home.service';
-import { BuscadorComponent } from '../buscador/buscador.component';
+import { BuscadorComponent } from '../buscador/buscador.component'; 
 
 
 @Component({

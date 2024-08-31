@@ -69,7 +69,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     // Spain coordinates
-    const initialState = { lng: -3.585342, lat: 37.161356, zoom: 5, pitch: 50, maxPitch: 85 };
+    const initialState = { lng: -3.585342, lat: 15, zoom: 2, pitch: 50, maxPitch: 85 };
      
     this.map = new Map({
       container: this.mapContainer.nativeElement,
@@ -77,8 +77,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       style: `https://api.maptiler.com/maps/hybrid/style.json?key=${config.apiKey}`,
       center: [initialState.lng, initialState.lat],
       zoom: initialState.zoom,
-      pitch: 50,
-      maxPitch: 85,
+      pitch: initialState.pitch,
+      maxPitch: initialState.maxPitch,
       geolocate: false,
       geolocateControl: false,
     });

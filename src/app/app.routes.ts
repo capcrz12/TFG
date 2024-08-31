@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { RutaComponent } from './ruta/ruta.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AccesoComponent } from './acceso/acceso.component';
-import { RegistroComponent } from './registro/registro.component';
-import { TerminosComponent } from './terminos/terminos.component';
+import { HomeComponent } from './components/home/home.component';
+import { RutaComponent } from './components/ruta/ruta.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { AccesoComponent } from './components/acceso/acceso.component';
+import { RegistroComponent } from './components/registro/registro.component';
+import { TerminosComponent } from './components/terminos/terminos.component';
 
 export const routes: Routes = [
     {
