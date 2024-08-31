@@ -47,6 +47,7 @@ h2 {
     border-radius: 60px;
 
     align-items: center;
+    justify-content: center;
 }
 
 fieldset:first-child {
@@ -176,9 +177,17 @@ i.eye-closed {
 .terminos {
     display: flex;
     flex-direction: row;
+
+    width: 100%;
+
     align-items: center;
-    justify-content: left;
+    justify-content: center;
     gap: 0;
+}
+
+#terms {
+    width: 20%;
+    cursor: pointer;
 }
 
 .alertas {
