@@ -1,0 +1,35 @@
+<section>
+    <div id="main-info">
+        <h2>ACCESO</h2>
+    </div>
+    <div class="seccion">
+        <form class="contenedor">
+            <fieldset>
+                <p class="label">Correo electrónico</p>
+                <div class="caja">
+                    <input type="email" name="email" [(ngModel)]="email" placeholder="Email"/>
+                </div>
+            </fieldset>
+            <fieldset>
+                <p class="label">Contraseña</p>
+                <div class="caja">
+                    <input [type]="passwordFieldType()" name="password" [(ngModel)]="password" placeholder="Contraseña"/>
+                    <i 
+                        class="fas" 
+                        [ngClass]="{'eye': !showPassword, 'eye-closed': showPassword}" 
+                        (click)="togglePasswordVisibility()"
+                    ></i>
+                </div>
+                <div>
+                    @if (error !== '') {
+                        <p class="error">{{ error }}</p>
+                    }
+                </div>
+            </fieldset>
+            <div class="enviar">
+                <p>¿Ha olvidado su contraseña?</p>
+                <button type="submit" (click)="login()">Acceder</button>
+            </div>
+        </form>
+    </div>
+</section>

@@ -1,0 +1,71 @@
+.contenedor {
+    width: 80vw;
+    height: 8vh;
+    display: flex;
+    margin: 0 auto;
+    margin-bottom: 2.5%;
+    justify-content: center;
+    align-items: center;
+}
+
+.buscador {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 20%;
+    border-radius: 60px;
+    border: 0.5px solid;
+}
+
+.buscador:last-child {
+    width: 90%;
+    height: 70%;
+    justify-content: flex-start;
+    padding-left: 4%;
+}
+
+.lupa {
+    width: 2vw;
+    margin-right: 1vw;
+}
+
+.resultados {
+    margin: 0 10%;
+    height: 10vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+}
+
+.info > p {
+    display: flex;
+    flex: 1;
+    align-items: center;
+}
+
+#name {
+    justify-content: baseline;
+    font-weight: bold;
+}
+
+#km {
+    justify-content: center;
+}
+
+
+#ubication {
+    justify-content: end;
+}
+
+#resLink {
+    text-decoration: none;
+    color: black;
+}
