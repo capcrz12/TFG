@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 export class AccesoComponent {
   email: string;
   password: string;
+  error: string = '';
 
   showPassword: boolean = false;
 
@@ -32,6 +33,10 @@ export class AccesoComponent {
   login() {
     const usuario = { email: this.email, password: this.password };
 
-    this.accesoService.login(usuario);
+    this.accesoService.login(usuario).subscribe({
+      error: (error: Error) => {
+        this.error = error.message;
+      }
+    });
   }
 }

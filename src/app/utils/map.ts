@@ -19,21 +19,27 @@ import { gpx } from "@tmcw/togeojson";
         console.error('Error loading GPX:', error);
       });
   }
-    export function cargarGPXObservable(filePath: string): Observable<any> {
-      return from(
-        fetch(filePath)
-          .then(response => response.text())
-          .then(xml => {
-            const gpxFile = new DOMParser().parseFromString(xml, 'text/xml');
-            const geoJson = gpx(gpxFile); // Convertir GPX a GeoJSON
-            return geoJson; // Devolver datos convertidos
-          })
-          .catch(error => {
-            console.error('Error loading GPX:', error);
-            throw error; // Propagar el error para manejarlo adecuadamente
-          })
-      );
-    }
+  
+  export function cargarGPXObservable(filePath: string): Observable<any> {
+    return from(
+      fetch(filePath)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Failed to fetch ${filePath}`);
+          }
+          return response.text();
+        })
+        .then(xml => {
+          const gpxFile = new DOMParser().parseFromString(xml, 'text/xml');
+          const geoJson = gpx(gpxFile); // Convertir GPX a GeoJSON
+          return geoJson; // Devolver datos convertidos
+        })
+        .catch(error => {
+          console.error('Error loading GPX:', error);
+          throw error; // Propagar el error para manejarlo adecuadamente
+        })
+    );
+  }
 
 
   export function getData(gpxData: any, route: any, index: number/*, dataMap: any*/) {
@@ -135,8 +141,8 @@ import { gpx } from "@tmcw/togeojson";
     return elevationProfile;
   }
 
-    // Calcular la velocidad promedio en kilómetros por hora (km/h)
-    export function calculateAverageSpeed(gpxData: any): number {
+  // Calcular la velocidad promedio en kilómetros por hora (km/h)
+  export function calculateAverageSpeed(gpxData: any): number {
     if (!gpxData || !gpxData.features || gpxData.features.length === 0) {
       return -1;
     }
@@ -183,6 +189,11 @@ import { gpx } from "@tmcw/togeojson";
     const distance = R * c; // distancia en kilómetros
 
     return distance;
+  }
+
+  // Calcular el tiempo promedio de recorrido
+  export function calculateEstimatedTime(km: number, speed: number):  number {
+    return parseFloat((km / speed).toFixed(2));
   }
 
   export function calculateMaxAltitude(gpxData: any): number {

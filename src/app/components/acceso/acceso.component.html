@@ -20,6 +20,11 @@
                         (click)="togglePasswordVisibility()"
                     ></i>
                 </div>
+                <div>
+                    @if (error !== '') {
+                        <p class="error">{{ error }}</p>
+                    }
+                </div>
             </fieldset>
             <div class="enviar">
                 <p>¿Ha olvidado su contraseña?</p>

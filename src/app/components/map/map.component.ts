@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Input, Output, EventEmitter, SimpleChange, SimpleChanges } from '@angular/core';
 import { Map, MapStyle, Marker, config, FullscreenControl, geolocation, GeolocateControl, Popup } from '@maptiler/sdk';
 import '@maptiler/sdk/dist/maptiler-sdk.css';
-import { gpx } from "@tmcw/togeojson";
-import { Dictionary } from '../dictionary'; 
-import { getExtremes, calculateElevationProfile } from '../utils/map';
+import { Dictionary } from '../../dictionary'; 
+import { getExtremes, calculateElevationProfile } from '../../utils/map';
 import { Router } from '@angular/router';
 
 @Component({
@@ -65,7 +64,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.elevationProfileOut.emit(this.elevationProfile);
 
     this.routesGeoJson = convertRoutesToGeoJSON(this.routes);
-    }
+  }
 
   ngAfterViewInit() {
     // Spain coordinates
@@ -312,16 +311,31 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    if (changes['filters']) {
+    if (changes['filters'] && this.filters.length > 0) {
       if (this.map) {
         const source = this.map.getSource('routes') as maplibregl.GeoJSONSource;
+  
         if (source) {
-          // Verifica que la fuente existe antes de aplicar el filtro
+           // Aplica el filtro a los puntos sin agrupar
           this.map.setFilter('unclustered-point', this.filters);
-          this.map.setFilter('clusters', this.filters);
-        } else {
-          console.error("Source 'routes' no encontrado.");
+
+  
+          // Reagrupar y actualizar el número en los clusters
+          this.updateClusters();
         }
+      }
+    }
+  }
+  
+  // Actualiza los clusters después de aplicar filtros
+  updateClusters() {
+    if (this.map) {
+      const source = this.map.getSource('routes') as maplibregl.GeoJSONSource;
+  
+      // Recalcula los clusters para reflejar los cambios
+      if (source) {
+        // Simplemente vuelve a cargar la fuente para forzar la actualización de los clusters
+        this.map.triggerRepaint();
       }
     }
   }

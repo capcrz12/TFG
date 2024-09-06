@@ -1,0 +1,143 @@
+<section>
+    <div id="main-info">
+        @if (paso1 == 1) {
+            <h2>SUBIR UNA RUTA NUEVA: PASO 1 DE 2</h2>
+        }
+        @else {        
+            <h2>SUBIR UNA RUTA NUEVA: PASO 2 DE 2</h2>
+        }
+    </div>
+    <div class="seccion">
+        @if (paso1 == 1) {
+            <div class="contenedor">
+                <div class="fila">
+                    <fieldset>
+                        <p class="label">Nombre de la ruta *</p>
+                        <div [ngClass]="{'caja-error': errorMessage && !name}" class="caja">
+                            <input required type="text" name="name" [(ngModel)]="name" [class.error]="errorMessage && !name" placeholder="Ruta de ..."/>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <p class="label">Ubicación de la ruta *</p>
+                        <div [ngClass]="{'caja-error': errorMessage && !ubication}" class="caja">
+                            <input required type="text" name="ubication" [(ngModel)]="ubication" [class.error]="errorMessage && !ubication" placeholder="Cordillera ..."/>
+                        </div>
+                    </fieldset>
+                </div>
+                <fieldset>
+                    <p class="label">Descripción de la ruta</p>
+                    <div class="caja grande">
+                        <textarea type="" name="description" [(ngModel)]="description" placeholder="La mejor ruta de ..." ></textarea>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <p class="label">Archivo gpx *</p>
+                    <div>
+                        <input required type="file" accept=".gpx" name="gpx" (change)="onFileSelected($event)"/>
+                    </div>
+                </fieldset>
+                <div class="enviar">
+                    <button type="button" (click)="submit()">Siguiente</button>
+                </div>
+            </div>
+            <div class="alertas">
+                @if (successMessage !== '') {
+                    <p class="success">{{ successMessage }}</p>
+                }
+                @if (errorMessage !== '') {
+                    <p class="error">{{ errorMessage }}</p>
+                }
+            </div>
+        }
+        @else {
+            <div class="section">
+                <h3>PREVISUALIZACIÓN DE LA RUTA</h3>
+                <p>Los datos aquí expuestos han sido calculados de manera automática. En esta sección puede modificar los que considere necesarios.</p>
+
+                <div class="previsualizacion">
+                    <div class="fila">
+                        <fieldset>
+                            <p>NOMBRE</p>
+                            <div class="caja">
+                                <input value="{{name}}"/>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <p>UBICACIÓN</p>
+                            <div class="caja">
+                                <input value="{{ubication}}"/>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <fieldset>
+                        <p>DESCRIPCIÓN</p>
+                        <div class="caja grande">
+                            <textarea value="{{description}}"></textarea>
+                        </div>
+                    </fieldset>
+                    <div class="fila">
+                        <fieldset>
+                            <p>TIEMPO ESTIMADO</p>
+                            <div class="caja">
+                                <p>{{estimated_hour}} h</p>
+                                <p>{{estimated_min}} min</p>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <p>KM</p>
+                            <div class="caja">
+                                <input (change)="updateEstimatedTime()" [(ngModel)]="km" value="{{km}}"/>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <p>VELOCIDAD - Km/h</p>
+                            <div class="caja">
+                                <input (change)="updateEstimatedTime()" [(ngModel)]="speed" value="{{speed}}"/> 
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="fila">
+                        <fieldset>
+                            <p>ALTITUD MÁXIMA</p>
+                            <div class="caja">
+                                <input [(ngModel)]="max_alt" value="{{max_alt}}"/>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <p>ALTITUD MÍNIMA</p>
+                            <div class="caja">
+                                <input [(ngModel)]="min_alt" value="{{min_alt}}"/>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="fila">
+                        <fieldset>
+                            <p>DESNIVEL POSITIVO</p>
+                            <div class="caja">
+                                <input [(ngModel)]="pos_desnivel" value="{{pos_desnivel}}"/>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <p>DESNIVEL NEGATIVO</p>
+                            <div class="caja">
+                                <input [(ngModel)]="neg_desnivel" value="{{neg_desnivel}}"/>
+                            </div> 
+                        </fieldset>
+                    </div> 
+                </div>
+
+                <div class="map">
+                    <app-map
+                        [file]="gpx!.name"
+                        [gpxData]="gpxData" 
+                        [type]="0"
+                    ></app-map>
+                </div>
+
+                <div class="enviar">
+                    <button type="button" (click)="subirRuta()">SUBIR RUTA</button>
+                </div>
+            </div>
+        }
+    </div>
+</section>

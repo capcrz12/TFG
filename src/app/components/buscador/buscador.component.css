@@ -64,3 +64,8 @@
 #ubication {
     justify-content: end;
 }
+
+#resLink {
+    text-decoration: none;
+    color: black;
+}

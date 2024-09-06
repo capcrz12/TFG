@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, Input, OnChanges, Output, SimpleChanges, EventEmitter, OnInit } from '@angular/core';
 import { Chart, LinearScale, CategoryScale, LineController, LineElement, PointElement } from 'chart.js';
-import { calculateElevationProfile } from '../utils/map';
 
 @Component({
   selector: 'app-grafica',

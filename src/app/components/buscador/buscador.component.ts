@@ -3,11 +3,12 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { BuscadorService } from './buscador.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-buscador',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './buscador.component.html',
   styleUrl: './buscador.component.css'
 })

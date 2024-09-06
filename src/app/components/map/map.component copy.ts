@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Inp
 import { Map, MapStyle, Marker, config, FullscreenControl, geolocation, GeolocateControl, Popup } from '@maptiler/sdk';
 import '@maptiler/sdk/dist/maptiler-sdk.css';
 import { gpx } from "@tmcw/togeojson";
-import { Dictionary } from '../dictionary'; 
-import { getExtremes, calculateElevationProfile } from '../utils/map';
+import { Dictionary } from '../../dictionary'; 
+import { getExtremes, calculateElevationProfile } from '../../utils/map';
 
 @Component({
   selector: 'app-map',

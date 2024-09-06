@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { Dictionary } from '../../dictionary'; 
 import { HomeService } from './home.service';
 import { BuscadorComponent } from '../buscador/buscador.component'; 
+import { AccesoService } from '../acceso/acceso.service';
+import { Console } from 'console';
 
 
 @Component({
@@ -27,22 +29,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
   bounds: any;
   dataMap:Dictionary[] = [];
 
+  dataLoaded: boolean = false;
+
   filters: any = [];  // Añadir propiedad para almacenar filtros
 
-  constructor(private homeService: HomeService) {
+  constructor(private homeService: HomeService, private accesoService: AccesoService) {
     this.name = 'Ruta de prueba'
     this.user = 'Carlos Pérez'
-    this.siguiendo = true;  // Al cargar home aparece en siguiendo si es true, y en explorar si es false
+    this.siguiendo = false;  // Al cargar home aparece en siguiendo si es true, y en explorar si es false
 
     this.type = 0;   
   }
 
   ngOnInit(): void{
     this.getData();
+    this.isAuthenticated() ? this.siguiendo = true : this.siguiendo = false;
   }
 
   ngAfterViewInit() {
-
   }
   
   // Funcion que scrollea a la parte superior de la pantalla
@@ -112,11 +116,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
 
+  isAuthenticated () {
+    return this.accesoService.isAuthenticated();
+  }
+
   getData() {
     this.homeService.getRoutes().subscribe((res) => {
       this.routes = res;
       this.homeService.getGPXData(this.routes).then((gpxData) => {
         this.dataMap = this.homeService.getDataMap(this.routes, gpxData);
+        this.dataLoaded = true;
       }).catch(error => {
         console.error('Error:', error);
       });

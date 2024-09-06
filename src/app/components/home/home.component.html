@@ -1,12 +1,14 @@
 <section>
     <!--Botones del menu-->
     <div id="main-info">
-        <h2 (click)="setSiguiendo(true)" [class.bold]="siguiendo">Siguiendo</h2>
-        <h2 (click)="setSiguiendo(false)" [class.bold]="!siguiendo">Explorar</h2>
+        @if (isAuthenticated()) {
+            <h2 (click)="setSiguiendo(true)" [class.bold]="siguiendo">Siguiendo</h2>
+            <h2 (click)="setSiguiendo(false)" [class.bold]="!siguiendo">Explorar</h2>
+        }
     </div>
 
     <!--Página Siguiendo-->
-    @if (siguiendo) {
+    @if (siguiendo && isAuthenticated()) {
     @for (dato of dataMap; track dato['id']) {
     <div id="usuario">
         <div id="perfilUsuario">
@@ -35,7 +37,7 @@
     </div>
     }
     }
-    @else {
+    @else if (dataLoaded) {
     <app-map id="map" [type]="1" [routes]="dataMap" [filters]="filters"></app-map>
     <div class="map-overlay top">
         <div class="map-overlay-inner">
@@ -137,4 +139,11 @@
     <app-buscador (resultadosOut)="onFilterApplied($event)"></app-buscador>
 
     }
+    @else {
+        <div id="ruta">
+            <div id='datos-texto'>
+                <p>Cargando explorador</p>
+            </div>
+        </div>
+        }
 </section>

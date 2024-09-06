@@ -21,11 +21,22 @@
         </div>
         -->
         <li><a routerLink="myFeed">HOME</a></li>
-        <li><a routerLink="myFeed">MIS RUTAS</a></li>
-        <li>
-            <a routerLink="myFeed">
-                <img class="perfil" src="../../assets/images/92938495.jpeg">
-            </a>
-        </li>
+        @if (isAuthenticated()) {
+            <li><a routerLink="nuevaRuta">AÑADIR NUEVA RUTA</a></li>
+            <li>
+                <a routerLink="myFeed">
+                    <img class="perfil" src="../../assets/images/92938495.jpeg">
+                </a>
+            </li>
+            <button (click)="logout()">Cerrar sesión</button>
+        }
+        @else {
+            <li>
+                <a routerLink="acceso">INICIAR SESIÓN</a>
+            </li>
+            <li>
+                <a routerLink="registro">REGISTRARSE</a>
+            </li>
+        }
     </ul>
 </nav>

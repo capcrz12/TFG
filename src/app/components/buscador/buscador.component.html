@@ -11,11 +11,13 @@
 <div>
     @for (res of resultados; track res['id']) {
         <div class="resultados">
-            <div class="info">
-                <p id="name">{{res['name']}}</p>
-                <p id="km">{{res['km']}} Km</p>
-                <p id="ubication">{{res['ubication']}}</p>
-            </div>
+            <a id="resLink" routerLink="/ruta/{{res['id']}}">
+                <div class="info">
+                    <p id="name">{{res['name']}}</p>
+                    <p id="km">{{res['km']}} Km</p>
+                    <p id="ubication">{{res['ubication']}}</p>
+                </div>
+            </a>
             <hr width="100%">
         </div>
     }

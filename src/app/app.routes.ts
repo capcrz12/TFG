@@ -5,6 +5,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { AccesoComponent } from './components/acceso/acceso.component';
 import { RegistroComponent } from './components/registro/registro.component';
 import { TerminosComponent } from './components/terminos/terminos.component';
+import { accesoGuard } from './guards/acceso.guard';
+import { NuevaRutaComponent } from './components/nueva-ruta/nueva-ruta.component';
 
 export const routes: Routes = [
     {
@@ -13,12 +15,18 @@ export const routes: Routes = [
     },
     {
       path: 'ruta/:id',
-      component: RutaComponent
+      component: RutaComponent,
+      //canActivate: [accesoGuard]
     },
     {
       path: '',
       redirectTo: '/myFeed',
       pathMatch: 'full'
+    },
+    {
+      path: 'nuevaRuta',
+      component: NuevaRutaComponent,
+      canActivate: [accesoGuard]
     },
     {
       path: 'acceso',
