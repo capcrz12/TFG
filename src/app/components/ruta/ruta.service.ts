@@ -12,38 +12,6 @@ import { Dictionary } from '../../dictionary';
 export class RutaService {
   constructor(private http: HttpClient) { }
 
-  /*
-  // Se usaba para obtener el gpx desde assets del front
-  getData(id: string): Observable<any> {
-    return this.http.get(`${environment.APIUrl}routes/get_route/${id}`).pipe(
-      switchMap((routeJSON: any) => {
-        if (routeJSON.gpx !== '') {
-          return cargarGPXObservable(`./assets/${routeJSON.gpx}`).pipe(
-            map(gpxData => {
-              let dataMap: Dictionary = {};
-              let data: Dictionary[] = [];
-              //getData(gpxData, routeJSON, 0, data);
-              getData(gpxData, routeJSON, 0);
-              getStatistics(routeJSON, data, 0);
-              dataMap = data[0];
-              return { routeJSON, gpxData, dataMap };
-            }),
-            catchError(error => {
-              console.error('Error:', error);
-              return of({ routeJSON, gpxData: null, dataMap: {}});
-            })
-          );
-        } else {
-          return of({ routeJSON, gpxData: null, dataMap: {}});
-        }
-      }),
-      catchError(error => {
-        console.error('Error:', error);
-        return of({ routeJSON: null, gpxData: null, dataMap: {}});
-      })
-    );
-  }*/
-
   getData(id: string): Observable<any> {
     return this.http.get(`${environment.APIUrl}routes/get_route/${id}`).pipe(
       switchMap((routeJSON: any) => {

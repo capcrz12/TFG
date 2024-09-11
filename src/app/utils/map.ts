@@ -77,6 +77,7 @@ import { gpx } from "@tmcw/togeojson";
     }
 
     dataMap[index]['id'] = route.id;
+    dataMap[index]['user'] = route.id_usuario;
     dataMap[index]['name'] = route.name;
     dataMap[index]['description'] = route.description;
     dataMap[index]['ubication'] = route.ubication;

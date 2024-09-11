@@ -17,7 +17,7 @@ import { gpx } from '@maptiler/sdk';
 })
 export class RutaComponent implements OnInit, OnChanges {
   name: string = '';
-  @Input() id: string = '';
+  @Input() id: string = ''; 
   routeJSON:any = [];
   rutaId: number;
   pointHovered: number;

@@ -11,7 +11,7 @@ export class NuevaRutaService {
   constructor(private http: HttpClient, private router: Router) { }
 
   upload (ruta: any, gpx: File) {
-     // Recuperar el token almacenado en localStorage
+    // Recuperar el token almacenado en localStorage
     const token = localStorage.getItem('auth_token'); // o sessionStorage.getItem('auth_token')
 
     // Asegurarse de que existe el token

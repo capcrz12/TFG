@@ -1,0 +1,40 @@
+<section>
+    <h3>Perfil</h3>
+    <div id="main-info">
+        <h2>{{name}}</h2>
+        @if (propio) {
+            <img class="icono" src="../../assets/images/usuario.png">
+        }
+    </div>
+    <div class="perfil">
+        <div class="info">
+            <p>Km totales recorridos: {{total_km}}</p>
+            @if (propio) {
+                <p>Correo: {{email}}</p>
+                <br>
+                <p class="clickable cerrar" (click)="logout()">Cerrar sesión</p>
+            }
+        </div>
+        <div class="imagen">
+            <img class="foto" src="../../assets/images/92938495.jpeg">
+        </div>
+    </div>
+    @if (propio) {
+        <h3>Mis rutas</h3>
+    }
+    @else {
+        <h3>Rutas subidas</h3>
+    }
+    <div class="rutas">
+        @for (route of routes; track $index) {
+            <a class="ruta" [routerLink]="['/ruta',route.id]">
+                <div id="nombre-caja">
+                    <h1 id="nombre">{{route.name}}</h1>
+                </div>
+                <h1 id="ubi">{{route.ubication}}</h1>
+                <h1 id="kmFecha">{{route.km}} Km - {{route.fecha}}</h1>
+                <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44.jpeg" id="image" alt="Logotipo">
+            </a>
+        }
+    </div>
+</section>

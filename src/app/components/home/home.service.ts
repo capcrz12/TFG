@@ -16,8 +16,12 @@ export class HomeService {
 
   constructor(private http:HttpClient) { }
 
-  getRoutes(): Observable<any> {
-    return this.http.get(environment.APIUrl+"routes/get_routes");
+  getRoutesSiguiendo(id: number): Observable<any> {
+    return this.http.get(environment.APIUrl+`routes/get_routes_followed/${id}`);
+  }
+
+  getRoutesExplorar(): Observable<any> {
+    return this.http.get(environment.APIUrl+"routes/get_routes_and_user");
   }
 
   /*
@@ -62,6 +66,7 @@ export class HomeService {
   
 
   getDataMap(routes:any, gpxData:any): Dictionary[] {
+    this.dataMap = [];
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].gpx != '') {
         this.gpxData = gpxData;
