@@ -7,6 +7,7 @@ import { RegistroComponent } from './components/registro/registro.component';
 import { TerminosComponent } from './components/terminos/terminos.component';
 import { accesoGuard } from './guards/acceso.guard';
 import { NuevaRutaComponent } from './components/nueva-ruta/nueva-ruta.component';
+import { PerfilComponent } from './components/perfil/perfil.component';
 
 export const routes: Routes = [
     {
@@ -22,6 +23,11 @@ export const routes: Routes = [
       path: '',
       redirectTo: '/myFeed',
       pathMatch: 'full'
+    },
+    {
+      path: 'perfil/:idPerfil',
+      component: PerfilComponent,
+      canActivate: [accesoGuard]
     },
     {
       path: 'nuevaRuta',

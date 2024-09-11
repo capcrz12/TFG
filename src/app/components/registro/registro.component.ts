@@ -12,6 +12,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   styleUrl: './registro.component.css'
 })
 export class RegistroComponent {
+  name: string;
   email: string;
   password: string;
   repPassword: string;
@@ -25,6 +26,7 @@ export class RegistroComponent {
   showRepPassword: boolean = false;
 
   constructor (public registroService: RegistroService) {
+    this.name = '';
     this.email = '';
     this.password = '';
     this.repPassword = '';
@@ -56,7 +58,7 @@ export class RegistroComponent {
       this.error = true;
       return;
     }
-    else if (this.email == '' || this.password == '' || this.repPassword == '') {
+    else if (this.name == '' || this.email == '' || this.password == '' || this.repPassword == '') {
       this.errorMessage = 'Complete todos los campos por favor.';
       this.error = true;
       return;
@@ -66,7 +68,7 @@ export class RegistroComponent {
       this.successMessage = 'Procesando...';
       this.error = false;
       // Si las contraseñas coinciden, proceder con el registro
-      const usuario = { email: this.email, password: this.password };
+      const usuario = { name: this.name, email: this.email, password: this.password };
       this.registroService.register(usuario).subscribe(
         (response) => {
           this.verifiying = true;

@@ -241,10 +241,12 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         // the unclustered-point layer, open a popup at
         // the location of the feature, with
         // description HTML from its properties.
-        this.map!.on('mouseover', 'unclustered-point', (e) => {
+        this.map!.on('mouseover', 'unclustered-point', (e) => {   
           const coordinates = (e!.features![0] as any).geometry.coordinates.slice();
           const name = e!.features![0].properties['name'];
           const km = e!.features![0].properties['km'];
+          console.log(e!.features![0]);
+          const user = e!.features![0].properties['user_name'];
 
           // Ensure that if the map is zoomed out such that
           // multiple copies of the feature are visible, the
@@ -256,7 +258,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
           this.popup = new Popup()
               .setLngLat(coordinates)
               .setHTML(
-                  `Ruta: ${name}<br>Km: ${km}`
+                  `Ruta: ${name}<br>Km: ${km}<br>Autor: ${user}`
               )
               .addTo(this.map!);
         });
@@ -381,7 +383,8 @@ function convertRoutesToGeoJSON(routes: any[]): any {//GeoJSON.FeatureCollection
       maxAltitude: route.maxAltitude,
       minAltitude: route.minAltitude,
       speed: route.speed,
-      ubication: route.ubication
+      ubication: route.ubication,
+      user_name: route.user['nombre']
     }
   }));
 

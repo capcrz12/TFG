@@ -9,13 +9,13 @@
 
     <!--Página Siguiendo-->
     @if (siguiendo && isAuthenticated()) {
-    @for (dato of dataMap; track dato['id']) {
+    @for (dato of dataMapSiguiendo; track dato['id']) {
     <div id="usuario">
         <div id="perfilUsuario">
             <a routerLink="">
                 <img class="perfil" src="../../assets/images/92938495.jpeg">
             </a>
-            <h3><a routerLink="">{{user.toUpperCase()}}</a></h3>
+            <h3><a [routerLink]="['/perfil', dato['user']['id']]">{{dato['user']['nombre']}}</a></h3>
         </div>
 
         <div id="ruta">
@@ -38,7 +38,7 @@
     }
     }
     @else if (dataLoaded) {
-    <app-map id="map" [type]="1" [routes]="dataMap" [filters]="filters"></app-map>
+    <app-map id="map" [type]="1" [routes]="dataMapExplorar" [filters]="filters"></app-map>
     <div class="map-overlay top">
         <div class="map-overlay-inner">
             <nav id="nav-filter">

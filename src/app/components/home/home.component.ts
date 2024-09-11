@@ -18,31 +18,33 @@ import { Console } from 'console';
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   name: string;
-  user: string;
   siguiendo: boolean;
   isFilterOpen: boolean = false;
-  routes:any = [];
+  routesSiguiendo:any = [];
+  routesExplorar:any = [];
  
   type:number;
   gpxData: any; // Declaración de la propiedad gpxData para almacenar datos de GPX
   coordinates: any;
   bounds: any;
-  dataMap:Dictionary[] = [];
+  dataMapSiguiendo:Dictionary[] = [];
+  dataMapExplorar:Dictionary[] = [];
+
 
   dataLoaded: boolean = false;
 
   filters: any = [];  // Añadir propiedad para almacenar filtros
 
   constructor(private homeService: HomeService, private accesoService: AccesoService) {
-    this.name = 'Ruta de prueba'
-    this.user = 'Carlos Pérez'
+    this.name = ''
     this.siguiendo = false;  // Al cargar home aparece en siguiendo si es true, y en explorar si es false
 
     this.type = 0;   
   }
 
   ngOnInit(): void{
-    this.getData();
+    this.getDataSiguiendo();
+    this.getDataExplorar();
     this.isAuthenticated() ? this.siguiendo = true : this.siguiendo = false;
   }
 
@@ -59,6 +61,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   setSiguiendo(value: boolean): void {
     this.siguiendo = value;
+    if (this.siguiendo == true)
+      this.getDataSiguiendo();
   }
 
   toggleFilter() {
@@ -120,11 +124,25 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return this.accesoService.isAuthenticated();
   }
 
-  getData() {
-    this.homeService.getRoutes().subscribe((res) => {
-      this.routes = res;
-      this.homeService.getGPXData(this.routes).then((gpxData) => {
-        this.dataMap = this.homeService.getDataMap(this.routes, gpxData);
+  getDataSiguiendo() {
+    this.accesoService.getCurrentUser().subscribe((id) => {
+      this.homeService.getRoutesSiguiendo(id).subscribe((res) => {
+        this.routesSiguiendo = res;
+        this.homeService.getGPXData(this.routesSiguiendo).then((gpxData) => {
+          this.dataMapSiguiendo = this.homeService.getDataMap(this.routesSiguiendo, gpxData);
+          this.dataLoaded = true;
+        }).catch(error => {
+          console.error('Error:', error);
+        });
+      });
+    });
+  }
+
+  getDataExplorar() {
+    this.homeService.getRoutesExplorar().subscribe((res) => {
+      this.routesExplorar = res;
+      this.homeService.getGPXData(this.routesExplorar).then((gpxData) => {
+        this.dataMapExplorar = this.homeService.getDataMap(this.routesExplorar, gpxData);
         this.dataLoaded = true;
       }).catch(error => {
         console.error('Error:', error);

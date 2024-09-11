@@ -10,7 +10,7 @@ export class RegistroService {
 
   constructor(private http: HttpClient) {}
 
-  register(usuario: { email: string, password: string }): Observable<any> {
+  register(usuario: { name: string, email: string, password: string }): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<any>(`${environment.APIUrl}users/register`, usuario, { headers }); 
   }

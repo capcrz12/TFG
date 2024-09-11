@@ -1,0 +1,188 @@
+section {
+    width: 95vw;
+    margin: 0 auto;    
+    margin-top: 2vh;
+    display: flex;
+    flex-direction: column;
+    gap: 4vh;
+}
+
+#main-info {
+    width: 55vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    padding-right: 2vw;
+}
+
+.clickable {
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.clickable:hover {
+    font-size: 1.4vw;
+    transition: 0.2s;
+    color: black;
+}
+
+.cerrar {
+    color: red;
+}
+
+.cerrar:hover {
+    font-size: 1.4vw;
+    transition: 0.2s;
+    color: red;
+}
+
+
+h2 {
+    font-size: 2vw;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 100;
+    width: 90%;
+    margin-bottom: 1vh;
+    border-bottom: 1px solid black;
+}
+
+h3 {
+    font-size: 1.5vw;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 100;
+    width: 50%;
+    margin-bottom: 0.5vh;
+}
+
+.perfil {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    justify-content: space-between;
+    width: 85%;
+
+    margin: 0 5%;
+}
+
+.icono {
+    width: 2.5vw;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.icono:hover {
+    transition: 0.2s;
+    width: 3vw;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3vh;
+
+    width: 100%;
+    height: 100%;
+}
+
+.imagen {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 40%;
+    height: 100%;
+}
+
+.foto {
+    border-radius: 50%;
+    background-color: grey;
+}
+
+p {
+    font-size: 1.25vw;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 80;
+    width: 100%;
+    color: black;
+    margin-bottom: 1vh;
+}
+
+.rutas {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 5vh;
+}
+
+.ruta {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 50vh;
+    border-radius: 60px;
+    justify-self: center;
+    align-self: center;
+
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.ruta:hover {
+    transition: 0.5s;
+    width: 110%;
+    height: 55vh;
+}
+
+#image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 60px;
+}
+
+#nombre-caja {
+    position: absolute;
+    bottom: 15%;
+    left: 10%;
+
+    width: 80%;
+}
+
+#nombre {
+    color: white;
+    font-size: 2vw;
+
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: rgb(0, 0, 0);
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; /* Mostrar ... al final si se desborda */
+}
+
+#ubi {
+    position: absolute;
+    bottom: 10%;
+    left: 12%;
+
+    color: white;
+    font-size: 1.5vw;
+
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: rgb(0, 0, 0);
+}
+
+#kmFecha {
+    position: absolute;
+    bottom: 2%;
+    left: 12%;
+
+    color: white;
+    font-size: 1.5vw;
+
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: rgb(0, 0, 0);
+}

@@ -6,6 +6,12 @@
         @if (!verifiying) {
             <form class="contenedor">
                 <fieldset>
+                    <p class="label">Nombre de usuario o Nombre y Apellidos</p>
+                    <div class="caja">
+                        <input required type="text" name="name" [(ngModel)]="name" placeholder="Nombre"/>
+                    </div>
+                </fieldset>
+                <fieldset>
                     <p class="label">Correo electrónico</p>
                     <div class="caja">
                         <input required type="email" name="email" [(ngModel)]="email" placeholder="Email"/>

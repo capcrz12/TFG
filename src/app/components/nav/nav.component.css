@@ -125,7 +125,7 @@ a:hover {
 
 .perfil {
     width: 5vw;
-    border: solid;
+    border: 0.5px solid;
     border-radius: 50%;
     background-color: grey;
     transition: 0.5s;
