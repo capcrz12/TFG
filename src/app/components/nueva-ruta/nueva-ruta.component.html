@@ -86,13 +86,13 @@
                         <fieldset>
                             <p>KM</p>
                             <div class="caja">
-                                <input (change)="updateEstimatedTime()" [(ngModel)]="km" value="{{km}}"/>
+                                <input type="number" (change)="updateEstimatedTime()" [(ngModel)]="km" value="{{km}}"/>
                             </div>
                         </fieldset>
                         <fieldset>
                             <p>VELOCIDAD - Km/h</p>
                             <div class="caja">
-                                <input (change)="updateEstimatedTime()" [(ngModel)]="speed" value="{{speed}}"/> 
+                                <input type="number" (change)="updateEstimatedTime()" [(ngModel)]="speed" value="{{speed}}"/> 
                             </div>
                         </fieldset>
                     </div>
@@ -100,13 +100,13 @@
                         <fieldset>
                             <p>ALTITUD MÁXIMA</p>
                             <div class="caja">
-                                <input [(ngModel)]="max_alt" value="{{max_alt}}"/>
+                                <input type="number" [(ngModel)]="max_alt" value="{{max_alt}}"/>
                             </div>
                         </fieldset>
                         <fieldset>
                             <p>ALTITUD MÍNIMA</p>
                             <div class="caja">
-                                <input [(ngModel)]="min_alt" value="{{min_alt}}"/>
+                                <input type="number" [(ngModel)]="min_alt" value="{{min_alt}}"/>
                             </div>
                         </fieldset>
                     </div>
@@ -114,13 +114,13 @@
                         <fieldset>
                             <p>DESNIVEL POSITIVO</p>
                             <div class="caja">
-                                <input [(ngModel)]="pos_desnivel" value="{{pos_desnivel}}"/>
+                                <input type="number" [(ngModel)]="pos_desnivel" value="{{pos_desnivel}}"/>
                             </div>
                         </fieldset>
                         <fieldset>
                             <p>DESNIVEL NEGATIVO</p>
                             <div class="caja">
-                                <input [(ngModel)]="neg_desnivel" value="{{neg_desnivel}}"/>
+                                <input type="number" [(ngModel)]="neg_desnivel" value="{{neg_desnivel}}"/>
                             </div> 
                         </fieldset>
                     </div> 

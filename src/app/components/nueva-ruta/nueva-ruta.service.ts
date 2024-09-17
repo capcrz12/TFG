@@ -27,8 +27,7 @@ export class NuevaRutaService {
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); // Angular establece automáticamente el multipart
     return this.http.post<FormData>(`${environment.APIUrl}routes/add_route`, formData, { headers })
       .subscribe(response => {
-        console.log('Respuesta del servidor: ', response);
-        this.router.navigate(['/myFeed']); // Navega a la página principal
+        this.router.navigate(['/myFeed'], { state: { message: 'Ruta añadida con éxito' } }); // Navega a la página principal
       }, error => {
         console.error('Error en la solicitud: ', error)
       });

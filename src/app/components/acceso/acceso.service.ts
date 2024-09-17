@@ -13,7 +13,7 @@ export class AccesoService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(usuario: { name: string, email: string, password: string }): Observable<string> {
+  login(usuario: { id: number, name: string, email: string, password: string }): Observable<string> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<{ access_token: string }>(`${environment.APIUrl}users/login`, usuario, { headers })
     .pipe(
@@ -42,6 +42,13 @@ export class AccesoService {
       return localStorage.getItem('auth_token');
     }
     return null;
+  }
+
+  checkPassword (id: number, password: string): Observable<any> {
+    const usuario = {id: id, password: password};
+    const token = this.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); // Angular establece automáticamente el multipart
+    return this.http.post(`${environment.APIUrl}users/check_password`, usuario, {headers})
   }
 
   getCurrentUser(): Observable<any> {

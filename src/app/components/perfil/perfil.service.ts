@@ -42,4 +42,11 @@ export class PerfilService {
 
     return this.http.get(`${environment.APIUrl}routes/get_routes_by_author/${id}`, { headers });
   }
+
+  updatePerfil(usuario: any): Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); // Angular establece automáticamente el multipart
+
+    return this.http.post(`${environment.APIUrl}users/update_profile`,usuario, { headers });
+  }
 }

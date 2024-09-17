@@ -31,7 +31,7 @@ export class AccesoComponent {
   }
 
   login() {
-    const usuario = { name: '', email: this.email, password: this.password };
+    const usuario = { id: -1,name: '', email: this.email, password: this.password };
 
     this.accesoService.login(usuario).subscribe({
       error: (error: Error) => {

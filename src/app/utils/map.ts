@@ -63,11 +63,11 @@ import { gpx } from "@tmcw/togeojson";
         dataMap[index]['name'] = route.name;
         dataMap[index]['ubication'] = route.ubication;
         dataMap[index]['speed'] = calculateAverageSpeed(gpxData);
-        dataMap[index]['maxAltitude'] = calculateMaxAltitude(gpxData);
-        dataMap[index]['minAltitude'] = calculateMinAltitude(gpxData);
+        dataMap[index]['max_alt'] = calculateMaxAltitude(gpxData);
+        dataMap[index]['min_alt'] = calculateMinAltitude(gpxData);
         dataMap[index]['km'] = parseFloat(calculateTotalDistance(gpxData).toFixed(2));
-        dataMap[index]['des_neg'] = calculateNegativeElevationLoss(gpxData);
-        dataMap[index]['des_pos'] = calculatePositiveElevationGain(gpxData);
+        dataMap[index]['neg_desnivel'] = calculateNegativeElevationLoss(gpxData);
+        dataMap[index]['pos_desnivel'] = calculatePositiveElevationGain(gpxData);
         */
   }
 
@@ -83,11 +83,11 @@ import { gpx } from "@tmcw/togeojson";
     dataMap[index]['ubication'] = route.ubication;
     dataMap[index]['speed'] = route.speed;
     dataMap[index]['estimated_time'] = route.estimated_time;
-    dataMap[index]['maxAltitude'] = route.max_alt;
-    dataMap[index]['minAltitude'] = route.min_alt;
+    dataMap[index]['max_alt'] = route.max_alt;
+    dataMap[index]['min_alt'] = route.min_alt;
     dataMap[index]['km'] = route.km;
-    dataMap[index]['des_neg'] = route.neg_desnivel;
-    dataMap[index]['des_pos'] = route.pos_desnivel;
+    dataMap[index]['neg_desnivel'] = route.neg_desnivel;
+    dataMap[index]['pos_desnivel'] = route.pos_desnivel;
     dataMap[index]['lat'] = route.lat;
     dataMap[index]['lon'] = route.lon;
   }
@@ -202,25 +202,25 @@ import { gpx } from "@tmcw/togeojson";
       return -1;
     }
 
-    let maxAltitude = -Infinity;
+    let max_alt = -Infinity;
     const features = gpxData.features[0];
 
     // Recorrer cada punto del sendero para encontrar la altitud máxima
     for (let i = 1; i < features.geometry.coordinates.length; i++) {
 
       let altitude = features.geometry.coordinates[i][2]; // La altitud es el tercer elemento del array de coordenadas
-      if (altitude > maxAltitude) {
-        maxAltitude = altitude;
+      if (altitude > max_alt) {
+        max_alt = altitude;
       }
     }
 
-    // Si maxAltitude sigue siendo igual a -Infinity, significa que no se encontraron altitudes válidas
+    // Si max_alt sigue siendo igual a -Infinity, significa que no se encontraron altitudes válidas
     // en el archivo GPX
-    if (maxAltitude === -Infinity) {
+    if (max_alt === -Infinity) {
       return -1;
     }
 
-    return parseFloat(maxAltitude.toFixed(0));
+    return parseFloat(max_alt.toFixed(0));
   }
 
   export function calculateMinAltitude(gpxData: any): number {
@@ -228,25 +228,25 @@ import { gpx } from "@tmcw/togeojson";
       return -1;
     }
 
-    let minAltitude = Infinity;
+    let min_alt = Infinity;
     const features = gpxData.features[0];
 
     // Recorrer cada punto del sendero para encontrar la altitud máxima
     for (let i = 1; i < features.geometry.coordinates.length; i++) {
 
       let altitude = features.geometry.coordinates[i][2]; // La altitud es el tercer elemento del array de coordenadas
-      if (altitude < minAltitude) {
-        minAltitude = altitude;
+      if (altitude < min_alt) {
+        min_alt = altitude;
       }
     }
 
-    // Si maxAltitude sigue siendo igual a -Infinity, significa que no se encontraron altitudes válidas
+    // Si min_alt sigue siendo igual a -Infinity, significa que no se encontraron altitudes válidas
     // en el archivo GPX
-    if (minAltitude === Infinity) {
+    if (min_alt === Infinity) {
       return -1;
     }
 
-    return parseFloat(minAltitude.toFixed(0));
+    return parseFloat(min_alt.toFixed(0));
   }
 
   export function calculatePositiveElevationGain(gpxData: any): number {

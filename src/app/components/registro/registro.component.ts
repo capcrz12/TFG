@@ -68,7 +68,7 @@ export class RegistroComponent {
       this.successMessage = 'Procesando...';
       this.error = false;
       // Si las contraseñas coinciden, proceder con el registro
-      const usuario = { name: this.name, email: this.email, password: this.password };
+      const usuario = { id: -1, name: this.name, email: this.email, password: this.password };
       this.registroService.register(usuario).subscribe(
         (response) => {
           this.verifiying = true;
