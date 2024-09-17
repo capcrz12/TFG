@@ -1,0 +1,97 @@
+<section>
+    <div id="main-info">
+        <h2>EDITAR RUTA</h2>
+        <button class="cancelar" type="button" (click)="cancelar()">CANCELAR</button>
+    </div>
+    <div class="seccion">
+        <div class="section">
+            <h3>PREVISUALIZACIÓN DE LOS DATOS</h3>
+            <p>Sólo se actualizarán los campos modificados.</p>
+
+            <div class="previsualizacion">
+                <div class="fila">
+                    <fieldset>
+                        <p>NOMBRE</p>
+                        <div class="caja">
+                            <input type="text" [(ngModel)]="ruta['name']" placeholder="{{dataMap['name']}}"/>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <p>UBICACIÓN</p>
+                        <div class="caja">
+                            <input type="text" [(ngModel)]="ruta['ubication']" placeholder="{{dataMap['ubication']}}"/>
+                        </div>
+                    </fieldset>
+                </div>
+                <fieldset>
+                    <p>DESCRIPCIÓN</p>
+                    <div class="caja grande">
+                        <textarea type="text" [(ngModel)]="ruta['description']" placeholder="{{dataMap['description']}}"></textarea>
+                    </div>
+                </fieldset>
+                <div class="fila">
+                    <fieldset>
+                        <p>TIEMPO ESTIMADO</p>
+                        <div class="caja">
+                            <p>{{hour}} h</p>
+                            <p>{{min}} min</p>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <p>KM</p>
+                        <div class="caja">
+                            <input type="number" (change)="updateEstimatedTime()" [(ngModel)]="ruta['km']" placeholder="{{dataMap['km']}}"/>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <p>VELOCIDAD - Km/h</p>
+                        <div class="caja">
+                            <input type="number" (change)="updateEstimatedTime()" [(ngModel)]="ruta['speed']" placeholder="{{dataMap['speed']}}"/> 
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="fila">
+                    <fieldset>
+                        <p>ALTITUD MÁXIMA</p>
+                        <div class="caja">
+                            <input type="number" [(ngModel)]="ruta['max_alt']" placeholder="{{dataMap['max_alt']}}"/>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <p>ALTITUD MÍNIMA</p>
+                        <div class="caja">
+                            <input type="number" [(ngModel)]="ruta['min_alt']" placeholder="{{dataMap['min_alt']}}"/>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="fila">
+                    <fieldset>
+                        <p>DESNIVEL POSITIVO</p>
+                        <div class="caja">
+                            <input type="number" [(ngModel)]="ruta['pos_desnivel']" placeholder="{{dataMap['pos_desnivel']}}"/>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <p>DESNIVEL NEGATIVO</p>
+                        <div class="caja">
+                            <input type="number" [(ngModel)]="ruta['neg_desnivel']" placeholder="{{dataMap['neg_desnivel']}}"/>
+                        </div> 
+                    </fieldset>
+                </div> 
+            </div>
+
+            <div class="map">
+                <app-map
+                    [file]="dataMap['name']"
+                    [gpxData]="gpxData" 
+                    [type]="0"
+                ></app-map>
+            </div>
+
+            <div class="enviar">
+                <button class="cancelar" type="button" (click)="cancelar()">CANCELAR</button>
+                <button class="send" type="button" (click)="subirRuta()">ACTUALIZAR RUTA</button>
+            </div>
+        </div>
+    </div>
+</section>

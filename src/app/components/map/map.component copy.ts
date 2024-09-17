@@ -42,10 +42,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataMap = {
       'speed': -1,
       'km': -1,
-      'des_pos': -1,
-      'des_neg': -1,
-      'maxAltitude': -1,
-      'minAltitude': -1,
+      'pos_desnivel': -1,
+      'neg_desnivel': -1,
+      'max_alt': -1,
+      'min_alt': -1,
     }
 
 

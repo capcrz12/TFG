@@ -57,6 +57,7 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    window.scrollTo(0, 0);
     // Listener para recargar página
     window.addEventListener('beforeunload', this.confirmExit);
 

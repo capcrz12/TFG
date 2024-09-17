@@ -1,4 +1,7 @@
 <section>
+    @if (message != '') {
+        <p>{{message}}</p>
+    }
     <!--Botones del menu-->
     <div id="main-info">
         @if (isAuthenticated()) {
