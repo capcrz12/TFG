@@ -9,11 +9,9 @@ section {
 
 #main-info {
     width: 80vw;
-    transition: 0.5s;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: end;
     padding-right: 2vw;
     margin-left: 10vw;
 }
@@ -209,7 +207,7 @@ i.eye-closed {
 
 .alertas {
     position: absolute;
-    top: 89.5vh;
+    top: 110vh;
     left: 54vw;
 }
 

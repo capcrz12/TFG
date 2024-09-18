@@ -1,14 +1,18 @@
 <section>
     <div id="main-info">
-        @if (paso1 == 1) {
-            <h2>SUBIR UNA RUTA NUEVA: PASO 1 DE 2</h2>
+        @if (paso == 1) {
+            <h2>SUBIR UNA RUTA NUEVA: AÑADIR INFORMACIÓN PRINCIPAL</h2>
+        }
+        @else if (paso == 2) {
+            <h2>SUBIR UNA RUTA NUEVA: AÑADIR IMÁGENES</h2>
         }
         @else {        
-            <h2>SUBIR UNA RUTA NUEVA: PASO 2 DE 2</h2>
+            <h2>SUBIR UNA RUTA NUEVA: REVISAR Y CORREGIR</h2>
         }
+        <p>Paso {{paso}} de 3</p>
     </div>
     <div class="seccion">
-        @if (paso1 == 1) {
+        @if (paso == 1) {
             <div class="contenedor">
                 <div class="fila">
                     <fieldset>
@@ -37,6 +41,30 @@
                     </div>
                 </fieldset>
                 <div class="enviar">
+                    <button type="button" (click)="submit()">Siguiente</button>
+                </div>
+            </div>
+            <div class="alertas">
+                @if (successMessage !== '') {
+                    <p class="success">{{ successMessage }}</p>
+                }
+                @if (errorMessage !== '') {
+                    <p class="error">{{ errorMessage }}</p>
+                }
+            </div>
+        }
+        @else if (paso == 2) {
+            <div class="contenedor">
+                <div class="fila">
+                    <fieldset>
+                        <p class="label">Imágenes:</p>
+                        <div>
+                            <input required multiple type="file" accept="image/*" name="images" (change)="onImagesSelected($event)"/>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="enviar">
+                    <button type="button" (click)="back()">Atrás</button>
                     <button type="button" (click)="submit()">Siguiente</button>
                 </div>
             </div>
@@ -135,6 +163,7 @@
                 </div>
 
                 <div class="enviar">
+                    <button type="button" (click)="back()">Atrás</button>
                     <button type="button" (click)="subirRuta()">SUBIR RUTA</button>
                 </div>
             </div>

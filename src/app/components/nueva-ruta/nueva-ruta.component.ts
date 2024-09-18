@@ -24,6 +24,8 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
   successMessage: string = '';
 
+  selectedImages: File[] = [];
+
   speed: number;
   max_alt: number;
   min_alt: number;
@@ -35,7 +37,7 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
   estimated_min: number;
   ruta: Dictionary;
 
-  paso1: number = 1;
+  paso: number = 1;
 
   constructor (private nuevaService: NuevaRutaService) {
     this.name = '';
@@ -87,7 +89,16 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
       console.log('No se seleccionó ningún archivo.');
     }
   }
-  
+ 
+  onImagesSelected(event: any) {
+    if (event.target.files.length > 0) {
+      this.selectedImages = Array.from(event.target.files);
+    }
+  }
+
+  back () {
+    if (this.paso>1) this.paso--;
+  }
 
   submit () {
     if (this.name == '' || this.ubication == '') {
@@ -166,7 +177,7 @@ calculateGPX () {
  
         this.successMessage = 'Archivo GPX procesado exitosamente.';
 
-        this.paso1++;
+        this.paso++;
       };
 
       reader.onerror = (error) => {
@@ -202,6 +213,6 @@ calculateGPX () {
     this.ruta['lat'] = this.gpxData.features[0].geometry.coordinates[0][1];
     this.ruta['lon'] = this.gpxData.features[0].geometry.coordinates[0][0];
 
-    this.nuevaService.upload(this.ruta, this.gpx!);
+    this.nuevaService.upload(this.ruta, this.gpx!, this.selectedImages);
   }
 }

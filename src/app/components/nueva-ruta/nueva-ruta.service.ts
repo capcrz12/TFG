@@ -10,7 +10,7 @@ export class NuevaRutaService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  upload (ruta: any, gpx: File) {
+  upload (ruta: any, gpx: File, images: File[]) {
     // Recuperar el token almacenado en localStorage
     const token = localStorage.getItem('auth_token'); // o sessionStorage.getItem('auth_token')
 
@@ -23,6 +23,10 @@ export class NuevaRutaService {
     const formData = new FormData();
     formData.append('gpx', gpx); 
     formData.append('route', JSON.stringify(ruta));
+
+    images.forEach((image, index) => {
+      formData.append('images', image, image.name); // Asegúrate de que la clave sea "images"
+    });
 
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); // Angular establece automáticamente el multipart
     return this.http.post<FormData>(`${environment.APIUrl}routes/add_route`, formData, { headers })
