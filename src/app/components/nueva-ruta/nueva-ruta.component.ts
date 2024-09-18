@@ -6,6 +6,7 @@ import { gpx } from "@tmcw/togeojson";
 import { MapComponent } from "../map/map.component";
 import { NuevaRutaService } from './nueva-ruta.service';
 import { Dictionary } from '../../dictionary';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nueva-ruta',
@@ -39,7 +40,7 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
 
   paso: number = 1;
 
-  constructor (private nuevaService: NuevaRutaService) {
+  constructor (private nuevaService: NuevaRutaService, private router: Router) {
     this.name = '';
     this.ubication = '';
     this.description = '';
@@ -214,6 +215,26 @@ calculateGPX () {
     this.ruta['lat'] = this.gpxData.features[0].geometry.coordinates[0][1];
     this.ruta['lon'] = this.gpxData.features[0].geometry.coordinates[0][0];
 
-    this.nuevaService.upload(this.ruta, this.gpx!, this.selectedImages);
+    this.nuevaService.upload(this.ruta, this.gpx!).subscribe({
+      next: async (response: any) => {
+        this.successMessage = 'Ruta añadida con éxito';
+        await this.uploadImages(response.id);
+
+        this.router.navigate(['/myFeed'], { state: { message: 'Ruta añadida con éxito' } }); // Navega a la página principal
+      },
+      error: (error: any) => {
+        this.errorMessage = 'Error al añadir la ruta: ' + (error as Error).message;
+        console.error('Error en la solicitud: ', error);
+      }
+    });    
+  } 
+  
+  uploadImages(routeId: number) {
+    const formData = new FormData();
+    this.selectedImages.forEach((image, index) => {
+      formData.append('images', image, image.name);
+    });
+  
+    return this.nuevaService.uploadImages(routeId, formData);
   }
 }
