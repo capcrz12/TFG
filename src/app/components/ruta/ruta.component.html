@@ -5,7 +5,7 @@
         <p class="hide-info">Km: {{dataMap['km']}}</p>
     </div>
     <div class="seccion">
-        <div id="map-grafica">
+        <div id="map-grafica" [class.expanded]="slides.length === 0">
             @if (gpxData) {
                 <app-map [file]="'./assets/'+routeJSON['gpx']" 
                         [dataMap]="dataMap" 
@@ -19,9 +19,26 @@
                 <app-grafica id="grafica" [gpxData]="gpxData" [elevationProfile]="elevationProfile"  (pointHovered)="onPointHovered($event)"></app-grafica>
             }
         </div>
-        <div id="image-primaria">
-            <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44.jpeg" alt="Logotipo">
-        </div>
+        @if (slides.length != 0) {
+            <div id="image-primaria">
+                <img class="imagen" src="{{selectedImage}}" alt="Logotipo">
+                <ngx-slick-carousel class="carousel" 
+                            #slickModal="slick-carousel" 
+                            [config]="slideConfig" 
+                            (init)="slickInit($event)"
+                            (breakpoint)="breakpoint($event)"
+                            (afterChange)="afterChange($event)"
+                            (beforeChange)="beforeChange($event)">
+                    @for (slide of slides; track slide) {
+                        <div (click)="selectImage(slide)" ngxSlickItem class="slide">
+                            <img class="carouselImg" src="{{ slide }}" alt="">
+                        </div>
+                    }
+                </ngx-slick-carousel>
+                <button class="arrow left" (click)="slickModal.slickPrev()">Atrás</button>
+                <button class="arrow right" (click)="slickModal.slickNext()">Siguiente</button>
+            </div>
+        }
     </div>
     <div id="main-info">
         <h2>INFORMACIÓN</h2>

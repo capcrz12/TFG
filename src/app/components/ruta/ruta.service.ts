@@ -44,6 +44,10 @@ export class RutaService {
     );
   }
 
+  getRouteImages(id: string): Observable<string[]> {
+    return this.http.get<string[]>(`${environment.APIUrl}routes/get_route_images/${id}`);
+  }
+  
   isAuthor(id: number): Observable<boolean> {
     let author = -1;
     this.accesoService.getCurrentUser().subscribe(res => {

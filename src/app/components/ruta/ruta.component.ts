@@ -5,19 +5,18 @@ import { Dictionary } from '../../dictionary';
 import { GraficaComponent } from '../grafica/grafica.component';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { RutaService } from './ruta.service';
-import { gpx } from '@maptiler/sdk';
-
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @Component({
   selector: 'app-ruta',
   standalone: true,
-  imports: [RouterOutlet, MapComponent, GraficaComponent, HttpClientModule],
+  imports: [RouterOutlet, MapComponent, GraficaComponent, HttpClientModule, SlickCarouselModule],
   templateUrl: './ruta.component.html',
   styleUrl: './ruta.component.css'
 })
 export class RutaComponent implements OnInit, OnChanges {
   name: string = '';
-  @Input() id: string = ''; 
+  @Input() id: string = '';
   routeJSON:any = [];
   rutaId: number;
   pointHovered: number;
@@ -29,8 +28,11 @@ export class RutaComponent implements OnInit, OnChanges {
   min: number;
   hour: number;
 
+  selectedImage: string = "";
+
   observer: IntersectionObserver | undefined;
 
+  slides: string[] = [];     // Array de URLs de las imágenes
 
   constructor(private rutaService:RutaService) {
     this.dataMap = {};
@@ -44,6 +46,7 @@ export class RutaComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     window.scrollTo(0, 0);
     this.getRoute();
+    this.getImages();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -58,7 +61,7 @@ export class RutaComponent implements OnInit, OnChanges {
     };
 
     // Obtener todos los elementos <p> dentro de #tabla-section
-    const paragraphs = document.querySelectorAll('#tabla-seccion p');
+    const paragraphs = document.querySelectorAll('#tabla-seccion p, .column-info p');
   
     // Configurar un observador de intersección para cada <p>
     paragraphs.forEach(p => {
@@ -109,5 +112,38 @@ export class RutaComponent implements OnInit, OnChanges {
         console.error('Error:', error);
       }
     });
+  }
+
+  getImages(): void {
+    this.rutaService.getRouteImages(this.id).subscribe({
+      next: (images: string[]) => {
+        this.slides = images;  // Asigna las URLs de las imágenes
+      },
+      error: (error) => {
+        console.error('Error al cargar las imágenes:', error);
+      }
+    });
+  }
+
+  slideConfig = {"slidesToShow": 3, "slidesToScroll": 1};
+  
+  selectImage(img: string) {
+    this.selectedImage = img;
+  }
+  
+  slickInit(e: any) {
+    this.selectImage(this.slides[0]);
+  }
+  
+  breakpoint(e: any) {
+    console.log('breakpoint');
+  }
+  
+  afterChange(e: any) {
+    console.log('afterChange');
+  }
+  
+  beforeChange(e: any) {
+    console.log('beforeChange');
   }
 }
