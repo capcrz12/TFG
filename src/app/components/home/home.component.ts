@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, Output, Input } from '@angular/core';
-import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { MapComponent } from '../map/map.component'; 
 import { CommonModule } from '@angular/common';
 import { Dictionary } from '../../dictionary'; 
@@ -22,6 +22,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   isFilterOpen: boolean = false;
   routesSiguiendo:any = [];
   routesExplorar:any = [];
+
+  message: string = '';
  
   type:number;
   gpxData: any; // Declaración de la propiedad gpxData para almacenar datos de GPX
@@ -35,7 +37,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   filters: any = [];  // Añadir propiedad para almacenar filtros
 
-  constructor(private homeService: HomeService, private accesoService: AccesoService) {
+  constructor(private router: Router,private homeService: HomeService, private accesoService: AccesoService) {
     this.name = ''
     this.siguiendo = false;  // Al cargar home aparece en siguiendo si es true, y en explorar si es false
 
@@ -46,6 +48,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.getDataSiguiendo();
     this.getDataExplorar();
     this.isAuthenticated() ? this.siguiendo = true : this.siguiendo = false;
+
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      this.message = navigation.extras.state['message'];  // Recibir el mensaje del estado
+    }
+
+    if (this.message) {
+      setTimeout(() => {
+        this.message = '';  // Limpiar el mensaje después de 5 segundos
+      }, 3000);
+    }
   }
 
   ngAfterViewInit() {
@@ -102,8 +115,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       'all', // Esto indica que todas las condiciones deben cumplirse
       ...(kmCheckbox ? [this.createFilterExpression('km', kmOperator, kmValue)] : []),
       ...(timeCheckbox ? [this.createFilterExpression('estimated_time', timeOperator, timeValue)] : []),
-      ...(posCheckbox ? [this.createFilterExpression('des_pos', posOperator, posValue)] : []),
-      ...(negCheckbox ? [this.createFilterExpression('des_neg', negOperator, negValue)] : []),
+      ...(posCheckbox ? [this.createFilterExpression('pos_desnivel', posOperator, posValue)] : []),
+      ...(negCheckbox ? [this.createFilterExpression('neg_desnivel', negOperator, negValue)] : []),
     ];  
   }
 

@@ -44,6 +44,7 @@ export class RutaComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    window.scrollTo(0, 0);
     this.getRoute();
     this.getImages();
   }

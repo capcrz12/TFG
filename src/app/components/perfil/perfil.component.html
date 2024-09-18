@@ -1,20 +1,61 @@
 <section>
     <h3>Perfil</h3>
     <div id="main-info">
-        <h2>{{name}}</h2>
         @if (propio) {
-            <img class="icono" src="../../assets/images/usuario.png">
+            @if (!edicion) {
+                <h2>{{name}}</h2>
+                <!-- Icono de edición del perfil -->
+                <img class="icono" (click)="modoEdicionPerfil()" src="../../assets/images/usuario.png">
+            }
+            @else {
+                <h2>Modo edición</h2>
+            }
+        }
+        @else {
+            <h2>{{name}}</h2>        
         }
     </div>
     <div class="perfil">
         <div class="info">
-            <p>Km totales recorridos: {{total_km}}</p>
             @if (propio) {
-                <p>Correo: {{email}}</p>
-                <br>
-                <p class="clickable cerrar" (click)="logout()">Cerrar sesión</p>
+                @if (!edicion) {
+                    <p>Km totales recorridos: {{total_km}}</p>
+                    <p>Correo: {{email}}</p>
+                    <br>
+                    <p class="clickable cerrar" (click)="logout()">Cerrar sesión</p>
+                    <p class="success">{{success}}</p>
+                }
+                @else {
+                    <p>Sólo se aplicarán cambios en los campos modificados</p>
+                    <label>Nombre:</label>
+                    <div class="caja">
+                        <input [(ngModel)]="nameEdit" placeholder="{{name}}">
+                    </div>
+                    <label>Cambiar Contraseña:</label>
+                    @if (!passwordChecked) {
+                        <div class="caja">
+                            <input type="password" [(ngModel)]="passwordEdit" placeholder="Introduzca la contraseña actual">
+                            <button class="boton enviar" (click)="checkPassword()">Siguiente</button>
+                        </div>
+                    }
+                    @else {
+                        <div class="caja">
+                            <input type="password" [(ngModel)]="passwordEdit" placeholder="Introduzca la nueva contraseña">
+                        </div>
+                    }
+                    <p class="error">{{error}}</p>
+                }
+            }
+            @else {
+                <p>Km totales recorridos: {{total_km}}</p>
             }
         </div>
+        @if (edicion) {
+            <div class="botones">
+                <button (click)="modoEdicionPerfil()" class="boton cancelar">Cancelar</button>
+                <button (click)="editarPerfil()" class="boton enviar">Realizar cambios</button>
+            </div>
+        }
         <div class="imagen">
             <img class="foto" src="../../assets/images/92938495.jpeg">
         </div>
@@ -27,14 +68,22 @@
     }
     <div class="rutas">
         @for (route of routes; track $index) {
-            <a class="ruta" [routerLink]="['/ruta',route.id]">
-                <div id="nombre-caja">
-                    <h1 id="nombre">{{route.name}}</h1>
-                </div>
-                <h1 id="ubi">{{route.ubication}}</h1>
-                <h1 id="kmFecha">{{route.km}} Km - {{route.fecha}}</h1>
-                <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44.jpeg" id="image" alt="Logotipo">
-            </a>
+           <div class="ruta"> 
+                @if (propio) {
+                    <div class="botones botRutas">
+                        <img [routerLink]="['/perfil', id,'editarRuta', route.id]" class="icono" src="../../assets/images/editar.png">
+                        <img (click)="eliminarRuta(route.id)" class="icono" src="../../assets/images/borrar.png">
+                    </div>
+                }
+                <a [routerLink]="['/ruta',route.id]">
+                    <div id="nombre-caja">
+                        <h1 id="nombre">{{route.name}}</h1>
+                    </div>
+                    <h1 id="ubi">{{route.ubication}}</h1>
+                    <h1 id="kmFecha">{{route.km}} Km - {{route.fecha}}</h1>
+                    <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44.jpeg" id="image" alt="Logotipo">
+                </a>
+            </div>
         }
     </div>
 </section>

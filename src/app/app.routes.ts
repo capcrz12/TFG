@@ -8,6 +8,8 @@ import { TerminosComponent } from './components/terminos/terminos.component';
 import { accesoGuard } from './guards/acceso.guard';
 import { NuevaRutaComponent } from './components/nueva-ruta/nueva-ruta.component';
 import { PerfilComponent } from './components/perfil/perfil.component';
+import { EditarRutaComponent } from './components/editar-ruta/editar-ruta.component';
+import { editarRutaGuard } from './guards/editar-ruta.guard';
 
 export const routes: Routes = [
     {
@@ -33,6 +35,11 @@ export const routes: Routes = [
       path: 'nuevaRuta',
       component: NuevaRutaComponent,
       canActivate: [accesoGuard]
+    },
+    {
+      path: 'perfil/:idPerfil/editarRuta/:id',
+      component: EditarRutaComponent,
+      canActivate: [accesoGuard, editarRutaGuard]
     },
     {
       path: 'acceso',

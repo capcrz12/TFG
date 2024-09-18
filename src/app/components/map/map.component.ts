@@ -46,10 +46,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataMap = {
       'speed': -1,
       'km': -1,
-      'des_pos': -1,
-      'des_neg': -1,
-      'maxAltitude': -1,
-      'minAltitude': -1,
+      'pos_desnivel': -1,
+      'neg_desnivel': -1,
+      'max_alt': -1,
+      'min_alt': -1,
     }
     
     this.speed = 0;
@@ -377,11 +377,11 @@ function convertRoutesToGeoJSON(routes: any[]): any {//GeoJSON.FeatureCollection
       id: route.id,
       name: route.name,
       estimated_time: route.estimated_time,
-      des_pos: route.des_pos,
-      des_neg: route.des_neg,
+      pos_desnivel: route.pos_desnivel,
+      neg_desnivel: route.neg_desnivel,
       km: route.km,
-      maxAltitude: route.maxAltitude,
-      minAltitude: route.minAltitude,
+      max_alt: route.max_alt,
+      min_alt: route.min_alt,
       speed: route.speed,
       ubication: route.ubication,
       user_name: route.user['nombre']
