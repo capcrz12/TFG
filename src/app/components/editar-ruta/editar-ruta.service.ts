@@ -3,6 +3,7 @@ import { Dictionary } from '../../dictionary';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +33,20 @@ export class EditarRutaService {
         console.error('Error en la solicitud: ', error)
         this.router.navigate(['/perfil', idPerfil], { state: { message: 'Ha ocurrido un error en la actualización' } }); // Navega a la página principal
       });
+  }
+
+  deleteImage (image: string, id: number): Observable<any> {
+    // Recuperar el token almacenado en localStorage
+    const token = localStorage.getItem('auth_token');
+
+    // Asegurarse de que existe el token
+    if (!token) {
+      console.error('No se ha encontrado el token de autenticación');
+    }
+
+    const body = { id: id, image: image };
+
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); // Angular establece automáticamente el multipart
+    return this.http.post(`${environment.APIUrl}routes/delete_route_image`, body, { headers });
   }
 }
