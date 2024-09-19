@@ -8,11 +8,13 @@ import { Dictionary } from '../../dictionary';
 import { RutaService } from '../ruta/ruta.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EditarRutaService } from './editar-ruta.service';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { NuevaRutaService } from '../nueva-ruta/nueva-ruta.service';
 
 @Component({
   selector: 'app-editar-ruta',
   standalone: true,
-  imports: [FormsModule, CommonModule, MapComponent],
+  imports: [FormsModule, CommonModule, MapComponent, SlickCarouselModule],
   templateUrl: './editar-ruta.component.html',
   styleUrl: './editar-ruta.component.css'
 })
@@ -31,7 +33,17 @@ export class EditarRutaComponent {
   routeJSON:any = [];
   data: Dictionary [];
 
-  constructor (private rutaService: RutaService, private editarService: EditarRutaService, private route: ActivatedRoute, private router: Router) {
+  selectedImages: File[] = [];
+  selectedImage: string = "";
+  slides: string[] = [];     // Array de URLs de las imágenes
+
+
+  constructor (private rutaService: RutaService, 
+    private editarService: EditarRutaService, 
+    private route: ActivatedRoute, 
+    private router: Router,
+    private nuevaService: NuevaRutaService) {
+
     this.id = -1;
     this.idPerfil = -1;
     this.gpxData = null;
@@ -48,6 +60,7 @@ export class EditarRutaComponent {
       this.idPerfil = +params['idPerfil']; 
 
       this.getRoute();
+      this.getImages();
     });
     // Listener para recargar página
     window.addEventListener('beforeunload', this.confirmExit);
@@ -80,6 +93,17 @@ export class EditarRutaComponent {
       },
       error: (error) => {
         console.error('Error:', error);
+      }
+    });
+  }
+
+  getImages(): void {
+    this.rutaService.getRouteImages(String(this.id)).subscribe({
+      next: (images: string[]) => {
+        this.slides = images;  // Asigna las URLs de las imágenes
+      },
+      error: (error) => {
+        console.error('Error al cargar las imágenes:', error);
       }
     });
   }
@@ -131,6 +155,71 @@ export class EditarRutaComponent {
 
   cancelar () {
     this.router.navigate(['/perfil', this.idPerfil]);
+  }
+
+  slideConfig = {"slidesToShow": 3, "slidesToScroll": 1};
+  
+  selectImage(img: string) {
+    this.selectedImage = img;
+  }
+  
+  slickInit(e: any) {
+    this.selectImage(this.slides[0]);
+  }
+  
+  breakpoint(e: any) {
+    console.log('breakpoint');
+  }
+  
+  afterChange(e: any) {
+    console.log('afterChange');
+  }
+  
+  beforeChange(e: any) {
+    console.log('beforeChange');
+  }
+
+  async onImagesSelected(event: any) {
+    if (event.target.files.length > 0) {
+      this.selectedImages = Array.from(event.target.files);
+
+      await this.uploadImages(this.id);
+    }
+  }
+
+  uploadImages(routeId: number) {
+    const formData = new FormData();
+    this.selectedImages.forEach((image, index) => {
+      formData.append('images', image, image.name);
+    });
+  
+    return this.nuevaService.uploadImages(routeId, formData).then(() => {
+      this.getImages();
+      this.errorMessage = '';
+      this.successMessage = 'Imagen añadida con éxito';
+    })
+    .catch((error) => {
+      console.error('Error al subir las imágenes:', error);
+      this.successMessage = '';
+      this.errorMessage = 'Error al subir la imagen';
+    });
+  }
+
+  deleteImage (image: string) {
+    const imageName = image.split('/').pop() || ''; // 'imagen2.jpg'
+
+    this.editarService.deleteImage(imageName, this.id).subscribe({
+      next: (res) => {
+        this.errorMessage = '';
+        this.successMessage = 'Imagen eliminada con éxito';
+        this.getImages();
+        this.selectImage(this.slides[0]);
+      },
+      error: (error) => {
+        this.successMessage = '';
+        this.errorMessage = 'Ha habido un problema en el borrado';
+      }
+    });
   }
 }
 

@@ -154,6 +154,8 @@
                     </div> 
                 </div>
 
+                <p>Mapa</p>
+
                 <div class="map">
                     <app-map
                         [file]="gpx!.name"
@@ -161,6 +163,28 @@
                         [type]="0"
                     ></app-map>
                 </div>
+
+                @if (slides.length > 0) {
+                    <p>Imágenes</p>
+
+                    <div id="image-primaria">
+                        <ngx-slick-carousel class="carousel" 
+                                    #slickModal="slick-carousel" 
+                                    [config]="slideConfig" 
+                                    (init)="slickInit($event)"
+                                    (breakpoint)="breakpoint($event)"
+                                    (afterChange)="afterChange($event)"
+                                    (beforeChange)="beforeChange($event)">
+                            @for (slide of slides; track slide) {
+                                <div ngxSlickItem class="slide">
+                                    <img class="carouselImg" src="{{ slide }}" alt="">
+                                </div>
+                            }
+                        </ngx-slick-carousel>
+                        <button class="arrow left" (click)="slickModal.slickPrev()">Atrás</button>
+                        <button class="arrow right" (click)="slickModal.slickNext()">Siguiente</button>
+                    </div>
+                }
 
                 <div class="enviar">
                     <button type="button" (click)="back()">Atrás</button>

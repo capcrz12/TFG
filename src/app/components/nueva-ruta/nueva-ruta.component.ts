@@ -7,11 +7,13 @@ import { MapComponent } from "../map/map.component";
 import { NuevaRutaService } from './nueva-ruta.service';
 import { Dictionary } from '../../dictionary';
 import { Router } from '@angular/router';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+
 
 @Component({
   selector: 'app-nueva-ruta',
   standalone: true,
-  imports: [FormsModule, CommonModule, MapComponent],
+  imports: [FormsModule, CommonModule, MapComponent, SlickCarouselModule],
   templateUrl: './nueva-ruta.component.html',
   styleUrl: './nueva-ruta.component.css'
 })
@@ -39,6 +41,8 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
   ruta: Dictionary;
 
   paso: number = 1;
+
+  slides: string[] = [];     // Array de URLs de las imágenes
 
   constructor (private nuevaService: NuevaRutaService, private router: Router) {
     this.name = '';
@@ -95,6 +99,13 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
   onImagesSelected(event: any) {
     if (event.target.files.length > 0) {
       this.selectedImages = Array.from(event.target.files);
+
+      this.slides = [];
+
+      this.selectedImages.forEach(image => {
+        const imageUrl = URL.createObjectURL(image);  // Generar un URL temporal
+        this.slides.push(imageUrl);  // Añadir el URL al array de slides
+      });
     }
   }
 
@@ -236,5 +247,25 @@ calculateGPX () {
     });
   
     return this.nuevaService.uploadImages(routeId, formData);
+  }
+
+
+  // Carrusel de imagenes
+  slideConfig = {"slidesToShow": 4, "slidesToScroll": 1};
+  
+  slickInit(e: any) {
+    console.log('init');  
+  }
+  
+  breakpoint(e: any) {
+    console.log('breakpoint');
+  }
+  
+  afterChange(e: any) {
+    console.log('afterChange');
+  }
+  
+  beforeChange(e: any) {
+    console.log('beforeChange');
   }
 }

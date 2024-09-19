@@ -88,6 +88,39 @@
                 ></app-map>
             </div>
 
+            @if (slides.length > 0) {
+                <p>Imágenes de la ruta</p>
+                <p>¡Atención! Las modificaciones de las imágenes se realizarán de forma directa</p>
+
+                <div id="image-primaria">
+                    <div class="selected">
+                        <img class="imagen" src="{{selectedImage}}" alt="Logotipo">
+                        <div>
+                            <p>Añadir imágenes</p> 
+                            <input required multiple type="file" accept="image/*" name="images" (change)="onImagesSelected($event)"/>
+                            <img (click)="deleteImage(selectedImage)" class="icono" src="../../assets/images/borrar.png">
+                            <p>{{successMessage}}</p>
+                            <p>{{errorMessage}}</p>
+                        </div>
+                    </div>
+                    <ngx-slick-carousel class="carousel" 
+                                #slickModal="slick-carousel" 
+                                [config]="slideConfig" 
+                                (init)="slickInit($event)"
+                                (breakpoint)="breakpoint($event)"
+                                (afterChange)="afterChange($event)"
+                                (beforeChange)="beforeChange($event)">
+                        @for (slide of slides; track slide) {
+                            <div (click)="selectImage(slide)" ngxSlickItem class="slide">
+                                <img class="carouselImg" src="{{ slide }}" alt="">
+                            </div>
+                        }
+                    </ngx-slick-carousel>
+                    <button class="arrow left" (click)="slickModal.slickPrev()">Atrás</button>
+                    <button class="arrow right" (click)="slickModal.slickNext()">Siguiente</button>
+                </div>
+            }
+
             <div class="enviar">
                 <button class="cancelar" type="button" (click)="cancelar()">CANCELAR</button>
                 <button class="send" type="button" (click)="subirRuta()">ACTUALIZAR RUTA</button>
