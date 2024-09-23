@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { Dictionary } from '../../dictionary'; 
 import { Observable } from 'rxjs';
+import { RutaService } from '../ruta/ruta.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class HomeService {
   dataMap:Dictionary[] = [];
 
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private rutaService: RutaService) { }
 
   getRoutesSiguiendo(id: number): Observable<any> {
     return this.http.get(environment.APIUrl+`routes/get_routes_followed/${id}`);
@@ -74,8 +75,19 @@ export class HomeService {
         //getData(this.gpxData, routes[i], i/*, this.dataMap*/);
         
         getStatistics(routes[i],this.dataMap, i);
+        this.rutaService.getRouteImages(routes[i].id).subscribe({
+          next: (images: string[]) => {
+            this.dataMap[i]['photo'] = images[0];
+          },
+          error: (error) => {
+            this.dataMap[i]['photo'] = '';
+            console.error('Error al cargar las imágenes:', error);
+          }
+        });
       }
     }
+
+    console.log(this.dataMap);
 
     return this.dataMap;
   }

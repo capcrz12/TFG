@@ -2,6 +2,7 @@ import { Component, Input, input, OnInit } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterModule } from '@angular/router';
 import { BuscadorComponent } from '../buscador/buscador.component';
 import { AccesoService } from '../acceso/acceso.service';
+import { PerfilService } from '../perfil/perfil.service';
 
 @Component({
   selector: 'app-nav',
@@ -13,8 +14,9 @@ import { AccesoService } from '../acceso/acceso.service';
 export class NavComponent implements OnInit {
   @Input() title = '';
   idPerfil: number = -1;
+  photo: string = '../../assets/images/perfil.png';
 
-  constructor (private accesoService: AccesoService) {}
+  constructor (private accesoService: AccesoService, private perfilService: PerfilService) {}
 
   ngOnInit(): void {
     this.getCurrentUser();
@@ -27,6 +29,14 @@ export class NavComponent implements OnInit {
   getCurrentUser () {
     return this.accesoService.getCurrentUser().subscribe(res => {
       this.idPerfil = res; 
+
+      this.perfilService.getUser(this.idPerfil).subscribe(user => {
+        if (user.photo) {
+          this.photo = user.photo;
+        }
+        console.log(user.photo);
+      })
     })
   }
+  
 }

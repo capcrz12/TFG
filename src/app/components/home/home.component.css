@@ -110,6 +110,7 @@ a:hover {
     border-radius: 60px;
     justify-self: center;
     align-self: center;
+    cursor: pointer;
 }
 
 #image-primaria > img{

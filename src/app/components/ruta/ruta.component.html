@@ -19,24 +19,26 @@
                 <app-grafica id="grafica" [gpxData]="gpxData" [elevationProfile]="elevationProfile"  (pointHovered)="onPointHovered($event)"></app-grafica>
             }
         </div>
-        @if (slides.length != 0) {
+        @if (slides.length > 0) {
             <div id="image-primaria">
                 <img class="imagen" src="{{selectedImage}}" alt="Logotipo">
-                <ngx-slick-carousel class="carousel" 
-                            #slickModal="slick-carousel" 
-                            [config]="slideConfig" 
-                            (init)="slickInit($event)"
-                            (breakpoint)="breakpoint($event)"
-                            (afterChange)="afterChange($event)"
-                            (beforeChange)="beforeChange($event)">
-                    @for (slide of slides; track slide) {
-                        <div (click)="selectImage(slide)" ngxSlickItem class="slide">
-                            <img class="carouselImg" src="{{ slide }}" alt="">
-                        </div>
-                    }
-                </ngx-slick-carousel>
-                <button class="arrow left" (click)="slickModal.slickPrev()">Atrás</button>
-                <button class="arrow right" (click)="slickModal.slickNext()">Siguiente</button>
+                @if (slides.length > 1) {
+                    <ngx-slick-carousel class="carousel" 
+                                #slickModal="slick-carousel" 
+                                [config]="slideConfig" 
+                                (init)="slickInit($event)"
+                                (breakpoint)="breakpoint($event)"
+                                (afterChange)="afterChange($event)"
+                                (beforeChange)="beforeChange($event)">
+                        @for (slide of slides; track slide) {
+                            <div (click)="selectImage(slide)" ngxSlickItem class="slide">
+                                <img class="carouselImg" src="{{ slide }}" alt="">
+                            </div>
+                        }
+                    </ngx-slick-carousel>
+                    <button class="arrow left" (click)="slickModal.slickPrev()">Atrás</button>
+                    <button class="arrow right" (click)="slickModal.slickNext()">Siguiente</button>
+                }
             </div>
         }
     </div>
