@@ -15,8 +15,13 @@
     @for (dato of dataMapSiguiendo; track dato['id']) {
     <div id="usuario">
         <div id="perfilUsuario">
-            <a routerLink="">
-                <img class="perfil" src="../../assets/images/92938495.jpeg">
+            <a [routerLink]="['/perfil', dato['user']['id']]">
+                @if (dato['user']['photo'] != '') {
+                    <img class="perfil" src="{{dato['user']['photo']}}">
+                }
+                @else {
+                    <img class="perfil" src="../../assets/images/perfil.png">
+                }
             </a>
             <h3><a [routerLink]="['/perfil', dato['user']['id']]">{{dato['user']['nombre']}}</a></h3>
         </div>
@@ -27,9 +32,11 @@
                 <p>{{ dato['ubication'] }}</p>
                 <p>{{ dato['km'] }} km</p>
             </div>
-            <div id="image-primaria">
-                <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44.jpeg" alt="Logotipo">
-            </div>
+            @if (dato['photo'] != '') {
+                <div id="image-primaria" [routerLink]="['/ruta',dato['id']]">
+                    <img src="{{dato['photo']}}" alt="Logotipo">
+                </div>
+            }
         </div>
     </div>
     } @empty {

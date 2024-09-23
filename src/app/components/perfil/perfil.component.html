@@ -57,7 +57,16 @@
             </div>
         }
         <div class="imagen">
-            <img class="foto" src="../../assets/images/92938495.jpeg">
+            @if (!photoProfileTMP || !edicion) {
+                <img class="foto" src="{{photoProfile}}">            
+            }
+            @else {
+                <img class="foto" src="{{photoProfileTMP}}">                        
+            }
+            @if (edicion) {
+                <p>Cambiar foto</p>   
+                <input required type="file" accept="image/*" name="images" (change)="onImageSelected($event)"/>
+            }
         </div>
     </div>
     @if (propio) {

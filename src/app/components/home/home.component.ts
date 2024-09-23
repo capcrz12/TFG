@@ -7,6 +7,7 @@ import { HomeService } from './home.service';
 import { BuscadorComponent } from '../buscador/buscador.component'; 
 import { AccesoService } from '../acceso/acceso.service';
 import { Console } from 'console';
+import { RutaService } from '../ruta/ruta.service';
 
 
 @Component({

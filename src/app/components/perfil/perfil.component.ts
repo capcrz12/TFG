@@ -25,6 +25,11 @@ export class PerfilComponent implements OnInit{
     passwordEdit: string;
     passwordChecked: boolean;
 
+    photoProfile: string = '../../assets/images/perfil.png';
+    photoProfileTMP: string = '';
+    selectedImage: File | null = null;
+
+
     error: string = '';
     success: string = '';
 
@@ -89,6 +94,7 @@ export class PerfilComponent implements OnInit{
 
         this.nameEdit = '';
         this.passwordEdit = '';
+        this.photoProfileTMP = '';
         this.passwordChecked = false;
       }
     }
@@ -105,6 +111,9 @@ export class PerfilComponent implements OnInit{
         this.email = res.email;
         this.name = res.nombre;
         this.total_km = res.total_km;
+        if (res.photo) {
+          this.photoProfile = res.photo;
+        }
       });
     }
 
@@ -114,7 +123,7 @@ export class PerfilComponent implements OnInit{
       })
     }
 
-    editarPerfil () {
+    async editarPerfil () {
       let usuario = {id: this.id, name: this.name, email: '', password: ''};
       if (this.nameEdit != '') {
         usuario['name'] = this.nameEdit;
@@ -123,7 +132,10 @@ export class PerfilComponent implements OnInit{
         usuario['password'] = this.passwordEdit;
       }
 
+      await this.updatePhoto();
+
       this.perfilService.updatePerfil(usuario).subscribe((res) => {
+
         this.success = 'Datos actualizados correctamente';
         setTimeout(() => {
           this.success = '';
@@ -131,6 +143,22 @@ export class PerfilComponent implements OnInit{
         this.getInfo();
         this.modoEdicionPerfil();
       })
+    }
+
+    updatePhoto () {
+      if (this.photoProfileTMP != '' || !this.selectedImage) {
+        const formData = new FormData();
+        formData.append('image', this.selectedImage!, this.selectedImage!.name);
+        
+        return this.perfilService.updatePhoto(this.idPerfil, formData);
+      }
+      else
+        return ;
+    }
+
+    onImageSelected (event: any) {
+      this.photoProfileTMP = URL.createObjectURL(event.target.files[0]);
+      this.selectedImage = event.target.files[0];
     }
 
     eliminarRuta (id: number) {

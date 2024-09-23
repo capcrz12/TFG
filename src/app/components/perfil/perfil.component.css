@@ -161,6 +161,7 @@ input {
 
 .imagen {
     display: flex;
+    flex-direction: column;
 
     align-items: center;
     justify-content: center;
@@ -172,6 +173,8 @@ input {
 .foto {
     border-radius: 50%;
     background-color: grey;
+    max-width: 30vw;
+    max-height: 30vw;
 }
 
 p {
