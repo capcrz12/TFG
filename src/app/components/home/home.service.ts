@@ -87,8 +87,6 @@ export class HomeService {
       }
     }
 
-    console.log(this.dataMap);
-
     return this.dataMap;
   }
 

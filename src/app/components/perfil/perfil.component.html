@@ -13,6 +13,7 @@
         }
         @else {
             <h2>{{name}}</h2>        
+            <button class="boton-seguir" [class.red]="siguiendo" (click)="botonSeguir()">{{botonSeguimiento}}</button>
         }
     </div>
     <div class="perfil">

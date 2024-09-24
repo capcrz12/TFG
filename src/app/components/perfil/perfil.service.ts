@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { catchError, Observable, switchMap, throwError } from 'rxjs';
+import { map, Observable, switchMap, throwError } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -61,4 +62,40 @@ export class PerfilService {
 
     return this.http.post(`${environment.APIUrl}users/update_profile_photo/${id}`,image, { headers }).toPromise();
   }
+
+  follow(id_follower: number, id_followed: number):Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); 
+
+    const body = {id_follower: id_follower, id_followed: id_followed};
+
+    return this.http.post(`${environment.APIUrl}users/follow`,body, { headers });
+  }
+
+  unfollow(id_follower: number, id_followed: number):Observable<any> {
+    const token = this.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); 
+
+    const body = {id_follower: id_follower, id_followed: id_followed};
+
+    return this.http.post(`${environment.APIUrl}users/unfollow`,body, { headers });
+  }
+
+  private getFolloweds(id_follower: number) {
+    const token = this.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); 
+
+    return this.http.get(`${environment.APIUrl}users/get_followeds/${id_follower}`, { headers });
+  }
+
+  isFollowing(id_follower: number, id_followed: number):Observable<boolean> {
+
+    return this.getFolloweds(id_follower).pipe(
+      map((data: any) => {
+        const found = data.find((item: any) => item.id_usuario_seguido === id_followed);
+
+        return !!found; // True si se encuetra, false si no
+      })
+    );
+  };
 }

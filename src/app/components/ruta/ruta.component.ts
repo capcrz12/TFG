@@ -1,16 +1,18 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MapComponent } from '../map/map.component'; 
-import { RouterOutlet, Router } from '@angular/router';
+import { RouterOutlet, Router, RouterLink } from '@angular/router';
 import { Dictionary } from '../../dictionary';
 import { GraficaComponent } from '../grafica/grafica.component';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { RutaService } from './ruta.service';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { PerfilService } from '../perfil/perfil.service';
+import { AccesoService } from '../acceso/acceso.service';
 
 @Component({
   selector: 'app-ruta',
   standalone: true,
-  imports: [RouterOutlet, MapComponent, GraficaComponent, HttpClientModule, SlickCarouselModule],
+  imports: [RouterOutlet, RouterLink, MapComponent, GraficaComponent, HttpClientModule, SlickCarouselModule],
   templateUrl: './ruta.component.html',
   styleUrl: './ruta.component.css'
 })
@@ -28,13 +30,18 @@ export class RutaComponent implements OnInit, OnChanges {
   min: number;
   hour: number;
 
+  idPerfil: number = -1;
+
   selectedImage: string = "";
+
+  botonSeguimiento: string = 'Seguir';
+  siguiendo: boolean = false;
 
   observer: IntersectionObserver | undefined;
 
   slides: string[] = [];     // Array de URLs de las imágenes
 
-  constructor(private rutaService:RutaService) {
+  constructor(private rutaService:RutaService, private perfilService:PerfilService, private accesoService:AccesoService) {
     this.dataMap = {};
     this.data = [];
     this.rutaId = -1;
@@ -47,10 +54,44 @@ export class RutaComponent implements OnInit, OnChanges {
     window.scrollTo(0, 0);
     this.getRoute();
     this.getImages();
+
+    this.getId();
   }
+
 
   ngOnChanges(changes: SimpleChanges): void {
     this.setupIntersectionObserver();
+  }
+
+  getId() {
+    this.accesoService.getCurrentUser().subscribe({
+      next: (res) => {
+        this.idPerfil = res;
+        this.checkIfFollowing(); // Llamar a la función cuando se obtiene el idPerfil
+      },
+      error: (error) => {
+        console.error('Error al obtener el idPerfil:', error);
+      }
+    });
+  }
+
+  checkIfFollowing() {
+    // Verifica si tanto idPerfil como dataMap están disponibles
+    if (this.idPerfil !== -1 && this.dataMap['user'] && this.dataMap['user']['id']) {
+      this.perfilService.isFollowing(this.idPerfil, this.dataMap['user']['id']).subscribe({
+        next: (result: boolean) => {
+          this.siguiendo = result;
+          this.botonSeguimiento = this.siguiendo ? 'Dejar de seguir' : 'Seguir'; 
+        },
+        error: (error) => {
+          console.error('Error al verificar si sigue al usuario:', error);
+          this.siguiendo = false; // En caso de error, establece siguiendo en false
+        }
+      });
+    }
+    else {
+      console.log('Datos no cargados aún');
+    }
   }
 
   setupIntersectionObserver(): void {
@@ -100,6 +141,46 @@ export class RutaComponent implements OnInit, OnChanges {
     this.min = Math.round((this.dataMap['estimated_time'] - this.hour) * 60);
   }
 
+  botonSeguir() {
+    this.siguiendo = !this.siguiendo;
+    this.botonSeguimiento = this.siguiendo ? 'Dejar de seguir' : 'Seguir';
+
+    if (this.siguiendo) {
+      this.follow();
+    } else {
+      this.unfollow();
+    }
+  }
+
+  follow() {
+  this.perfilService.follow(this.idPerfil, this.dataMap['user']['id']).subscribe({
+    next: () => {
+      console.log('Has empezado a seguir al usuario.');
+    },
+    error: (error) => {
+      console.error('Error al seguir al usuario:', error);
+      // En caso de error, revertir el estado a no seguir
+      this.siguiendo = false;
+      this.botonSeguimiento = 'Seguir';
+    }
+  });
+}
+
+unfollow() {
+  this.perfilService.unfollow(this.idPerfil, this.dataMap['user']['id']).subscribe({
+    next: () => {
+      console.log('Has dejado de seguir al usuario.');
+    },
+    error: (error) => {
+      console.error('Error al dejar de seguir al usuario:', error);
+      // En caso de error, revertir el estado a seguir
+      this.siguiendo = true;
+      this.botonSeguimiento = 'Dejar de seguir';
+    }
+  });
+}
+
+
   getRoute(): void {
     this.rutaService.getData(this.id).subscribe({
       next: (data) => {
@@ -107,6 +188,8 @@ export class RutaComponent implements OnInit, OnChanges {
         this.gpxData = data.gpxData;
         this.dataMap = data.dataMap;
         this.formatTime();
+
+        this.checkIfFollowing();
       },
       error: (error) => {
         console.error('Error:', error);
