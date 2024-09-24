@@ -177,6 +177,30 @@ input {
     transition: 0.5s;
 }
 
+.openModal {
+    cursor: pointer;
+}
+
+
+.seguidores-perfil {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+}
+
+.col > :first-child {
+    font-weight: bold;
+}
+
 .imagen {
     display: flex;
     flex-direction: column;

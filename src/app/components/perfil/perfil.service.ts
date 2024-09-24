@@ -81,11 +81,18 @@ export class PerfilService {
     return this.http.post(`${environment.APIUrl}users/unfollow`,body, { headers });
   }
 
-  private getFolloweds(id_follower: number) {
+  getFolloweds(id_follower: number) {
     const token = this.getToken();
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); 
 
     return this.http.get(`${environment.APIUrl}users/get_followeds/${id_follower}`, { headers });
+  }
+
+  getFollowers(id_followed: number) {
+    const token = this.getToken();
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); 
+
+    return this.http.get(`${environment.APIUrl}users/get_followers/${id_followed}`, { headers });
   }
 
   isFollowing(id_follower: number, id_followed: number):Observable<boolean> {

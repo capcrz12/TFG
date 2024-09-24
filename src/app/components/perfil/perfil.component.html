@@ -20,6 +20,16 @@
         <div class="info">
             @if (propio) {
                 @if (!edicion) {
+                    <div class="seguidores-perfil">
+                        <div class="col">
+                            <p>Siguiendo</p>
+                            <p class="openModal" (click)="openModalSeguidos()">{{numFolloweds}}</p>
+                        </div>
+                        <div class="col">
+                            <p>Seguidores</p>
+                            <p class="openModal" (click)="openModalSeguidores()">{{numFollowers}}</p>
+                        </div>
+                    </div>
                     <p>Km totales recorridos: {{total_km}}</p>
                     <p>Correo: {{email}}</p>
                     <br>
@@ -48,6 +58,16 @@
                 }
             }
             @else {
+                <div class="seguidores-perfil">
+                    <div class="col">
+                        <p>Siguiendo</p>
+                        <p class="openModal" (click)="openModalSeguidos()">{{numFolloweds}}</p>
+                    </div>
+                    <div class="col">
+                        <p>Seguidores</p>
+                        <p class="openModal" (click)="openModalSeguidores()">{{numFollowers}}</p>
+                    </div>
+                </div>
                 <p>Km totales recorridos: {{total_km}}</p>
             }
         </div>
@@ -96,4 +116,16 @@
             </div>
         }
     </div>
+    @if (modalOpen) {
+        <!-- Modal de seguidores o seguidos -->
+            <app-modal-seguidores
+                [title]="modalTitle"
+                [followeds]="followeds"
+                [followers]="followers"
+                [idPerfil]="id"
+                [modalFollowed]="modalFollowed"
+                (close)="closeModal()"
+            >
+            </app-modal-seguidores>
+        }
 </section>

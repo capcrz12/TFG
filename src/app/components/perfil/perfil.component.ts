@@ -4,11 +4,13 @@ import { PerfilService } from './perfil.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RutaService } from '../ruta/ruta.service';
+import { forkJoin } from 'rxjs';
+import { ModalSeguidoresComponent } from '../modal-seguidores/modal-seguidores.component';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [FormsModule, RouterModule],
+  imports: [FormsModule, RouterModule, ModalSeguidoresComponent],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css'
 })
@@ -34,6 +36,15 @@ export class PerfilComponent implements OnInit{
 
     error: string = '';
     success: string = '';
+
+    followers: any[] = [];
+    followeds: any[] = [];
+    numFollowers: number = 0;
+    numFolloweds: number = 0;
+
+    modalOpen: boolean = false;
+    modalFollowed: boolean = true;
+    modalTitle: string = 'Seguidores';
 
     @Input() idPerfil: number = -1;
 
@@ -61,6 +72,8 @@ export class PerfilComponent implements OnInit{
         this.getCurrentUser();
         this.getInfo ();
         this.getRoutes();
+        this.getFollowers();
+        this.getFolloweds();
       });
     }
 
@@ -88,6 +101,23 @@ export class PerfilComponent implements OnInit{
           this.passwordEdit = '';
         }
       })
+    }
+
+    openModalSeguidores() {
+      this.modalFollowed = false;
+      this.modalTitle = 'Seguidores';
+      this.modalOpen = true;
+    }
+    
+    openModalSeguidos() {
+      this.modalFollowed = true;
+      this.modalTitle = 'Siguiendo';
+      this.modalOpen = true;
+    }
+    
+  
+    closeModal() {
+      this.modalOpen = false;
     }
 
     checkIfFollowing() {
@@ -159,6 +189,20 @@ export class PerfilComponent implements OnInit{
       }
     }
 
+    getFolloweds () {
+      this.perfilService.getFolloweds(this.idPerfil).subscribe((res:any) => {
+        this.followeds = res;
+        this.numFolloweds = this.followeds.length;
+      });
+    }
+
+    getFollowers () {
+      this.perfilService.getFollowers(this.idPerfil).subscribe((res:any) => {
+        this.followers = res;
+        this.numFollowers = this.followers.length;
+      })
+    }
+    
     getCurrentUser () {
       this.perfilService.getCurrentUser().subscribe((res) => {
         this.id = res;
@@ -177,6 +221,7 @@ export class PerfilComponent implements OnInit{
 
         this.checkIfFollowing();
       });
+      
     }
 
     getRoutes () {
