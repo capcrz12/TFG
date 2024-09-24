@@ -1,8 +1,21 @@
 <section>
+    @if (dataMap) {
+    <div id="user-info">
+        <a [routerLink]="['/perfil', dataMap['user']['id']]">
+            @if (dataMap['user']['photo'] != '') {
+                <img class="author-photo" src="{{dataMap['user']['photo']}}">
+            }
+            @else {
+                <img class="author-photo" src="../../assets/images/perfil.png">
+            }        
+        </a>
+        <button class="boton" [class.red]="siguiendo" (click)="botonSeguir()">{{botonSeguimiento}}</button>
+    </div>
     <div id="main-info">
         <h2>{{dataMap['name']}}</h2>
         <p class="hide-info">Ubicación: {{dataMap['ubication']}}</p>
         <p class="hide-info">Km: {{dataMap['km']}}</p>
+        <p class="hide-info">Autor: {{dataMap['user']['nombre']}}</p>
     </div>
     <div class="seccion">
         <div id="map-grafica" [class.expanded]="slides.length === 0">
@@ -47,6 +60,10 @@
     </div>
     <!-- INFORMACION -->
     <div class="seccion info">
+        <div class="column-info">
+            <p>Autor: </p>
+            <p>{{dataMap['user']['nombre']}}</p>
+        </div>
         <div class="column-info">
             <p>Descripción: </p>
             <p>{{dataMap['description']}}</p>
@@ -97,4 +114,8 @@
             </div>
         </div>
     </div>
+    }
+    @else {
+    <p>Cargando ruta...</p>
+    }
 </section>

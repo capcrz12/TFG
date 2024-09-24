@@ -29,6 +29,8 @@ export class PerfilComponent implements OnInit{
     photoProfileTMP: string = '';
     selectedImage: File | null = null;
 
+    botonSeguimiento: string = 'Seguir';
+    siguiendo: boolean = false;
 
     error: string = '';
     success: string = '';
@@ -88,6 +90,64 @@ export class PerfilComponent implements OnInit{
       })
     }
 
+    checkIfFollowing() {
+      // Verifica si tanto idPerfil como dataMap están disponibles
+      if (this.idPerfil !== -1 && this.id !== -1) {
+        this.perfilService.isFollowing(this.id, this.idPerfil).subscribe({
+          next: (result: boolean) => {
+            this.siguiendo = result;
+            this.botonSeguimiento = this.siguiendo ? 'Dejar de seguir' : 'Seguir'; 
+          },
+          error: (error) => {
+            console.error('Error al verificar si sigue al usuario:', error);
+            this.siguiendo = false; // En caso de error, establece siguiendo en false
+          }
+        });
+      }
+      else {
+        console.log('Datos no cargados aún');
+      }
+    }
+
+    botonSeguir() {
+      this.siguiendo = !this.siguiendo;
+      this.botonSeguimiento = this.siguiendo ? 'Dejar de seguir' : 'Seguir';
+  
+      if (this.siguiendo) {
+        this.follow();
+      } else {
+        this.unfollow();
+      }
+    }
+  
+    follow() {
+      this.perfilService.follow(this.id, this.idPerfil).subscribe({
+        next: () => {
+          console.log('Has empezado a seguir al usuario.');
+        },
+        error: (error) => {
+          console.error('Error al seguir al usuario:', error);
+          // En caso de error, revertir el estado a no seguir
+          this.siguiendo = false;
+          this.botonSeguimiento = 'Seguir';
+        }
+      });
+    }
+  
+    unfollow() {
+      this.perfilService.unfollow(this.id, this.idPerfil).subscribe({
+        next: () => {
+          console.log('Has dejado de seguir al usuario.');
+        },
+        error: (error) => {
+          console.error('Error al dejar de seguir al usuario:', error);
+          // En caso de error, revertir el estado a seguir
+          this.siguiendo = true;
+          this.botonSeguimiento = 'Dejar de seguir';
+        }
+      });
+    }
+
     modoEdicionPerfil () {
       if (this.propio) {
         this.edicion = !this.edicion;
@@ -114,6 +174,8 @@ export class PerfilComponent implements OnInit{
         if (res.photo) {
           this.photoProfile = res.photo;
         }
+
+        this.checkIfFollowing();
       });
     }
 
