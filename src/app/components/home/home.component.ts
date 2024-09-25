@@ -6,8 +6,6 @@ import { Dictionary } from '../../dictionary';
 import { HomeService } from './home.service';
 import { BuscadorComponent } from '../buscador/buscador.component'; 
 import { AccesoService } from '../acceso/acceso.service';
-import { Console } from 'console';
-import { RutaService } from '../ruta/ruta.service';
 
 
 @Component({
@@ -46,8 +44,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void{
-    this.getDataSiguiendo();
-    this.getDataExplorar();
+    // Suscribirse a los cambios de autenticación
+    this.accesoService.getAuthStatus().subscribe((isAuthenticated) => {
+      this.siguiendo = isAuthenticated;
+      this.getDataSiguiendo();
+      this.getDataExplorar();
+    });
+
     this.isAuthenticated() ? this.siguiendo = true : this.siguiendo = false;
 
     const navigation = this.router.getCurrentNavigation();

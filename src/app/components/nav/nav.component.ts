@@ -19,7 +19,10 @@ export class NavComponent implements OnInit {
   constructor (private accesoService: AccesoService, private perfilService: PerfilService) {}
 
   ngOnInit(): void {
-    this.getCurrentUser();
+    // Suscribirse a los cambios de autenticación
+    this.accesoService.getAuthStatus().subscribe((isAuthenticated) => {
+      this.getCurrentUser();
+    });
   }
 
   isAuthenticated () {
