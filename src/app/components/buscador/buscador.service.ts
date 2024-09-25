@@ -12,4 +12,9 @@ export class BuscadorService {
   getRoutes (busqueda:string) {
     return this.http.get(`${environment.APIUrl}routes/get_routes/${busqueda}`);
   }  
+
+  getUsers (busqueda:string) {
+    return this.http.get(`${environment.APIUrl}users/get_users/${busqueda}`);
+  }  
+
 }

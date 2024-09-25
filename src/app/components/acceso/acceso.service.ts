@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { of, Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
@@ -73,11 +73,12 @@ export class AccesoService {
     return expirationDate < currentDate;
   }
 
+  // Retorna un observable del estado de autenticación
   getAuthStatus(): Observable<boolean> {
     return this.isAuthenticatedSubject.asObservable();
   }
 
   isAuthenticated(): boolean {
-    return this.isAuthenticatedSubject.value;
+    return !!this.getToken() && !this.isTokenExpired();
   }
 }

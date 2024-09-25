@@ -200,3 +200,33 @@ input[type=number] {
     font-size: 8px;
     font-family: "Courier New";
 }
+
+.busca {
+    width: 80%;
+
+    align-self: center;
+    gap: 0vh;
+}
+
+.buscadores {
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+    align-items: flex-start;
+    justify-content: baseline;
+}
+
+.busca-rutas {
+    width: 60%;
+}
+
+.busca-usuarios {
+    width: 40%;
+}
+
+.title {
+    height: 4vh;
+    margin: 0;
+    margin-left: 2vw;
+}
