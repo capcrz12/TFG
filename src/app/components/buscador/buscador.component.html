@@ -4,21 +4,41 @@
         <input 
             class="buscador" 
             [formControl]="control "
-            placeholder="Buscar caminos . . ."
+            placeholder="{{placeholder}}"
         />
     </fieldset>
 </div>
 <div>
-    @for (res of resultados; track res['id']) {
-        <div class="resultados">
-            <a id="resLink" routerLink="/ruta/{{res['id']}}">
-                <div class="info">
-                    <p id="name">{{res['name']}}</p>
-                    <p id="km">{{res['km']}} Km</p>
-                    <p id="ubication">{{res['ubication']}}</p>
-                </div>
-            </a>
-            <hr width="100%">
-        </div>
+    @if (isRouteSearch) {
+        @for (res of resultados; track res['id']) {
+            <div class="resultados">
+                <a id="resLink" routerLink="/ruta/{{res['id']}}">
+                    <div class="info">
+                        <p id="name">{{res['name']}}</p>
+                        <p id="km">{{res['km']}} Km</p>
+                        <p id="ubication">{{res['ubication']}}</p>
+                    </div>
+                </a>
+                <hr width="100%">
+            </div>
+        }
+    }
+    @else {
+        @for (res of resultados; track res['id']) {
+            <div class="resultados">
+                <a id="resLink" [routerLink]="['/perfil', res['id']]">
+                    <div class="info">
+                        @if (res['photo'] != '') {
+                            <img class="perfil" src="{{res['photo']}}">
+                        }
+                        @else {
+                            <img class="perfil" src="../../assets/images/perfil.png">
+                        }
+                        <p id="name">{{res['nombre']}}</p>
+                    </div>
+                </a>
+                <hr width="100%">
+            </div>
+        }
     }
 </div>

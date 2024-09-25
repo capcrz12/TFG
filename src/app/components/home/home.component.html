@@ -145,9 +145,18 @@
             </nav>
         </div>
     </div>
-    <!--Buscador y lista de elementos buscados-->    
-    <app-buscador (resultadosOut)="onFilterApplied($event)"></app-buscador>
-
+    <div class="busca">
+        <div class="buscadores"> 
+            <p class="busca-rutas title">Buscar rutas</p>
+            <p class="busca-usuarios title">Buscar usuarios</p>
+        </div>
+        <!--Buscador de rutas y de usuarios y lista de elementos buscados-->    
+        <div class="buscadores">
+            <app-buscador class="busca-rutas" [isRouteSearch]="true" (resultadosOut)="onFilterApplied($event)"></app-buscador>
+            <app-buscador class="busca-usuarios" [isRouteSearch]="false"></app-buscador>
+        </div>
+    </div>
+    
     }
     @else {
         <div id="ruta">

@@ -49,14 +49,14 @@ export class RutaService {
   }
   
   isAuthor(id: number): Observable<boolean> {
-    let author = -1;
-    this.accesoService.getCurrentUser().subscribe(res => {
-      author = res;
-    });
-  
-    return this.getData(String(id)).pipe(
-      map(res => {
-        return res.dataMap['user'] == Number(author);
+    return this.accesoService.getCurrentUser().pipe(
+      switchMap(author => {
+        return this.getData(String(id)).pipe(
+          map(res => {
+            console.log(res.dataMap['user']['id'], author);
+            return res.dataMap['user']['id'] == Number(author);
+          })
+        );
       }),
       catchError((error) => {
         console.error('Error:', error);
@@ -64,6 +64,7 @@ export class RutaService {
       })
     );
   }
+  
 
   deleteRoute(id: number, idPerfil: number): Observable<any> {
     // Recuperar el token almacenado en localStorage

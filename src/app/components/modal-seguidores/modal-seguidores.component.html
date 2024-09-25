@@ -1,0 +1,39 @@
+<div class="modal-overlay" (click)="closeModal()"></div>
+<div class="modal-content">
+  <h2>{{ title }}</h2>
+
+  <ul>
+    @if (modalFollowed) {
+        @for (user of followeds; track user.id_usuario_seguido) {
+            <li>
+                @if (user.user_photo != '') {
+                    <img [routerLink]="['/perfil', user.id_usuario_seguido]" src="{{user.user_photo}}" class="user-photo">
+                }
+                @else {
+                    <img [routerLink]="['/perfil', user.id_usuario_seguido]" src="../../assets/images/perfil.png" class="user-photo">                
+                }
+                <span [routerLink]="['/perfil', user.id_usuario_seguido]">{{ user.user_name }}</span>
+                <button (click)="toggleFollow(user)" class="boton" [class.red]="!user.notFollowing">
+                    {{ user.notFollowing ?'Seguir' : 'Dejar de seguir' }}
+                </button>
+            </li>
+        }
+    }
+    @else {
+        @for (user of followers; track user.id_usuario_seguido) {
+            <li>
+                @if (user.user_photo != '') {
+                    <img [routerLink]="['/perfil', user.id_usuario_seguidor]" src="{{user.user_photo}}" class="user-photo">
+                }
+                @else {
+                    <img [routerLink]="['/perfil', user.id_usuario_seguidor]" src="../../assets/images/perfil.png" class="user-photo">                
+                }
+                <span [routerLink]="['/perfil', user.id_usuario_seguido]">{{ user.user_name }}</span>
+            </li>
+        }
+    }
+  </ul>
+  
+
+  <button class="boton red close" (click)="closeModal()">Cerrar</button>
+</div>
