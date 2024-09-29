@@ -3,15 +3,13 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { of, Observable, throwError, BehaviorSubject } from 'rxjs';
+import { of, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccesoService {
-
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false); // Inicia como no autenticado
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -21,7 +19,6 @@ export class AccesoService {
     .pipe(
       map(response => {
         localStorage.setItem('auth_token', response.access_token); // Guarda el token en el dispositivo local del usuario
-        this.isAuthenticatedSubject.next(true); // Emitir que el usuario está autenticado
         this.router.navigate(['/myFeed']); // Navega a la página principal
         return '';
       }),
@@ -37,7 +34,6 @@ export class AccesoService {
 
   logout() {
     localStorage.removeItem('auth_token'); // Elimina el token al cerrar sesión
-    this.isAuthenticatedSubject.next(false); // Emitir que el usuario no está autenticado
     this.router.navigate(['/acceso']); // Redirige a la página de inicio de sesión
   }
 
@@ -75,7 +71,7 @@ export class AccesoService {
 
   // Retorna un observable del estado de autenticación
   getAuthStatus(): Observable<boolean> {
-    return this.isAuthenticatedSubject.asObservable();
+    return of(this.isAuthenticated());
   }
 
   isAuthenticated(): boolean {

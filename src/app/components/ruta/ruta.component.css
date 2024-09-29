@@ -306,3 +306,11 @@ h2 {
     text-align: center;
     justify-content: center;
 }
+
+.mostrar {
+    visibility: visible;
+}
+
+.ocultar {
+    visibility: hidden;
+}

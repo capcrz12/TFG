@@ -153,32 +153,32 @@ export class RutaComponent implements OnInit, OnChanges {
   }
 
   follow() {
-  this.perfilService.follow(this.idPerfil, this.dataMap['user']['id']).subscribe({
-    next: () => {
-      console.log('Has empezado a seguir al usuario.');
-    },
-    error: (error) => {
-      console.error('Error al seguir al usuario:', error);
-      // En caso de error, revertir el estado a no seguir
-      this.siguiendo = false;
-      this.botonSeguimiento = 'Seguir';
-    }
-  });
-}
+    this.perfilService.follow(this.idPerfil, this.dataMap['user']['id']).subscribe({
+      next: () => {
+        console.log('Has empezado a seguir al usuario.');
+      },
+      error: (error) => {
+        console.error('Error al seguir al usuario:', error);
+        // En caso de error, revertir el estado a no seguir
+        this.siguiendo = false;
+        this.botonSeguimiento = 'Seguir';
+      }
+    });
+  }
 
-unfollow() {
-  this.perfilService.unfollow(this.idPerfil, this.dataMap['user']['id']).subscribe({
-    next: () => {
-      console.log('Has dejado de seguir al usuario.');
-    },
-    error: (error) => {
-      console.error('Error al dejar de seguir al usuario:', error);
-      // En caso de error, revertir el estado a seguir
-      this.siguiendo = true;
-      this.botonSeguimiento = 'Dejar de seguir';
-    }
-  });
-}
+  unfollow() {
+    this.perfilService.unfollow(this.idPerfil, this.dataMap['user']['id']).subscribe({
+      next: () => {
+        console.log('Has dejado de seguir al usuario.');
+      },
+      error: (error) => {
+        console.error('Error al dejar de seguir al usuario:', error);
+        // En caso de error, revertir el estado a seguir
+        this.siguiendo = true;
+        this.botonSeguimiento = 'Dejar de seguir';
+      }
+    });
+  }
 
 
   getRoute(): void {
@@ -200,6 +200,7 @@ unfollow() {
   getImages(): void {
     this.rutaService.getRouteImages(this.id).subscribe({
       next: (images: string[]) => {
+        console.log(images)
         this.slides = images;  // Asigna las URLs de las imágenes
       },
       error: (error) => {

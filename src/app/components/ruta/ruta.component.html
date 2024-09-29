@@ -1,16 +1,18 @@
 <section>
     @if (dataMap) {
-    <div id="user-info">
-        <a [routerLink]="['/perfil', dataMap['user']['id']]">
-            @if (dataMap['user']['photo'] != '') {
-                <img class="author-photo" src="{{dataMap['user']['photo']}}">
-            }
-            @else {
-                <img class="author-photo" src="../../assets/images/perfil.png">
-            }        
-        </a>
-        <button class="boton" [class.red]="siguiendo" (click)="botonSeguir()">{{botonSeguimiento}}</button>
-    </div>
+        @if (this.idPerfil != this.dataMap['user']['id']) {
+            <div id="user-info">
+                <a [routerLink]="['/perfil', dataMap['user']['id']]">
+                    @if (dataMap['user']['photo'] != '') {
+                        <img class="author-photo" src="{{dataMap['user']['photo']}}">
+                    }
+                    @else {
+                        <img class="author-photo" src="../../assets/images/perfil.png">
+                    }        
+                </a>
+                <button class="boton" [class.red]="siguiendo" (click)="botonSeguir()">{{botonSeguimiento}}</button>
+            </div>
+        }
     <div id="main-info">
         <h2>{{dataMap['name']}}</h2>
         <p class="hide-info">Ubicación: {{dataMap['ubication']}}</p>
@@ -34,9 +36,8 @@
         </div>
         @if (slides.length > 0) {
             <div id="image-primaria">
-                <img class="imagen" src="{{selectedImage}}" alt="Logotipo">
-                @if (slides.length > 1) {
-                    <ngx-slick-carousel class="carousel" 
+                <img class="imagen" src="{{selectedImage}}" alt="Imagen">
+                    <ngx-slick-carousel class="carousel" [class.ocultar]="slides.length <= 1"
                                 #slickModal="slick-carousel" 
                                 [config]="slideConfig" 
                                 (init)="slickInit($event)"
@@ -49,9 +50,8 @@
                             </div>
                         }
                     </ngx-slick-carousel>
-                    <button class="arrow left" (click)="slickModal.slickPrev()">Atrás</button>
-                    <button class="arrow right" (click)="slickModal.slickNext()">Siguiente</button>
-                }
+                    <button class="arrow left" [class.ocultar]="slides.length <= 1" (click)="slickModal.slickPrev()">Atrás</button>
+                    <button class="arrow right" [class.ocultar]="slides.length <= 1" (click)="slickModal.slickNext()">Siguiente</button>
             </div>
         }
     </div>

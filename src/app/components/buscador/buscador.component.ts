@@ -62,9 +62,14 @@ export class BuscadorComponent implements OnInit {
 
   getUsers(busqueda: string) {
     this.buscadorService.getUsers(busqueda)
-    .subscribe(res => {
+    .subscribe({
+      next: (res) => {
       (busqueda != '' ? this.resultados = res : this.resultados = [])
       console.log(this.resultados)
+      },
+      error: () => {
+        this.resultados = [];
+      }
     })
   }
 }
