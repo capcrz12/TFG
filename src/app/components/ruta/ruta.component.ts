@@ -22,6 +22,7 @@ export class RutaComponent implements OnInit, OnChanges {
   routeJSON:any = [];
   rutaId: number;
   pointHovered: number;
+  coordsSelected: any;
 
   dataMap: Dictionary;
   data: Dictionary [];
@@ -33,6 +34,7 @@ export class RutaComponent implements OnInit, OnChanges {
   idPerfil: number = -1;
 
   selectedImage: string = "";
+  images: any[] = [];
 
   botonSeguimiento: string = 'Seguir';
   siguiendo: boolean = false;
@@ -153,32 +155,32 @@ export class RutaComponent implements OnInit, OnChanges {
   }
 
   follow() {
-  this.perfilService.follow(this.idPerfil, this.dataMap['user']['id']).subscribe({
-    next: () => {
-      console.log('Has empezado a seguir al usuario.');
-    },
-    error: (error) => {
-      console.error('Error al seguir al usuario:', error);
-      // En caso de error, revertir el estado a no seguir
-      this.siguiendo = false;
-      this.botonSeguimiento = 'Seguir';
-    }
-  });
-}
+    this.perfilService.follow(this.idPerfil, this.dataMap['user']['id']).subscribe({
+      next: () => {
+        console.log('Has empezado a seguir al usuario.');
+      },
+      error: (error) => {
+        console.error('Error al seguir al usuario:', error);
+        // En caso de error, revertir el estado a no seguir
+        this.siguiendo = false;
+        this.botonSeguimiento = 'Seguir';
+      }
+    });
+  }
 
-unfollow() {
-  this.perfilService.unfollow(this.idPerfil, this.dataMap['user']['id']).subscribe({
-    next: () => {
-      console.log('Has dejado de seguir al usuario.');
-    },
-    error: (error) => {
-      console.error('Error al dejar de seguir al usuario:', error);
-      // En caso de error, revertir el estado a seguir
-      this.siguiendo = true;
-      this.botonSeguimiento = 'Dejar de seguir';
-    }
-  });
-}
+  unfollow() {
+    this.perfilService.unfollow(this.idPerfil, this.dataMap['user']['id']).subscribe({
+      next: () => {
+        console.log('Has dejado de seguir al usuario.');
+      },
+      error: (error) => {
+        console.error('Error al dejar de seguir al usuario:', error);
+        // En caso de error, revertir el estado a seguir
+        this.siguiendo = true;
+        this.botonSeguimiento = 'Dejar de seguir';
+      }
+    });
+  }
 
 
   getRoute(): void {
@@ -199,8 +201,11 @@ unfollow() {
 
   getImages(): void {
     this.rutaService.getRouteImages(this.id).subscribe({
-      next: (images: string[]) => {
-        this.slides = images;  // Asigna las URLs de las imágenes
+      next: (images: any) => {
+        images.forEach((image:any) => {
+          this.slides.push(image.filename);  // Asigna las URLs de las imágenes
+        })
+        this.images = images;
       },
       error: (error) => {
         console.error('Error al cargar las imágenes:', error);
@@ -212,6 +217,7 @@ unfollow() {
   
   selectImage(img: string) {
     this.selectedImage = img;
+    this.coordsSelected = this.images.find((img) => img['filename'] == this.selectedImage);
   }
   
   slickInit(e: any) {

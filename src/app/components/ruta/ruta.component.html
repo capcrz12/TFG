@@ -1,16 +1,18 @@
 <section>
-    @if (dataMap) {
-    <div id="user-info">
-        <a [routerLink]="['/perfil', dataMap['user']['id']]">
-            @if (dataMap['user']['photo'] != '') {
-                <img class="author-photo" src="{{dataMap['user']['photo']}}">
-            }
-            @else {
-                <img class="author-photo" src="../../assets/images/perfil.png">
-            }        
-        </a>
-        <button class="boton" [class.red]="siguiendo" (click)="botonSeguir()">{{botonSeguimiento}}</button>
-    </div>
+    @if (this.dataMap) {
+        @if (this.idPerfil != this.dataMap['user']['id']) {
+            <div id="user-info">
+                <a [routerLink]="['/perfil', dataMap['user']['id']]">
+                    @if (dataMap['user']['photo'] != '') {
+                        <img class="author-photo" src="{{dataMap['user']['photo']}}">
+                    }
+                    @else {
+                        <img class="author-photo" src="../../assets/images/perfil.png">
+                    }        
+                </a>
+                <button class="boton" [class.red]="siguiendo" (click)="botonSeguir()">{{botonSeguimiento}}</button>
+            </div>
+        }
     <div id="main-info">
         <h2>{{dataMap['name']}}</h2>
         <p class="hide-info">Ubicación: {{dataMap['ubication']}}</p>
@@ -26,6 +28,7 @@
                         [type]="0" 
                         [pointHovered]="pointHovered"
                         (dataMapOut)="receiveDataMap($event)" 
+                        [coordsSelected]="coordsSelected"
                         (elevationProfileOut)="receiveElevationProfile($event)" id="map">
                 </app-map>
             
@@ -34,9 +37,18 @@
         </div>
         @if (slides.length > 0) {
             <div id="image-primaria">
-                <img class="imagen" src="{{selectedImage}}" alt="Logotipo">
-                @if (slides.length > 1) {
-                    <ngx-slick-carousel class="carousel" 
+                <img class="imagen" src="{{selectedImage}}" alt="Imagen">
+
+                <!-- Icono de información en la esquina superior derecha -->
+                <div class="info-icon">
+                    <img class="info-image" src="../../../assets/images/informacion.png"/>
+                    <div class="info-box">
+                        <!-- Cuadro con la información que aparecerá al hacer hover -->
+                        <p>Si la imagen seleccionada contiene coordenadas, será mostrada en el mapa interactivo</p>
+                    </div>
+                </div>
+
+                    <ngx-slick-carousel class="carousel" [class.ocultar]="slides.length <= 1"
                                 #slickModal="slick-carousel" 
                                 [config]="slideConfig" 
                                 (init)="slickInit($event)"
@@ -49,9 +61,8 @@
                             </div>
                         }
                     </ngx-slick-carousel>
-                    <button class="arrow left" (click)="slickModal.slickPrev()">Atrás</button>
-                    <button class="arrow right" (click)="slickModal.slickNext()">Siguiente</button>
-                }
+                    <button class="arrow left" [class.ocultar]="slides.length <= 1" (click)="slickModal.slickPrev()">Atrás</button>
+                    <button class="arrow right" [class.ocultar]="slides.length <= 1" (click)="slickModal.slickNext()">Siguiente</button>
             </div>
         }
     </div>

@@ -43,7 +43,6 @@ export class NavComponent implements OnInit {
         if (user.photo) {
           this.photo = user.photo;
         }
-        console.log(user.photo);
       })
     })
   }

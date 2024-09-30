@@ -8,6 +8,8 @@ import { NuevaRutaService } from './nueva-ruta.service';
 import { Dictionary } from '../../dictionary';
 import { Router } from '@angular/router';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import * as exifr from 'exifr';
+import { areCoordsNear } from '../../utils/map';
 
 
 @Component({
@@ -28,6 +30,7 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
   successMessage: string = '';
 
   selectedImages: File[] = [];
+  coordImages: {lat: number, lon: number}[] = [];
 
   speed: number;
   max_alt: number;
@@ -99,15 +102,63 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
   onImagesSelected(event: any) {
     if (event.target.files.length > 0) {
       this.selectedImages = Array.from(event.target.files);
-
       this.slides = [];
-
-      this.selectedImages.forEach(image => {
-        const imageUrl = URL.createObjectURL(image);  // Generar un URL temporal
+      
+      const exifPromises = this.selectedImages.map((image: File, index: number) => {
+        const imageUrl = URL.createObjectURL(image);  // Generar un URL temporal para previsualizar la imagen
         this.slides.push(imageUrl);  // Añadir el URL al array de slides
+  
+        // función extractExifData para extraer los datos EXIF
+        this.extractExifData(image, index);
+      });
+
+      // Esperar a que todas las promesas de extracción de EXIF se resuelvan
+      Promise.all(exifPromises)
+      .then(() => {
+        console.log('Extracción de datos EXIF completada para todas las imágenes.');
+        // Aquí puedes proceder con otras acciones una vez que tengas todas las coordenadas procesadas.
+      })
+      .catch((error) => {
+        console.error('Error al procesar los datos EXIF de las imágenes:', error);
       });
     }
   }
+  
+  // Función para extraer los datos EXIF de cada imagen seleccionada
+  extractExifData(image: File, index: number): Promise<void> {
+    return exifr.parse(image, { gps: true })
+      .then((exifData) => {
+        if (exifData) {
+          const latitude = exifData.latitude;
+          const longitude = exifData.longitude;
+  
+          if (latitude && longitude) {
+            console.log(`Coordenadas GPS de la imagen ${index + 1}: Latitud ${latitude}, Longitud ${longitude}`);
+  
+            // Verificar proximidad con la ruta
+            if (areCoordsNear(latitude, longitude, this.gpxData.features[0].geometry.coordinates, 1)) {
+              console.log('Imagen cercana a la ruta.');
+              this.coordImages[index] = { lat: latitude, lon: longitude };
+            }
+            else {
+              this.coordImages[index] = { lat: 100, lon: 100 }; // Valores fuera de rango
+            }
+          } else {
+            console.log(`No se encontraron coordenadas GPS en la imagen ${index + 1}`);
+            this.coordImages[index] = { lat: 100, lon: 100 }; // Valores fuera de rango
+          }
+        } else {
+          console.log(`No se encontraron datos EXIF en la imagen ${index + 1}`);
+          this.coordImages[index] = { lat: 100, lon: 100 }; // Valores fuera de rango
+        }
+      })
+      .catch((error) => {
+        console.error(`Error al extraer los datos EXIF de la imagen ${index + 1}:`, error);
+        this.coordImages[index] = { lat: 100, lon: 100 }; // Valores fuera de rango
+      });
+  }
+  
+
 
   back () {
     if (this.paso>1) this.paso--;
@@ -179,6 +230,8 @@ calculateGPX () {
           return;
         }
 
+        console.log(this.gpxData);
+        
         // Extraer datos del GPX
         this.speed = calculateAverageSpeed(this.gpxData);
         this.max_alt = calculateMaxAltitude(this.gpxData);
@@ -245,6 +298,10 @@ calculateGPX () {
     this.selectedImages.forEach((image, index) => {
       formData.append('images', image, image.name);
     });
+
+    console.log(this.coordImages);
+
+    formData.append('coords', JSON.stringify(this.coordImages));
   
     return this.nuevaService.uploadImages(routeId, formData);
   }

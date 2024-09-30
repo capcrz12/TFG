@@ -175,7 +175,7 @@ import { gpx } from "@tmcw/togeojson";
     return -1;
   }
 
-  // Calcular distancia entre dos coordenadas geográficas utilizando la fórmula haversine
+  // Calcular distancia en km entre dos coordenadas geográficas utilizando la fórmula haversine
   export function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const R = 6371; // radio de la Tierra en kilómetros
     const dLat = degreesToRadians(lat2 - lat1);
@@ -294,6 +294,7 @@ import { gpx } from "@tmcw/togeojson";
   export function degreesToRadians(degrees: number): number {
     return degrees * (Math.PI / 180);
   }
+// Función para calcular la distancia entre dos puntos GPS en metros
 
   export function calculateTotalDistance(gpxData: any): number {
     if (!gpxData || !gpxData.features || gpxData.features.length === 0) {
@@ -312,4 +313,16 @@ import { gpx } from "@tmcw/togeojson";
     }
 
     return totalDistance;
+  }
+
+  // Función que comprubea si unas coordenadas están suficientemente cerca de una ruta según un valor tolerancia
+  export function areCoordsNear(lat: number, lon: number, routePoints: [lat:number, lon:number, alt:number][], tolerance: number): boolean {
+    for (const point of routePoints) {
+      const distance = calculateDistance(lat, lon, point[1], point[0]);
+      console.log(distance);
+      if (distance <= tolerance) {
+        return true; // Las coordenadas están lo suficientemente cerca
+      }
+    }
+    return false; // No se encontró un punto cercano
   }

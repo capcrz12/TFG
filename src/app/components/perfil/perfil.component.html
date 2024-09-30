@@ -111,7 +111,12 @@
                     </div>
                     <h1 id="ubi">{{route.ubication}}</h1>
                     <h1 id="kmFecha">{{route.km}} Km - {{route.fecha}}</h1>
-                    <img src="../../assets/images/WhatsApp Image 2024-04-16 at 16.38.44.jpeg" id="image" alt="Logotipo">
+                    @if (route.photo != '') {
+                        <img src="{{route.photo}}" id="image" alt="Logotipo">
+                    }
+                    @else {
+                        <img src="../../../assets/images/route_default.jpg" id="image" alt="Logotipo">                    
+                    }                
                 </a>
             </div>
         }
