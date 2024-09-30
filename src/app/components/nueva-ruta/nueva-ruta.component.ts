@@ -78,7 +78,13 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
     window.removeEventListener('beforeunload', this.confirmExit);
   }
 
-  // Función para el evento de confirmar recarga de página
+  /**
+   * 
+   * Función para confirmar la recarga de la página
+   * 
+   * @param event Evento de confirmación de cierre de la página
+   * 
+   */  
   @HostListener('window:beforeunload', ['$event'])
   confirmExit(event: BeforeUnloadEvent) {
     // Prevenir la acción predeterminada del evento (recargar/navegar)
@@ -88,7 +94,13 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
     event.returnValue = 'Tiene cambios sin guardar. ¿Está seguro de que desea salir?';
   }
 
-
+  /**
+   * 
+   * Función para seleccionar un archivo GPX
+   * 
+   * @param event Evento de selección de archivo
+   * 
+   */
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -99,6 +111,17 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
     }
   }
  
+  /**
+   * 
+   * Función para almacenar las imágenes seleccionadas y
+   * extraer los datos EXIF (coordenadas GPS)
+   * 
+   * @param event Evento de selección de archivos
+   * 
+   * - Extraer los datos EXIF de cada imagen seleccionada
+   * - Almacenar las imagenes en el array de slides
+   * 
+   */
   onImagesSelected(event: any) {
     if (event.target.files.length > 0) {
       this.selectedImages = Array.from(event.target.files);
@@ -124,7 +147,19 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
     }
   }
   
-  // Función para extraer los datos EXIF de cada imagen seleccionada
+  /**
+   * 
+   * Función para extraer los datos EXIF de cada imagen seleccionada
+   * 
+   * @param image Archivo seleccionado
+   * @param index Índice del archivo
+   * 
+   * - Extraer los datos EXIF de la imagen
+   * - Almacenar las coordenadas GPS en el array coordImages
+   * 
+   * ! Almacena lat = 100 y lon = 100 si no se encuentran coordenadas GPS
+   *
+   */  
   extractExifData(image: File, index: number): Promise<void> {
     return exifr.parse(image, { gps: true })
       .then((exifData) => {
@@ -159,11 +194,20 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
   }
   
 
-
   back () {
     if (this.paso>1) this.paso--;
   }
 
+  /**
+   * 
+   * Función para enviar la ruta
+   * 
+   * - Comprobar que todos los campos estén completos
+   * - Comprobar que se ha seleccionado un archivo GPX
+   * - Calcular los datos de la ruta
+   * - Enviar la ruta a la API
+   * 
+   */
   submit () {
     if (this.name == '' || this.ubication == '') {
       this.errorMessage = 'Complete todos los campos por favor.';
@@ -183,6 +227,14 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * 
+   * Función para convertir un archivo GPX a GeoJSON
+   * 
+   * @param gpxContent contenido del archivo GPX
+   * @returns GeoJSON
+   *  
+   */
   convertirAGeoJson(gpxContent: string): any {
     try {
       // Parsear el archivo GPX (contenido XML) usando DOMParser
@@ -198,6 +250,11 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * 
+   * Función para calcular el tiempo estimado
+   *
+   */ 
   updateEstimatedTime() {
     this.estimated_time = calculateEstimatedTime(this.km, this.speed);
 
@@ -205,8 +262,16 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
     this.estimated_min = Math.round((this.estimated_time - this.estimated_hour) * 60);
   }
 
-calculateGPX () {
-  try {
+  /**
+   * 
+   * Función para calcular los datos de la ruta
+   * 
+   * - Calcular los datos de la ruta
+   * - Actualizar los datos de la ruta
+   * 
+   */
+  calculateGPX () {
+    try {
       if (!this.gpx) {
         this.errorMessage = 'No se ha seleccionado ningún archivo GPX.';
         this.successMessage = '';
@@ -265,6 +330,14 @@ calculateGPX () {
     }
   }
 
+  /**
+   * 
+   * Función para enviar la ruta
+   * 
+   * - Crear un objeto de ruta
+   * - Enviar la ruta a la API
+   * 
+   */
   subirRuta () {
     this.ruta['name'] = this.name;
     this.ruta['ubication'] = this.ubication;
@@ -293,6 +366,16 @@ calculateGPX () {
     });    
   } 
   
+  /**
+   * 
+   * Función para subir las imágenes
+   * 
+   * @param routeId ID de la ruta
+   * 
+   * - Almacenar los archivos seleccionados en el formulario
+   * - Enviar el formulario a la ruta
+   *
+   */
   uploadImages(routeId: number) {
     const formData = new FormData();
     this.selectedImages.forEach((image, index) => {

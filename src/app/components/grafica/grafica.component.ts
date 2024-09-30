@@ -31,6 +31,15 @@ export class GraficaComponent implements AfterViewInit, OnChanges, OnInit {
   }
 
 
+  /**
+   * 
+   * Función para inicializar el gráfico
+   * 
+   * - Inicializar el gráfico
+   * - Configurar el evento de mousemove
+   * - Actualizar el gráfico
+   *
+   */
   ngAfterViewInit(): void {
     this.ctx = document.getElementById('myChart');
     this.initializeChart();
@@ -38,6 +47,12 @@ export class GraficaComponent implements AfterViewInit, OnChanges, OnInit {
     this.updateChart();
   }
 
+  /**
+   * 
+   * Función para actualizar el gráfico
+   * 
+   * @param changes Objeto con los cambios en las propiedades
+   */
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['elevationProfile'] && !changes['elevationProfile'].firstChange) {
       this.updateChart();
@@ -48,6 +63,11 @@ export class GraficaComponent implements AfterViewInit, OnChanges, OnInit {
     }
   }
   
+  /**
+   *  
+   * Función para inicializar el gráfico
+   * 
+   */
   initializeChart(): void {
     this.chart = new Chart(this.ctx, {
       type: 'line',
@@ -91,6 +111,13 @@ export class GraficaComponent implements AfterViewInit, OnChanges, OnInit {
     });
   }
 
+  /**
+   * 
+   * Función para configurar el evento de mousemove
+   * 
+   * - Configurar el evento de mousemove
+   *  
+   */
   setupMouseMoveListener(): void {
     this.ctx.addEventListener('mousemove', (event: MouseEvent) => {
       const points = this.chart!.getElementsAtEventForMode(event, 'nearest', { intersect: false }, true);
@@ -105,6 +132,11 @@ export class GraficaComponent implements AfterViewInit, OnChanges, OnInit {
     });
   }
 
+  /**
+   * 
+   * Función para actualizar el punto resaltado
+   *
+   */
   updateHighlightedPoint(): void {
     if (this.chart && this.highlightedPoint) {
       const highlightedDataset = this.chart.data.datasets.find(dataset => dataset.label === 'Highlighted Point');
@@ -114,7 +146,12 @@ export class GraficaComponent implements AfterViewInit, OnChanges, OnInit {
       }
     }
   }
-
+  
+  /**
+   *  
+   * Función para actualizar el gráfico
+   * 
+   */
   updateChart(): void {
     if (this.chart) {
       this.chart.data.labels = this.elevationProfile.kilometers;

@@ -43,6 +43,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.type = 0;   
   }
 
+  /**
+   * 
+   * Función para inicializar el componente
+   * 
+   * - Suscribirse a los cambios de autenticación
+   * - Si el usuario está autenticado, se muestra el componente en siguiendo
+   * - Si el usuario no está autenticado, se muestra el componente en explorar
+   *
+   */
   ngOnInit(): void{
     // Suscribirse a los cambios de autenticación
     this.accesoService.getAuthStatus().subscribe((isAuthenticated) => {
@@ -68,7 +77,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
   }
   
-  // Funcion que scrollea a la parte superior de la pantalla
+  /**
+   * 
+   * Función que scrollea a la parte superior de la pantalla
+   * 
+   */
   scrollToTop() {
     window.scrollTo({
       top: 0,
@@ -76,6 +89,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
+  /**
+   * 
+   * Función para cambiar el estado de siguiendo
+   *
+   * @param value Estado de siguiendo
+   * 
+   */
   setSiguiendo(value: boolean): void {
     this.siguiendo = value;
     if (this.siguiendo == true)
@@ -86,7 +106,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.isFilterOpen = !this.isFilterOpen;
   }
 
-  // Filtro que comprueba si el nombre o la ubicacion de las rutas incluyen la cadena filter 
+  /**
+   * 
+   * Función para aplicar el filtro de nombre y ubicación
+   * 
+   * - Comprueba si el nombre o la ubicación de las rutas incluyen la cadena filter
+   * - Actualiza el filtro de Maplibre
+   * 
+   * @param filter Cadena de filtro
+   *
+   */
   onFilterApplied(filter: any) {
     this.filters = [
       'any', // Al menos una de las condiciones debe cumplirse
@@ -96,6 +125,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
   
 
+  /**
+   * 
+   * Función para aplicar los filtros
+   * 
+   * - Obtiene los filtros desde el HTML
+   * - Actualiza el filtro de Maplibre
+   * 
+   */
   applyFilter() {
     // Lógica para obtener los filtros desde el HTML
     const kmCheckbox = (document.getElementById('km') as HTMLInputElement).checked;
@@ -124,6 +161,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
     ];  
   }
 
+  /**
+   * 
+   * Función para crear un filtro de Maplibre
+   * 
+   * @param property Propiedad del filtro
+   * @param operator Operador del filtro
+   * @param value Valor del filtro
+   * 
+   * @returns Filtro de Maplibre
+   * 
+   */
   createFilterExpression(property: string, operator: string, value: number) {
     switch (operator) {
       case '>':
@@ -137,10 +185,27 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * 
+   * Función para comprobar si el usuario está autenticado
+   * 
+   * @returns boolean
+   * 
+   */
   isAuthenticated () {
     return this.accesoService.isAuthenticated();
   }
 
+  /**
+   * 
+   * Función para obtener los datos de las rutas siguiendo
+   * 
+   * - Obtiene el ID del usuario actual
+   * - Obtiene los datos de las rutas siguiendo
+   * - Obtiene los datos de GPX
+   * - Obtiene los datos de mapa
+   * 
+   */
   getDataSiguiendo() {
     this.accesoService.getCurrentUser().subscribe((id) => {
       this.homeService.getRoutesSiguiendo(id).subscribe((res) => {
@@ -155,6 +220,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
     });
   }
 
+  /**
+   * 
+   * Función para obtener los datos de las rutas explorar
+   * 
+   * - Obtiene los datos de las rutas explorar
+   * - Obtiene los datos de GPX
+   * - Obtiene los datos de mapa
+   *
+   */
   getDataExplorar() {
     this.homeService.getRoutesExplorar().subscribe((res) => {
       this.routesExplorar = res;

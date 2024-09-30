@@ -23,6 +23,14 @@ export class BuscadorComponent implements OnInit {
 
   constructor(private buscadorService : BuscadorService) {}
 
+  /**
+   * 
+   *  Función para inicializar el componente
+   * 
+   *  - Si es una búsqueda de rutas, se inicializa la búsqueda de rutas
+   *  - Si es una búsqueda de usuarios, se inicializa la búsqueda de usuarios
+   *  
+   */
   ngOnInit(): void {
     if (this.isRouteSearch) {
       this.ObserverChangeRouteSearch();
@@ -34,6 +42,14 @@ export class BuscadorComponent implements OnInit {
     }
   }
 
+  /**
+   * 
+   *  Función para inicializar la búsqueda de rutas
+   * 
+   *  - Se inicializa la búsqueda de rutas
+   *  - Se emite el evento resultadosOut
+   *
+   */
   ObserverChangeRouteSearch() {
     this.control.valueChanges
     .pipe(
@@ -43,6 +59,13 @@ export class BuscadorComponent implements OnInit {
     ))
   }
 
+  /**
+   *  Función para inicializar la búsqueda de usuarios
+   * 
+   *  - Se inicializa la búsqueda de usuarios
+   *  - Se emite el evento resultadosOut
+   *
+   */
   ObserverChangeUserSearch() {
     this.control.valueChanges
     .pipe(
@@ -52,6 +75,13 @@ export class BuscadorComponent implements OnInit {
     ))
   }
 
+  /**
+   * 
+   * Función para buscar rutas
+   * 
+   * @param busqueda Cadena de búsqueda
+   *  
+   */
   getRoutes(busqueda: string) {
     this.buscadorService.getRoutes(busqueda)
     .subscribe(res => {
@@ -60,6 +90,13 @@ export class BuscadorComponent implements OnInit {
     })
   }
 
+  /**
+   * 
+   * Función para buscar usuarios
+   * 
+   * @param busqueda 
+   * 
+   */
   getUsers(busqueda: string) {
     this.buscadorService.getUsers(busqueda)
     .subscribe({

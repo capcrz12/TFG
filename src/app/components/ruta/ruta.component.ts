@@ -52,6 +52,14 @@ export class RutaComponent implements OnInit, OnChanges {
     this.hour = 0;
   }
 
+  /**
+   * 
+   * Función para inicializar el componente
+   * 
+   * - Obtener la ruta
+   * - Obtener las imágenes
+   * 
+   */
   ngOnInit(): void {
     window.scrollTo(0, 0);
     this.getRoute();
@@ -65,6 +73,11 @@ export class RutaComponent implements OnInit, OnChanges {
     this.setupIntersectionObserver();
   }
 
+  /**
+   * 
+   * Función para obtener el ID del perfil
+   * 
+   */
   getId() {
     this.accesoService.getCurrentUser().subscribe({
       next: (res) => {
@@ -77,6 +90,11 @@ export class RutaComponent implements OnInit, OnChanges {
     });
   }
 
+  /**
+   * 
+   * Función para comprobar si el usuario está siguiendo al perfil
+   *  
+   */
   checkIfFollowing() {
     // Verifica si tanto idPerfil como dataMap están disponibles
     if (this.idPerfil !== -1 && this.dataMap['user'] && this.dataMap['user']['id']) {
@@ -143,6 +161,11 @@ export class RutaComponent implements OnInit, OnChanges {
     this.min = Math.round((this.dataMap['estimated_time'] - this.hour) * 60);
   }
 
+  /**
+   * 
+   * Función para cambiar el estado de siguiendo
+   * 
+   */
   botonSeguir() {
     this.siguiendo = !this.siguiendo;
     this.botonSeguimiento = this.siguiendo ? 'Dejar de seguir' : 'Seguir';
@@ -154,6 +177,11 @@ export class RutaComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * 
+   * Función para seguir al perfil
+   *  
+   */ 
   follow() {
     this.perfilService.follow(this.idPerfil, this.dataMap['user']['id']).subscribe({
       next: () => {
@@ -168,6 +196,11 @@ export class RutaComponent implements OnInit, OnChanges {
     });
   }
 
+  /**
+   * 
+   * Función para dejar de seguir al perfil
+   *  
+   */
   unfollow() {
     this.perfilService.unfollow(this.idPerfil, this.dataMap['user']['id']).subscribe({
       next: () => {
@@ -182,7 +215,11 @@ export class RutaComponent implements OnInit, OnChanges {
     });
   }
 
-
+  /**
+   * 
+   * Función para obtener la ruta
+   * 
+   */ 
   getRoute(): void {
     this.rutaService.getData(this.id).subscribe({
       next: (data) => {
@@ -199,6 +236,11 @@ export class RutaComponent implements OnInit, OnChanges {
     });
   }
 
+  /**
+   * 
+   * Función para obtener las imágenes
+   * 
+   */
   getImages(): void {
     this.rutaService.getRouteImages(this.id).subscribe({
       next: (images: any) => {

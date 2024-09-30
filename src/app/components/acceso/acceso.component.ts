@@ -22,6 +22,14 @@ export class AccesoComponent {
     this.password = '';
   }
 
+  /**
+   * Sobreescribe el tipo de campo de la contraseña
+   * 
+   * Si el campo es visible, se devuelve 'text'
+   * Si el campo es oculto, se devuelve 'password'
+   * 
+   * @returns string
+   */
   passwordFieldType() {
     return this.showPassword ? 'text' : 'password';
   }
@@ -30,6 +38,12 @@ export class AccesoComponent {
     this.showPassword = !this.showPassword;
   }
 
+  /**
+   * Función para enviar la solicitud de acceso
+   * 
+   * - Enviar la solicitud de acceso a la API
+   *  
+   */
   login() {
     const usuario = { id: -1,name: '', email: this.email, password: this.password };
 

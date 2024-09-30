@@ -60,6 +60,16 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.elevationProfile = { kilometers: [] as number[], altitudes: [] as number[]};
   }
 
+  /**
+   * 
+   * Función para inicializar el componente
+   * 
+   * - Obtener los datos de las rutas
+   * - Obtener los datos de GPX
+   * - Calcular el perfil de elevación
+   * - Emitir los datos de mapa y perfil de elevación
+   *  
+   */
   ngOnInit(): void {
     config.apiKey = 'xkstedU79vEq8uEaVE2A';
     this.elevationProfile = calculateElevationProfile(this.gpxData);
@@ -69,6 +79,20 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     this.routesGeoJson = convertRoutesToGeoJSON(this.routes);
   }
 
+  /**
+   * 
+   * Función para inicializar la mapa
+   * 
+   * - Inicializar la mapa
+   * - Configurar el estilo de la mapa
+   * - Configurar el estado inicial de la mapa
+   * - Añadir la capa de GPX
+   * - Añadir la capa de rutas
+   * - Añadir la capa de puntos
+   * - Añadir el evento de zoom
+   * - Añadir el evento de click
+   * 
+   */
   ngAfterViewInit() {
     // Spain coordinates
     const initialState = { lng: -3.585342, lat: 15, zoom: 2, pitch: 50, maxPitch: 85 };
@@ -297,6 +321,16 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  /**
+   * 
+   * Función para actualizar los cambios en las propiedades
+   * 
+   * - Si el punto de interacción cambia, actualizar el punto interactivo
+   * - Si se selecciona una imagen con coordenadas válidas, añadir el marcador de imagen 
+   * 
+   * @param changes Objeto con los cambios en las propiedades
+   * 
+   */
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['pointHovered'] && this.pointHovered !== -1 && this.elevationProfile) {
       const index = this.elevationProfile.kilometers.indexOf(this.pointHovered);
@@ -341,7 +375,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
   
-  // Actualiza los clusters después de aplicar filtros
+  /**
+   * 
+   * Función para actualizar los clusters después de aplicar filtros
+   * 
+   */  
   updateClusters() {
     if (this.map) {
       const source = this.map.getSource('routes') as maplibregl.GeoJSONSource;
@@ -354,6 +392,14 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   *
+   * Función para añadir un punto interactivo
+   * 
+   * @param latitude Latitud del punto
+   * @param longitude Longitud del punto
+   * 
+   */
   addInteractivePoint(latitude: number, longitude: number): void {
     if (this.map && !this.pointExists) {
       this.point = new Marker()
@@ -372,6 +418,14 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * 
+   * Función para añadir un marcador de imagen
+   * 
+   * @param latitude Latitud de la imagen
+   * @param longitude Longitud de la imagen
+   * 
+   */
   addImage(latitude: number, longitude: number): void {
     if (this.map && !this.imageExists) {
 
@@ -401,6 +455,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * 
+   * Función para eliminar el marcador de imagen
+   * 
+   */
   deleteImage() {
     if (this.image) {
       this.image.remove();  // Elimina el marcador del mapa
@@ -414,6 +473,14 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 }
 
+/**
+ * 
+ * Función para convertir las rutas a GeoJSON
+ * 
+ * @param routes 
+ * @returns 
+ * 
+ */
 function convertRoutesToGeoJSON(routes: any[]): any {//GeoJSON.FeatureCollection<GeoJSON.Point> {
   const features = routes.map(route => ({
     type: 'Feature',

@@ -18,6 +18,14 @@ export class NavComponent implements OnInit {
 
   constructor (private accesoService: AccesoService, private perfilService: PerfilService) {}
 
+  /**
+   * 
+   * Función para inicializar el componente
+   * 
+   * - Suscribirse a los cambios de autenticación
+   * - Obtener el perfil del usuario actual
+   * 
+   */
   ngOnInit(): void {
     // Suscribirse a los cambios de autenticación
     this.accesoService.getAuthStatus().subscribe((isAuthenticated) => {
@@ -31,10 +39,22 @@ export class NavComponent implements OnInit {
     });
   }
 
+  /**
+   * 
+   * Función para comprobar si el usuario está autenticado
+   * 
+   * @returns boolean
+   *  
+   */
   isAuthenticated () {
     return this.accesoService.isAuthenticated();
   }
 
+  /**
+   * 
+   * Función para obtener el perfil del usuario actual
+   * 
+   */
   getCurrentUser () {
     return this.accesoService.getCurrentUser().subscribe(res => {
       this.idPerfil = res; 

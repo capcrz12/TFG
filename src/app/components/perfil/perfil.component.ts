@@ -65,6 +65,18 @@ export class PerfilComponent implements OnInit{
       }
     }
 
+    /**
+     * 
+     * Función para inicializar el componente
+     * 
+     * - Suscribirse a los cambios de autenticación
+     * - Obtener el perfil del usuario actual
+     * - Obtener la información del perfil
+     * - Obtener las rutas del perfil
+     * - Obtener los seguidores del perfil
+     * - Obtener los seguidos del perfil
+     * 
+     */
     ngOnInit(): void {
       this.route.params.subscribe(params => {
         this.idPerfil = +params['idPerfil']; 
@@ -77,18 +89,40 @@ export class PerfilComponent implements OnInit{
       });
     }
 
+    /**
+     * 
+     * Función para cerrar la sesión
+     * 
+     */
     logout () {
       this.accesoService.logout();
     }
 
+    /**
+     * 
+     * Función para comprobar si el usuario es propio de la página
+     *
+     */
     isMyPerfil () {
       this.propio = this.checkID() && this.accesoService.isAuthenticated();
     }
 
+    /**
+     * 
+     * Función para comprobar si el ID del perfil es el mismo que el ID del usuario
+     * 
+     * @returns boolean
+     *  
+     */
     checkID() {
       return this.id == this.idPerfil;
     }
 
+    /**
+     * 
+     * Función para comprobar si la contraseña es correcta
+     * 
+     */
     checkPassword () {
       this.accesoService.checkPassword(this.id, this.passwordEdit).subscribe((res) => {
         this.passwordChecked = res;
@@ -103,23 +137,42 @@ export class PerfilComponent implements OnInit{
       })
     }
 
+    /**
+     * 
+     * Función para abrir el modal de seguidores
+     * 
+     */
     openModalSeguidores() {
       this.modalFollowed = false;
       this.modalTitle = 'Seguidores';
       this.modalOpen = true;
     }
     
+    /**
+     * 
+     * Función para abrir el modal de siguiendo
+     * 
+     */
     openModalSeguidos() {
       this.modalFollowed = true;
       this.modalTitle = 'Siguiendo';
       this.modalOpen = true;
     }
     
-  
+    /**
+     * 
+     * Función para cerrar el modal
+     *  
+     */
     closeModal() {
       this.modalOpen = false;
     }
 
+    /**
+     * 
+     * Función para comprobar si el usuario está siguiendo al perfil
+     * 
+     */
     checkIfFollowing() {
       // Verifica si tanto idPerfil como dataMap están disponibles
       if (this.idPerfil !== -1 && this.id !== -1) {
@@ -139,6 +192,11 @@ export class PerfilComponent implements OnInit{
       }
     }
 
+    /**
+     * 
+     * Función para cambiar el estado de siguiendo
+     * 
+     */
     botonSeguir() {
       this.siguiendo = !this.siguiendo;
       this.botonSeguimiento = this.siguiendo ? 'Dejar de seguir' : 'Seguir';
@@ -150,6 +208,11 @@ export class PerfilComponent implements OnInit{
       }
     }
   
+    /**
+     * 
+     * Función para seguir al perfil
+     * 
+     */
     follow() {
       this.perfilService.follow(this.id, this.idPerfil).subscribe({
         next: () => {
@@ -164,6 +227,11 @@ export class PerfilComponent implements OnInit{
       });
     }
   
+    /**
+     * 
+     * Función para dejar de seguir al perfil
+     * 
+     */
     unfollow() {
       this.perfilService.unfollow(this.id, this.idPerfil).subscribe({
         next: () => {
@@ -178,6 +246,11 @@ export class PerfilComponent implements OnInit{
       });
     }
 
+    /**
+     * 
+     * Función para activar o desactivar el modo de edición del perfil
+     *  
+     */
     modoEdicionPerfil () {
       if (this.propio) {
         this.edicion = !this.edicion;
@@ -189,6 +262,11 @@ export class PerfilComponent implements OnInit{
       }
     }
 
+    /**
+     * 
+     * Función para obtener los seguidos del perfil
+     *  
+     */
     getFolloweds () {
       this.perfilService.getFolloweds(this.idPerfil).subscribe((res:any) => {
         this.followeds = res;
@@ -196,6 +274,11 @@ export class PerfilComponent implements OnInit{
       });
     }
 
+    /**
+     * 
+     * Función para obtener los seguidores del perfil
+     *  
+     */
     getFollowers () {
       this.perfilService.getFollowers(this.idPerfil).subscribe((res:any) => {
         this.followers = res;
@@ -203,6 +286,11 @@ export class PerfilComponent implements OnInit{
       })
     }
     
+    /**
+     * 
+     * Función para obtener el perfil del usuario actual
+     *  
+     */
     getCurrentUser () {
       this.perfilService.getCurrentUser().subscribe((res) => {
         this.id = res;
@@ -210,6 +298,11 @@ export class PerfilComponent implements OnInit{
       });
     }
 
+    /**
+     * 
+     * Función para obtener la información del perfil
+     *  
+     */
     getInfo () {
       this.perfilService.getUser(this.idPerfil).subscribe((res) => {
         this.email = res.email;
@@ -224,6 +317,11 @@ export class PerfilComponent implements OnInit{
       
     }
 
+    /**
+     * 
+     * Función para obtener las rutas del perfil
+     *  
+     */
     getRoutes () {
       this.perfilService.getRoutes(this.idPerfil).subscribe((res) => {
         this.routes = res;
@@ -241,6 +339,11 @@ export class PerfilComponent implements OnInit{
       })
     }
 
+    /**
+     * 
+     * Función para actualizar el perfil
+     * 
+     */
     async editarPerfil () {
       let usuario = {id: this.id, name: this.name, email: '', password: ''};
       if (this.nameEdit != '') {
@@ -263,6 +366,11 @@ export class PerfilComponent implements OnInit{
       })
     }
 
+    /**
+     * 
+     * Función para actualizar la foto del perfil
+     * 
+     */
     updatePhoto () {
       if (this.photoProfileTMP != '' || !this.selectedImage) {
         const formData = new FormData();
@@ -274,11 +382,25 @@ export class PerfilComponent implements OnInit{
         return ;
     }
 
+    /**
+     * 
+     * Función para mostrar la foto del perfil seleccionada
+     * 
+     * @param event Evento de selección de archivo
+     *  
+     */
     onImageSelected (event: any) {
       this.photoProfileTMP = URL.createObjectURL(event.target.files[0]);
       this.selectedImage = event.target.files[0];
     }
 
+    /**
+     * 
+     * Función para eliminar una ruta
+     * 
+     * @param id ID de la ruta
+     *  
+     */
     eliminarRuta (id: number) {
       this.rutaService.confirmDeleteRoute().subscribe(confirmed => {
         if (confirmed) {

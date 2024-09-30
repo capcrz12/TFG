@@ -85,6 +85,11 @@ export class EditarRutaComponent {
   }
 
 
+  /**
+   * 
+   * Función para obtener la ruta
+   * 
+   */
   getRoute(): void {
     this.rutaService.getData(String(this.id)).subscribe({
       next: (data) => {
@@ -99,6 +104,11 @@ export class EditarRutaComponent {
     });
   }
 
+  /**
+   * 
+   * Función para obtener las imágenes
+   * 
+   */
   getImages(): void {
     this.rutaService.getRouteImages(String(this.id)).subscribe({
       next: (images: any) => {
@@ -112,11 +122,21 @@ export class EditarRutaComponent {
     });
   }
   
+  /**
+   * 
+   * Función para formatear el tiempo estimado
+   * 
+   */
   formatTime() {
     this.hour = Math.floor(this.dataMap['estimated_time'])
     this.min = Math.round((this.dataMap['estimated_time'] - this.hour) * 60);
   }
 
+  /**
+   * 
+   * Función para actualizar el tiempo estimado
+   *
+   */
   updateEstimatedTime() {
     let km:number, speed :number;
     this.ruta['km'] ? km = this.ruta['km'] : km = this.dataMap['km'];
@@ -129,6 +149,14 @@ export class EditarRutaComponent {
     this.min = Math.round((this.ruta['estimated_time'] - this.hour) * 60);
   }
 
+  /**
+   * 
+   * Función para convertir un archivo GPX a GeoJSON
+   * 
+   * @param gpxContent contenido del archivo GPX
+   * @returns GeoJSON
+   * 
+   */
   convertirAGeoJson(gpxContent: string): any {
     try {
       // Parsear el archivo GPX (contenido XML) usando DOMParser
@@ -144,6 +172,17 @@ export class EditarRutaComponent {
     }
   }
 
+  /**
+   * 
+   * Función para subir la ruta
+   *     
+   * 
+   * - Copiar los datos de dataMap a ruta
+   * - El objeto usuario pasa a ser solo el id
+   * - Actualizar la ruta en la base de datos
+   * - Navegar a la página de perfil
+   * 
+   */
   subirRuta () {
     for (const key in this.dataMap) {
       if (this.dataMap.hasOwnProperty(key)) {
@@ -196,6 +235,17 @@ export class EditarRutaComponent {
     console.log('beforeChange');
   }
 
+  /**
+   * 
+   * Función para almacenar las imágenes seleccionadas y
+   * extraer los datos EXIF (coordenadas GPS)
+   * 
+   * @param event Evento de selección de archivos
+   * 
+   * - Extraer los datos EXIF de cada imagen seleccionada
+   * - Almacenar las imagenes en el array de slides
+   * 
+   */
   onImagesSelected(event: any) {
     if (event.target.files.length > 0) {
       this.selectedImages = Array.from(event.target.files);
@@ -219,8 +269,20 @@ export class EditarRutaComponent {
     }
   }
 
-    // Función para extraer los datos EXIF de cada imagen seleccionada
-    extractExifData(image: File, index: number): Promise<void> {
+  /**
+   * 
+   * Función para extraer los datos EXIF de cada imagen seleccionada
+   * 
+   * @param image Archivo seleccionado
+   * @param index Índice del archivo
+   * 
+   * - Extraer los datos EXIF de la imagen
+   * - Almacenar las coordenadas GPS en el array coordImages
+   * 
+   * ! Almacena lat = 100 y lon = 100 si no se encuentran coordenadas GPS
+   *
+   */
+  extractExifData(image: File, index: number): Promise<void> {
       return exifr.parse(image, { gps: true })
         .then((exifData) => {
           if (exifData) {
@@ -254,6 +316,16 @@ export class EditarRutaComponent {
     }
 
 
+  /**
+   * 
+   * Función para subir las imágenes
+   * 
+   * @param routeId ID de la ruta
+   * 
+   * - Almacenar los archivos seleccionados en el formulario
+   * - Enviar el formulario a la ruta
+   *
+   */
   uploadImages(routeId: number) {
     const formData = new FormData();
     this.selectedImages.forEach((image, index) => {
@@ -276,6 +348,16 @@ export class EditarRutaComponent {
     });
   }
 
+  /**
+   * 
+   * Función para eliminar una imagen
+   * 
+   * @param image Nombre de la imagen
+   * 
+   * - Almacenar el nombre de la imagen en imageName
+   * - Enviar la solicitud a la ruta
+   *
+   */
   deleteImage (image: string) {
     const imageName = image.split('/').pop() || ''; // 'imagen2.jpg'
 

@@ -35,18 +35,48 @@ export class RegistroComponent {
     this.error = false;
   }
 
+  /**
+   * 
+   * Función para obtener el tipo de campo de la contraseña
+   * 
+   * @returns string
+   * 
+   */
   passwordFieldType() {
     return this.showPassword ? 'text' : 'password';
   }
 
+  /**
+   * 
+   * Función para obtener el tipo de campo de la contraseña
+   * 
+   * @returns string
+   * 
+   */
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
+  /**
+   * 
+   * Función para obtener el tipo de campo de la contraseña de repetición
+   * 
+   * @returns string
+   * 
+   */
   toggleRepPasswordVisibility() {
     this.showRepPassword = !this.showRepPassword;
   }
 
+  /**
+   * 
+   * Función de registro de usuario
+   *
+   * - Verificar que se acepten los términos y condiciones
+   * - Verificar que la contraseña y la contraseña de repetición coincidan
+   * - Enviar el registro a la API
+   * 
+   */
   register () {
     if (!this.acceptedTerms) {
       this.errorMessage = 'Debes aceptar los términos y condiciones para registrarte.';
