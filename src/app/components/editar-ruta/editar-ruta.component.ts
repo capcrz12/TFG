@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { calculateAverageSpeed, calculateEstimatedTime, calculateMaxAltitude, calculateMinAltitude, calculateNegativeElevationLoss, calculatePositiveElevationGain, calculateTotalDistance, cargarGPX } from '../../utils/map';
+import { calculateEstimatedTime } from '../../utils/map';
 import { gpx } from "@tmcw/togeojson";
 import { MapComponent } from "../map/map.component";
 import { Dictionary } from '../../dictionary';
@@ -10,6 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EditarRutaService } from './editar-ruta.service';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { NuevaRutaService } from '../nueva-ruta/nueva-ruta.service';
+import * as exifr from 'exifr';
+import { areCoordsNear } from '../../utils/map';
 
 @Component({
   selector: 'app-editar-ruta',
@@ -36,6 +38,7 @@ export class EditarRutaComponent {
   selectedImages: File[] = [];
   selectedImage: string = "";
   slides: string[] = [];     // Array de URLs de las imágenes
+  coordImages: {lat: number, lon: number}[] = [];
 
 
   constructor (private rutaService: RutaService, 
@@ -43,7 +46,6 @@ export class EditarRutaComponent {
     private route: ActivatedRoute, 
     private router: Router,
     private nuevaService: NuevaRutaService) {
-
     this.id = -1;
     this.idPerfil = -1;
     this.gpxData = null;
@@ -99,8 +101,10 @@ export class EditarRutaComponent {
 
   getImages(): void {
     this.rutaService.getRouteImages(String(this.id)).subscribe({
-      next: (images: string[]) => {
-        this.slides = images;  // Asigna las URLs de las imágenes
+      next: (images: any) => {
+        images.forEach((image:any) => {
+          this.slides.push(image.filename);  // Asigna las URLs de las imágenes
+        })
       },
       error: (error) => {
         console.error('Error al cargar las imágenes:', error);
@@ -150,7 +154,20 @@ export class EditarRutaComponent {
       }
     }
 
-    this.editarService.updateRoute(this.ruta, this.idPerfil);   // Se pasa idPerfil para poder navegar al perfil una vez actualizada la ruta
+    this.ruta['user'] = this.ruta['user']['id'];
+
+    this.editarService.updateRoute(this.ruta, this.idPerfil).subscribe({
+      next: async (response: any) => {
+        this.successMessage = 'Ruta añadida con éxito';
+        await this.uploadImages(this.id);
+
+        this.router.navigate(['/myFeed'], { state: { message: 'Ruta añadida con éxito' } }); // Navega a la página principal
+      },
+      error: (error: any) => {
+        this.errorMessage = 'Error al añadir la ruta: ' + (error as Error).message;
+        console.error('Error en la solicitud: ', error);
+      }
+    });
   }
 
   cancelar () {
@@ -179,19 +196,73 @@ export class EditarRutaComponent {
     console.log('beforeChange');
   }
 
-  async onImagesSelected(event: any) {
+  onImagesSelected(event: any) {
     if (event.target.files.length > 0) {
       this.selectedImages = Array.from(event.target.files);
 
-      await this.uploadImages(this.id);
+      const exifPromises = this.selectedImages.map((image: File, index: number) => {
+        const imageUrl = URL.createObjectURL(image);  // Generar un URL temporal para previsualizar la imagen
+        this.slides.push(imageUrl);  // Añadir el URL al array de slides
+  
+        // función extractExifData para extraer los datos EXIF
+        this.extractExifData(image, index);
+      });
+
+      // Esperar a que todas las promesas de extracción de EXIF se resuelvan
+      Promise.all(exifPromises)
+      .then(() => {
+        console.log('Extracción de datos EXIF completada para todas las imágenes.');
+      })
+      .catch((error) => {
+        console.error('Error al procesar los datos EXIF de las imágenes:', error);
+      });
     }
   }
+
+    // Función para extraer los datos EXIF de cada imagen seleccionada
+    extractExifData(image: File, index: number): Promise<void> {
+      return exifr.parse(image, { gps: true })
+        .then((exifData) => {
+          if (exifData) {
+            const latitude = exifData.latitude;
+            const longitude = exifData.longitude;
+    
+            if (latitude && longitude) {
+              console.log(`Coordenadas GPS de la imagen ${index + 1}: Latitud ${latitude}, Longitud ${longitude}`);
+    
+              // Verificar proximidad con la ruta
+              if (areCoordsNear(latitude, longitude, this.gpxData.features[0].geometry.coordinates, 1)) {
+                console.log('Imagen cercana a la ruta.');
+                this.coordImages[index] = { lat: latitude, lon: longitude };
+              }
+              else {
+                this.coordImages[index] = { lat: 100, lon: 100 }; // Valores fuera de rango
+              }
+            } else {
+              console.log(`No se encontraron coordenadas GPS en la imagen ${index + 1}`);
+              this.coordImages[index] = { lat: 100, lon: 100 }; // Valores fuera de rango
+            }
+          } else {
+            console.log(`No se encontraron datos EXIF en la imagen ${index + 1}`);
+            this.coordImages[index] = { lat: 100, lon: 100 }; // Valores fuera de rango
+          }
+        })
+        .catch((error) => {
+          console.error(`Error al extraer los datos EXIF de la imagen ${index + 1}:`, error);
+          this.coordImages[index] = { lat: 100, lon: 100 }; // Valores fuera de rango
+        });
+    }
+
 
   uploadImages(routeId: number) {
     const formData = new FormData();
     this.selectedImages.forEach((image, index) => {
       formData.append('images', image, image.name);
     });
+
+    console.log(this.coordImages)
+
+    formData.append('coords', JSON.stringify(this.coordImages));
   
     return this.nuevaService.uploadImages(routeId, formData).then(() => {
       this.getImages();

@@ -76,8 +76,8 @@ export class HomeService {
         
         getStatistics(routes[i],this.dataMap, i);
         this.rutaService.getRouteImages(routes[i].id).subscribe({
-          next: (images: string[]) => {
-            this.dataMap[i]['photo'] = images[0];
+          next: (images: any) => {
+            this.dataMap[i]['photo'] = images[0].filename;
           },
           error: (error) => {
             this.dataMap[i]['photo'] = '';

@@ -227,6 +227,17 @@ export class PerfilComponent implements OnInit{
     getRoutes () {
       this.perfilService.getRoutes(this.idPerfil).subscribe((res) => {
         this.routes = res;
+        this.routes.forEach((route:any, index:number) => {
+          this.rutaService.getRouteImages(route.id).subscribe({
+            next: (images: any) => {
+              this.routes[index]['photo'] = images[0].filename;
+            },
+            error: (error) => {
+              this.routes[index]['photo'] = '';
+              console.error('Error al cargar las imágenes:', error);
+            }
+          });
+        })
       })
     }
 

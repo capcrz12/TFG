@@ -23,13 +23,16 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   km: number | undefined;
   elevationProfile: any;
   pointExists: boolean = false;
+  imageExists: boolean = false;
   point: any;
+  image: any;
   popup: Popup | any;
 
   @Input() type = -1; // type == 0 for rute maps / type == 1 for search maps
   @Input() file = '';
   @Input() routes:Dictionary[] = [];
   @Input() pointHovered = -1;
+  @Input() coordsSelected:any = {};
   @Input() filters: any = [];
 
 
@@ -313,6 +316,15 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
+    if (changes['coordsSelected'] && this.coordsSelected) {
+      const latitude = this.coordsSelected['lat'];
+      const longitude = this.coordsSelected['lon'];
+      if ((latitude > -90 && latitude < 90) && (longitude > -180 && longitude < 180))
+        this.addImage(latitude, longitude);
+      else
+        this.deleteImage();
+    }
+
     if (changes['filters'] && this.filters.length > 0) {
       if (this.map) {
         const source = this.map.getSource('routes') as maplibregl.GeoJSONSource;
@@ -358,6 +370,42 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         // Ensure it's added to the map. This is safe to call if it's already added.
         this.point.addTo(this.map);
     }
+  }
+
+  addImage(latitude: number, longitude: number): void {
+    if (this.map && !this.imageExists) {
+
+      const el = document.createElement('img');
+
+      el.className = 'marker';
+      el.src = `${this.coordsSelected['filename']}`;
+      el.style.maxWidth = `5vw`;
+      el.style.maxHeight = '5vh';
+
+      this.image = new Marker({element: el})
+        .setLngLat([longitude, latitude])
+        .addTo(this.map);
+      
+        this.imageExists = true;
+    }
+    else if (this.imageExists) {
+      // Update the data to a new position based on the animation timestamp. The
+      // divisor in the expression `timestamp / 1000` controls the animation speed.
+      this.image.setLngLat([longitude, latitude]);
+
+      const currentElement = this.image.getElement() as HTMLImageElement;
+      currentElement.src = `${this.coordsSelected['filename']}`;
+
+        // Ensure it's added to the map. This is safe to call if it's already added.
+        this.image.addTo(this.map);
+    }
+  }
+
+  deleteImage() {
+    if (this.image) {
+      this.image.remove();  // Elimina el marcador del mapa
+      this.imageExists = false;  // Restablece la variable de control si es necesario
+    }    
   }
  
   

@@ -1,5 +1,5 @@
 <section>
-    @if (dataMap) {
+    @if (this.dataMap) {
         @if (this.idPerfil != this.dataMap['user']['id']) {
             <div id="user-info">
                 <a [routerLink]="['/perfil', dataMap['user']['id']]">
@@ -28,6 +28,7 @@
                         [type]="0" 
                         [pointHovered]="pointHovered"
                         (dataMapOut)="receiveDataMap($event)" 
+                        [coordsSelected]="coordsSelected"
                         (elevationProfileOut)="receiveElevationProfile($event)" id="map">
                 </app-map>
             
@@ -37,6 +38,16 @@
         @if (slides.length > 0) {
             <div id="image-primaria">
                 <img class="imagen" src="{{selectedImage}}" alt="Imagen">
+
+                <!-- Icono de información en la esquina superior derecha -->
+                <div class="info-icon">
+                    <img class="info-image" src="../../../assets/images/informacion.png"/>
+                    <div class="info-box">
+                        <!-- Cuadro con la información que aparecerá al hacer hover -->
+                        <p>Si la imagen seleccionada contiene coordenadas, será mostrada en el mapa interactivo</p>
+                    </div>
+                </div>
+
                     <ngx-slick-carousel class="carousel" [class.ocultar]="slides.length <= 1"
                                 #slickModal="slick-carousel" 
                                 [config]="slideConfig" 

@@ -44,8 +44,19 @@ export class RutaService {
     );
   }
 
-  getRouteImages(id: string): Observable<string[]> {
-    return this.http.get<string[]>(`${environment.APIUrl}routes/get_route_images/${id}`);
+  getRouteImages(id: string): Observable<any> {
+
+    // Recuperar el token almacenado en localStorage
+    const token = localStorage.getItem('auth_token');
+
+    // Asegurarse de que existe el token
+    if (!token) {
+      console.error('No se ha encontrado el token de autenticación');
+    }
+
+    const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); // Angular establece automáticamente el multipart
+
+    return this.http.get<any>(`${environment.APIUrl}routes/get_route_images/${id}`, { headers });
   }
   
   isAuthor(id: number): Observable<boolean> {
