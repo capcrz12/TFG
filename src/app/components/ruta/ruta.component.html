@@ -1,6 +1,6 @@
 <section>
     @if (this.dataMap) {
-        @if (this.idPerfil != this.dataMap['user']['id']) {
+        @if (this.idPerfil != this.dataMap['user']['id'] && isAuthenticated()) {
             <div id="user-info">
                 <a [routerLink]="['/perfil', dataMap['user']['id']]">
                     @if (dataMap['user']['photo'] != '') {

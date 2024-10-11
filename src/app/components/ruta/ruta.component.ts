@@ -92,6 +92,15 @@ export class RutaComponent implements OnInit, OnChanges {
 
   /**
    * 
+   * Función que comprueba si el usuario está autenticado
+   * 
+   */
+  isAuthenticated() {
+    return this.accesoService.isAuthenticated();
+  }
+
+  /**
+   * 
    * Función para comprobar si el usuario está siguiendo al perfil
    *  
    */
