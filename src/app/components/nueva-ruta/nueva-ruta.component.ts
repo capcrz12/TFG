@@ -377,16 +377,21 @@ export class NuevaRutaComponent implements OnInit, OnDestroy {
    *
    */
   uploadImages(routeId: number) {
-    const formData = new FormData();
-    this.selectedImages.forEach((image, index) => {
-      formData.append('images', image, image.name);
-    });
+    if (this.selectedImages.length > 0) {
+      const formData = new FormData();
+      this.selectedImages.forEach((image, index) => {
+        formData.append('images', image, image.name);
+      });
 
-    console.log(this.coordImages);
+      console.log(this.coordImages);
 
-    formData.append('coords', JSON.stringify(this.coordImages));
-  
-    return this.nuevaService.uploadImages(routeId, formData);
+      formData.append('coords', JSON.stringify(this.coordImages));
+    
+      return this.nuevaService.uploadImages(routeId, formData);
+    }
+    else {
+      return null;
+    }
   }
 
 
