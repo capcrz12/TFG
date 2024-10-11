@@ -83,10 +83,10 @@ export class GraficaComponent implements AfterViewInit, OnChanges, OnInit {
         {
           label: 'Highlighted Point',
           data: [],
-          borderColor: 'red',
+          borderColor: 'black',
           backgroundColor: 'white',
-          pointRadius: 4, // Tamaño del punto
-          pointHoverRadius: 4, // Tamaño del punto al pasar el ratón
+          pointRadius: 5, // Tamaño del punto
+          pointHoverRadius: 5, // Tamaño del punto al pasar el ratón
           pointStyle: 'crossRot', // Forma del punto
         }]
       },

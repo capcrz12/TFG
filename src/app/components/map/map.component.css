@@ -21,7 +21,7 @@
   .marker {
     display: block;
     border: none;
-    border-radius: 50%;
+    border-radius: 60;
     cursor: pointer;
     padding: 0;
     object-fit: cover;

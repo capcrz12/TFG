@@ -434,8 +434,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
       el.className = 'marker';
       el.src = `${this.coordsSelected['filename']}`;
-      el.style.maxWidth = `5vw`;
-      el.style.maxHeight = '5vh';
+      el.style.borderRadius = '60px';
+      el.style.objectFit = 'cover';
+      el.style.width = `4vw`;
+      el.style.height = '4vw';
 
       this.image = new Marker({element: el})
         .setLngLat([longitude, latitude])
