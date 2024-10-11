@@ -19,7 +19,7 @@ export class GraficaComponent implements AfterViewInit, OnChanges, OnInit {
   @Input() gpxData: { kilometers: number[], altitudes: number[] };
   @Output() pointHovered = new EventEmitter<number>();
 
-  highlightedPoint: { x: number, y: number } | null = null;
+  highlightedPoint: { x: number, y: number } = {x: 0, y: 0};
 
   constructor() {
     Chart.register(CategoryScale, LinearScale, LineController, LineElement, PointElement);
@@ -87,13 +87,17 @@ export class GraficaComponent implements AfterViewInit, OnChanges, OnInit {
           backgroundColor: 'white',
           pointRadius: 4, // Tamaño del punto
           pointHoverRadius: 4, // Tamaño del punto al pasar el ratón
-          pointStyle: 'circle', // Forma del punto
+          pointStyle: 'crossRot', // Forma del punto
         }]
       },
       options: {
         scales: {
           y: {
-            beginAtZero: true
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Altitud (m)',
+            }
           },
           x: {
             title: {

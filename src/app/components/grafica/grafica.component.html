@@ -1,3 +1,9 @@
 <div class="graphic-wrap">
     <canvas id="myChart"></canvas>
+    @if(highlightedPoint.x != 0) {
+        <div class="tooltip">
+            <p>Km: {{highlightedPoint.x}}</p>
+            <p>Altitud: {{highlightedPoint.y}}</p>
+        </div>
+    }
 </div>
