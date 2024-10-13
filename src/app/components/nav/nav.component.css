@@ -125,13 +125,16 @@ a:hover {
 
 .perfil {
     width: 5vw;
+    height: 5vw;
+    object-fit: cover;
     border: 0.5px solid;
     border-radius: 50%;
     background-color: grey;
-    transition: 0.5s;
+    transition: 1s;
 }
 
 .perfil:hover {
     width: 6vw;
+    height: 6vw;
     transition: 1s;
 }
