@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { calculateAverageSpeed, calculateEstimatedTime, calculateMaxAltitude, calculateMinAltitude, calculateNegativeElevationLoss, calculatePositiveElevationGain, calculateTotalDistance, cargarGPX } from '../../utils/map';
+import { calculateAverageSpeed, calculateEstimatedTime, calculateMaxAltitude, calculateMinAltitude, calculateNegativeElevationLoss, calculatePositiveElevationGain, calculateTotalDistance } from '../../utils/map';
 import { gpx } from "@tmcw/togeojson";
 import { MapComponent } from "../map/map.component";
 import { NuevaRutaService } from './nueva-ruta.service';

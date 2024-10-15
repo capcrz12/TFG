@@ -231,7 +231,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
             filter: ['!', ['has', 'point_count']],
             layout: {
               'icon-image': 'senderista',   // Se añade al mapa mas arriba
-              'icon-size': 0.05
+              'icon-size': 0.06
             }
             /*
             paint: {

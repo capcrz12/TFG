@@ -1,4 +1,4 @@
-import { Component, Input, input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterModule } from '@angular/router';
 import { BuscadorComponent } from '../buscador/buscador.component';
 import { AccesoService } from '../acceso/acceso.service';
@@ -28,8 +28,8 @@ export class NavComponent implements OnInit {
    */
   ngOnInit(): void {
     // Suscribirse a los cambios de autenticación
-    this.accesoService.getAuthStatus().subscribe((isAuthenticated) => {
-      if (isAuthenticated) {
+    this.accesoService.isLoggedIn$.subscribe((status: boolean) => {
+      if (status) {
         this.getCurrentUser();
       } else {
         // Si el usuario no está autenticado, resetear los valores
@@ -39,6 +39,7 @@ export class NavComponent implements OnInit {
     });
   }
 
+  
   /**
    * 
    * Función para comprobar si el usuario está autenticado

@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { of, Observable, throwError } from 'rxjs';
+import { of, Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
@@ -11,7 +11,13 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class AccesoService {
 
+  private loggedIn = new BehaviorSubject<boolean>(false);
+
   constructor(private http: HttpClient, private router: Router) {}
+
+  public isLoggedIn$ = this.loggedIn.asObservable();
+
+
 
   login(usuario: { id: number, name: string, email: string, password: string }): Observable<string> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -19,6 +25,7 @@ export class AccesoService {
     .pipe(
       map(response => {
         localStorage.setItem('auth_token', response.access_token); // Guarda el token en el dispositivo local del usuario
+        this.loggedIn.next(true);  // Emitir que el usuario ha iniciado sesión
         this.router.navigate(['/myFeed']); // Navega a la página principal
         return '';
       }),
@@ -34,6 +41,7 @@ export class AccesoService {
 
   logout() {
     localStorage.removeItem('auth_token'); // Elimina el token al cerrar sesión
+    this.loggedIn.next(false); // Emitir que el usuario ha cerrado sesión
     this.router.navigate(['/acceso']); // Redirige a la página de inicio de sesión
   }
 
