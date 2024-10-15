@@ -37,7 +37,14 @@
         </div>
         @if (slides.length > 0) {
             <div id="image-primaria">
-                <img class="imagen" src="{{selectedImage}}" alt="Imagen">
+                <img class="imagen" (click)="openFullscreen(selectedImage)" src="{{selectedImage}}" alt="Imagen">
+
+                @if (isFullscreen) {
+                    <div class="fullscreen-overlay" (click)="closeFullscreen()">
+                        <span class="close-btn" (click)="closeFullscreen($event)">×</span>
+                        <img [src]="fullscreenImage" class="fullscreen-img" />
+                    </div>
+                }
 
                 <!-- Icono de información en la esquina superior derecha -->
                 <div class="info-icon">

@@ -11,11 +11,11 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class AccesoService {
 
-  private loggedIn = new BehaviorSubject<boolean>(false);
+  private loggedIn = new BehaviorSubject<boolean>(this.getAuthFromLocalStorage());
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  public isLoggedIn$ = this.loggedIn.asObservable();
+  public isLoggedIn$: Observable<boolean> = this.loggedIn.asObservable();
 
 
 
@@ -25,7 +25,8 @@ export class AccesoService {
     .pipe(
       map(response => {
         localStorage.setItem('auth_token', response.access_token); // Guarda el token en el dispositivo local del usuario
-        this.loggedIn.next(true);  // Emitir que el usuario ha iniciado sesión
+        this.loggedIn.next(true); // Borra el estado de localStorage
+        this.setAuthInLocalStorage(true); // Borra el estado de localStorage
         this.router.navigate(['/myFeed']); // Navega a la página principal
         return '';
       }),
@@ -41,7 +42,8 @@ export class AccesoService {
 
   logout() {
     localStorage.removeItem('auth_token'); // Elimina el token al cerrar sesión
-    this.loggedIn.next(false); // Emitir que el usuario ha cerrado sesión
+    this.setAuthInLocalStorage(false); // Borra el estado de localStorage
+    this.loggedIn.next(false);
     this.router.navigate(['/acceso']); // Redirige a la página de inicio de sesión
   }
 
@@ -84,5 +86,23 @@ export class AccesoService {
 
   isAuthenticated(): boolean {
     return !!this.getToken() && !this.isTokenExpired();
+  }
+
+  // Guarda el estado de autenticación en localStorage
+  private setAuthInLocalStorage(isLoggedIn: boolean): void {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
+    }
+  }
+
+  // Obtiene el estado de autenticación desde localStorage
+  private getAuthFromLocalStorage(): boolean {
+    if (typeof window !== 'undefined') {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    return isLoggedIn ? JSON.parse(isLoggedIn) : false;
+    }
+    else {
+      return false;
+    }
   }
 }
