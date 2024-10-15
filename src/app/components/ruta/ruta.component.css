@@ -156,6 +156,7 @@ h2 {
     object-fit: cover;
     border: 1px solid black;
     border-radius: 60px;
+    cursor: zoom-in;
 }
 
 .carousel {
@@ -175,7 +176,8 @@ h2 {
 }
 
 .carouselImg {
-    height: 50%;
+    height: 30vh;
+    width: 100%;
     object-fit: cover;
     border: none;
     cursor: pointer;
@@ -183,7 +185,7 @@ h2 {
 
 .arrow {
     position: absolute;
-    bottom: 20%;
+    top: 55%;
     z-index: 10;
     background: rgba(0, 0, 0, 0.5);
     color: white;
@@ -314,7 +316,8 @@ h2 {
     visibility: hidden;
 }
 
-
+/******************************************/
+/* Para la pantalla completa de la imagen */
 /* Contenedor de la imagen y el icono */
 .info-container {
     position: relative;
@@ -404,6 +407,7 @@ h2 {
   .fullscreen-img {
     max-width: 90%;
     max-height: 90%;
+    cursor: zoom-out;
   }
   
   /* Botón de cerrar (X) */
