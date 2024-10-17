@@ -403,6 +403,14 @@ input[type=number] {
         padding: 10px;
     }
 
+    .auth {
+        position: absolute;
+        width: 20%;
+        top: 10vh;
+        left: 7vh;
+        padding: 10px;
+    }
+
     .filter-header {
         display: flex;
         justify-content: center;

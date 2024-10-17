@@ -49,7 +49,7 @@
     }
     @else if (dataLoaded) {
     <app-map id="map" [type]="1" [routes]="dataMapExplorar" [filters]="filters"></app-map>
-    <div class="map-overlay top">
+    <div [class.auth]="!isAuthenticated()" class="map-overlay top">
         <div class="map-overlay-inner">
             <nav id="nav-filter">
                 <div (click)="toggleFilter()" class="filter-header">
