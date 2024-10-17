@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.getDataExplorar();
     });
 
-    this.isAuthenticated() ? this.siguiendo = true : this.siguiendo = false;
+    !this.isAuthenticated() ? this.siguiendo = true : this.siguiendo = false;
 
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {

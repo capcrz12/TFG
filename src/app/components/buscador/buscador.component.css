@@ -93,3 +93,18 @@
     background-color: grey;
     object-fit: cover;
 }
+
+@media (max-width: 480px) {
+    .lupa {
+        width: 5vw;
+    }
+
+    p {
+        font-size: 3vw;
+    }
+
+    .perfil {
+        width: 10vw;
+        height: 10vw;
+    }
+}
