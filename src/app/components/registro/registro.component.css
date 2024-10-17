@@ -268,3 +268,46 @@ button:hover {
     align-items: center;
     justify-content: center;
 }
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .seccion, .contenedor {
+        width: 90vw;
+        height: auto;
+    }
+
+    h2, .label, input {
+        font-size: 3vw;
+    }
+
+    button {
+        font-size: 2vw;
+        padding: 0.5rem 1rem;
+        margin-bottom: 3rem;
+    }
+
+    .caja {
+        width: 60vw;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .seccion, .contenedor {
+        width: 90vw;
+        height: auto;
+    }
+
+    h2, .label, input {
+        font-size: 4vw;
+    }
+
+    button {
+        font-size: 4vw;
+        padding: 0.5rem 1rem;
+        margin-bottom: 3rem;
+    }
+
+    .caja {
+        width: 60vw;
+    }
+}
