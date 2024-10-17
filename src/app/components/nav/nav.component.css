@@ -214,7 +214,7 @@ a {
     }
 
     .menu {
-        display: flex;
+        display: none;
         flex-direction: row;
         position: absolute;
         top: 0;
