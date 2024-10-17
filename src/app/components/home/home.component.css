@@ -239,6 +239,94 @@ input[type=number] {
     h2 {
         font-size: 3vw;
     }   
+
+    .nombre {
+        font-size: 4vw;
+    }
+
+    a {
+        font-size: 3vw;
+    }
+
+    p {
+        font-size: 3vw;
+    }
+
+    .perfil {
+        width: 12vw;
+        height: 12vw;
+    }
+
+    #ruta {
+        display: flex;
+        flex-direction: column;
+        height: 80%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #datos-texto {
+        flex-direction: row;
+        margin-left: 0;
+        width: 80%;
+        align-items: center;
+        height: 5vh;
+    }
+
+    #image-primaria {
+        width: 80vw;
+        height: 40vh;
+        border: 1px solid black;
+        border-radius: 60px;
+
+        margin: 1rem 0;
+        margin-left: 0;
+        padding: 0;
+
+        justify-self: center;
+        align-self: center;
+        cursor: pointer;
+    }
+
+    #map {
+        display: flex;
+        margin: 0 auto;
+        width: 90vw;
+        height: 60vh;
+        margin-top: 8vh;
+        margin-left: 0;
+    }
+
+    .map-overlay {
+        position: absolute;
+        width: 20%;
+        top: 20vh;
+        left: 15vh;
+        padding: 10px;
+    }
+
+    .filter-header {
+        display: flex;
+        justify-content: center;
+    }
+
+    .map-overlay-inner {
+        width: 60vw;
+    }
+
+    .titulo {
+        display: none;
+    }
+
+    .buscadores {
+        flex-direction: column;
+        margin-left: 0;
+        gap: 2vh;
+    }
+
+    .busca-rutas, .busca-usuarios {
+        width: 70vw;
+    }
 }
 
 @media (max-width: 480px) {

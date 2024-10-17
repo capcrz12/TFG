@@ -94,6 +94,21 @@
     object-fit: cover;
 }
 
+@media (min-width: 480px) and (max-witdh: 768px) {
+    .lupa {
+        width: 5vw;
+    }
+
+    p {
+        font-size: 3vw;
+    }
+
+    .perfil {
+        width: 20vw;
+        height: 20vw;
+    }
+}
+
 @media (max-width: 480px) {
     .lupa {
         width: 5vw;
