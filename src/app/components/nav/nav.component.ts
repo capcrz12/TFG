@@ -15,6 +15,7 @@ export class NavComponent implements OnInit {
   @Input() title = '';
   idPerfil: number = -1;
   photo: string = '../../assets/images/perfil.png';
+  isMenuOpen: boolean = true;
 
   constructor (private accesoService: AccesoService, private perfilService: PerfilService) {}
 
@@ -37,6 +38,15 @@ export class NavComponent implements OnInit {
         this.photo = '../../assets/images/perfil.png';
       }
     });
+  }
+
+  /**
+   * 
+   * Función para el menú responsive
+   * 
+   */
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 
   

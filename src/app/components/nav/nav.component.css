@@ -14,6 +14,8 @@ nav {
     padding: 0;
     margin: 0;
     justify-content: baseline;
+    opacity: 1;
+    transition: 0.75s;
 }
 
 .logo {
@@ -137,4 +139,94 @@ a:hover {
     width: 6vw;
     height: 6vw;
     transition: 1s;
+}
+
+
+/* Estilo del ícono de hamburguesa */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 4px;
+    margin: 3vh 1rem;
+}
+
+.hamburger > img {
+    width: 5vw;
+    z-index: 15;
+}
+
+/* Media Queries */
+@media (max-width: 480px) {
+    .logo {
+        width: 20vw;
+        height: auto;
+    }
+
+    .slogan {
+        display: none;
+    }
+
+    .title {
+        border: none;
+        font-size: 4vw;
+    }
+
+    .perfil {
+        width: 15vw;
+        height: 15vw;
+    }
+
+    .menu {
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: white;
+        padding: 2vh 0;
+        margin: 0;
+        text-align: right;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: 0.75s;
+    }
+
+    .menu li:nth-child(3) {
+        order: 1;
+    }
+
+    .menu li:nth-child(2) {
+        order: 3;
+    }
+
+    .menu li:nth-child(1) {
+        order: 2;
+    }
+
+    .menu.menu-open {
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 80vw;
+
+        font-size: 3vw;
+        transform: translateX(0);
+        opacity: 1;
+        transition: 0.75s;
+    }
+
+    .opacity-0 {
+        opacity: 0;
+        transition: 0.75s;
+    }
+
+    li {
+        font-size: 3.25vw;
+    }
+
+    .hamburger {
+        display: flex;
+    }
 }
