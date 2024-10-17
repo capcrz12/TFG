@@ -342,7 +342,95 @@ p {
 }
 
 @media (min-width: 481px) and (max-width: 768px) {
-    
+    h3, h2 {
+        font-size: 4vw;
+    }
+
+    .icono {
+        margin-left: 1rem;
+        width: 6vw;
+    }
+
+    .boton-seguir {
+        font-size: 2.5vw;
+        width: auto;
+        padding: 0.5rem 1rem;
+    }
+
+    p {
+        font-size: 3vw;
+    }
+
+    .info {
+        gap: 1vh;
+    }
+
+    .foto {
+        width: 35vw;
+        height: 35vw;
+    }
+
+    .caja {
+        width: 20vw;
+    }
+
+    input {
+        font-size: 3vw;
+    }
+
+    .password {
+        width: 30vw;
+    }
+
+    .botones {
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        top: 15vh;
+        right: 10vw;
+        gap: 2vw;
+
+        width: 30vw;
+    }
+
+    .boton {
+        font-size: 2.5vw;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .rutas {
+        gap: 3vw;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .ruta {
+        width: 27vw;
+        height: 27vw;
+    }
+
+    #nombre, #ubi, #kmFecha {
+        color: black;
+        font-size: 2.25vw;
+
+        -webkit-text-stroke-width: 0px;
+
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    #image {
+        border-radius: 10px;
+    }
+
+    .botRutas {
+        position: absolute;
+        top: 1vh;
+        right: 5%;
+        height: auto;
+        width: auto;
+    }
 }
 
 @media (max-width: 480px) {
