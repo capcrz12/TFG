@@ -15,7 +15,7 @@ export class NavComponent implements OnInit {
   @Input() title = '';
   idPerfil: number = -1;
   photo: string = '../../assets/images/perfil.png';
-  isMenuOpen: boolean = true;
+  isMenuOpen: boolean = false;
 
   constructor (private accesoService: AccesoService, private perfilService: PerfilService) {}
 
