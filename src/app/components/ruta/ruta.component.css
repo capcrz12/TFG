@@ -7,18 +7,6 @@ section {
     gap: 4vh;
 }
 
-section:hover {
-    #main-info {
-        width: 80vw;
-        transition: 0.5s;
-    }
-    
-    .hide-info {
-        visibility: visible;
-        transition: 0.2s;
-    }
-}
-
 #user-info {
     display: flex;
     flex-direction: column;
@@ -42,10 +30,6 @@ section:hover {
     transition: 0.5s;
 }
 
-.author-photo:hover {
-    width: 6vw;
-    transition: 1s;
-}
 
 .boton {
     background: #D1E7A8;
@@ -59,22 +43,12 @@ section:hover {
 
 }
 
-.boton:hover {
-    background-color: #738a48;
-    color: white;
-    transition: 0.5s;
-  }
-
   .red {
     background-color: #ee7272;
     transition: 0.5s;
   }
 
-  .red:hover {
-    background-color: #743838;
-    color: white;
-    transition: 0.5s;
-  }
+  
 
 #main-info {
     width: 50vw;
@@ -424,3 +398,151 @@ h2 {
     color: #f1f1f1;
   }
   
+@media (min-width: 769px) {
+    section:hover {
+        #main-info {
+            width: 80vw;
+            transition: 0.5s;
+        }
+        
+        .hide-info {
+            visibility: visible;
+            transition: 0.2s;
+        }
+    }
+
+    .author-photo:hover {
+        width: 6vw;
+        transition: 1s;
+    }
+
+    .boton:hover {
+        background-color: #738a48;
+        color: white;
+        transition: 0.5s;
+    }
+
+    .red:hover {
+        background-color: #743838;
+        color: white;
+        transition: 0.5s;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    #user-info {
+        width: 5vw;
+        height: 7vh;
+        flex-direction: row;
+        gap: 2vw;
+    
+        position: absolute;
+        top: 15vh;
+        right: 15vw;
+        z-index: 100;
+    }
+
+    #user-info .author-photo {
+        width: 8vw;
+        height: 8vw;
+    }
+
+    .boton {
+        font-size: 1.5vw;
+        width: auto;
+        padding: 0.5rem 1rem;
+    }
+
+    .column-info p, .statistics, .statisticsSecund {
+        font-size: 2.5vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .seccion {
+        flex-direction: column;
+        height: auto;
+    }
+
+    h2 {
+        font-size: 4vw;
+    }
+
+    #user-info {
+        width: 5vw;
+        height: 7vh;
+    
+        position: absolute;
+        top: 12vh;
+        right: 15vw;
+        z-index: 100;
+    }
+
+    #user-info .author-photo {
+        width: 12vw;
+        height: 12vw;
+    }
+
+    .boton {
+        font-size: 1.75vw;
+        width: auto;
+        padding: 0.5rem 1rem;
+    }
+
+    #map-grafica {
+        width: 90vw;
+        height: 75vh;
+    }
+
+    #map {
+        width: 90vw;
+        height: 70vh;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    #grafica {
+        height: 40vh;
+    }
+
+    #image-primaria {
+        width: 80vw;
+        height: 40vh;
+    }
+
+    .imagen {
+        border-radius: 0;
+    }
+
+    .arrow {
+        top: 70%;
+    }
+
+    .left {
+        left: 5vw;
+    }
+
+    .right {
+        right: 5vw;
+    }
+
+    .column-info {
+        gap:0;
+        margin: 0;
+    }
+
+    .column-info p, .statistics, .statisticsSecund {
+        font-size: 3.5vw;
+    }
+
+    .label {
+        font-weight: bold;
+    }
+
+    .column {
+        max-width: 30vw;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+    }
+}

@@ -228,7 +228,7 @@ a {
         text-align: right;
         opacity: 0;
         transform: translateX(100%);
-        transition: 0.75s;
+        transition: 1s;
     }
 
     .menu li:nth-child(3) {
@@ -253,7 +253,7 @@ a {
         font-size: 3vw;
         transform: translateX(0);
         opacity: 1;
-        transition: 0.75s;
+        transition: 1s;
     }
 
     .opacity-0 {

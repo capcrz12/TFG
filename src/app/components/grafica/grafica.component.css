@@ -34,3 +34,15 @@
 .tooltip:hover {
     opacity: 0.5;
 }
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .tooltip > p {
+        font-size: 2vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .tooltip > p {
+        font-size: 3vw;
+    }
+}
