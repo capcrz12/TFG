@@ -409,3 +409,49 @@ button {
     width: 3vw;
     height: 3vw;
 }
+
+@media (min-width:481px) and (max-width: 768px) {
+    .icono {
+        width: 7vw;
+        height: 7vw;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .seccion, .contenedor {
+        width: 90vw;
+        height: auto;
+    }
+
+    h2, .label, input, textarea {
+        font-size: 4vw;
+    }
+
+    textarea {
+        height: 80%;
+    }
+
+    .fila {
+        flex-direction: column;
+    }
+
+    button {
+        font-size: 4vw;
+        padding: 0.5rem 1rem;
+        margin-bottom: 3rem;
+    }
+
+    .caja {
+        width: 60vw;
+    }
+
+    .icono {
+        width: 10vw;
+        height: 10vw;
+    }
+
+    .arrow {
+        bottom: 0;
+    }
+}
