@@ -2,6 +2,7 @@ nav {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    width: 100vw;
 }
 
 .logotipo {
@@ -14,6 +15,8 @@ nav {
     padding: 0;
     margin: 0;
     justify-content: baseline;
+    opacity: 1;
+    transition: 0.75s;
 }
 
 .logo {
@@ -22,12 +25,6 @@ nav {
     display: flex;
     justify-content: center;
     align-items: center;    
-    transition: 0.5s;
-}
-
-.logo:hover {
-    width: 10.5vw;
-    height: 15.5vh;
     transition: 0.5s;
 }
 
@@ -41,11 +38,6 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: 1s;
-}
-
-.title-logo:hover {
-    width: 65%;
     transition: 1s;
 }
 
@@ -116,12 +108,6 @@ a {
     color: black;
 }
 
-a:hover {
-    font-size: 1.5vw;
-    transition: 0.2s;
-    color: black;
-}
-
 
 .perfil {
     width: 5vw;
@@ -133,8 +119,160 @@ a:hover {
     transition: 1s;
 }
 
-.perfil:hover {
-    width: 6vw;
-    height: 6vw;
-    transition: 1s;
+
+/* Estilo del ícono de hamburguesa */
+.hamburger {
+    display: none;
+}
+
+.hamburger > img {
+    width: 5vw;
+    z-index: 15;
+}
+
+@media (min-width: 769px) {
+    .logo:hover {
+        width: 10.5vw;
+        height: 15.5vh;
+        transition: 0.5s;
+    }
+
+    .title-logo:hover {
+        width: 65%;
+        transition: 1s;
+    }
+
+    a:hover {
+        font-size: 1.5vw;
+        transition: 0.2s;
+        color: black;
+    }
+
+    .perfil:hover {
+        width: 6vw;
+        height: 6vw;
+        transition: 1s;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .logotipo {
+        margin: 0;
+        padding: 0;
+        align-items: left;
+        justify-content: left;
+    }
+
+    .logo {
+        width: 15vw;
+        height: auto;
+    }
+
+
+    .slogan {
+        display: none;
+    }
+
+    .title {
+        border: none;
+        font-size: 3.25vw;
+    }
+
+    .menu {
+        width: 50vw;
+    }
+
+    li {
+        font-size: 2vw;
+    }
+
+    .perfil {
+        width: 10vw;
+        height: 10vw;
+    }
+}
+
+/* Media Queries */
+@media (max-width: 480px) {
+    .logo {
+        width: 20vw;
+        height: auto;
+    }
+
+    .slogan {
+        display: none;
+    }
+
+    .title {
+        border: none;
+        font-size: 4vw;
+    }
+
+    .perfil {
+        width: 15vw;
+        height: 15vw;
+    }
+
+    .menu {
+        display: none;
+        flex-direction: row;
+        position: absolute;
+        top: 0;
+        right: 0;
+        align-items: center;
+        justify-content: center;
+        height: 15vw;
+        background-color: white;
+        padding: 2vh 0;
+        margin: 0;
+        text-align: right;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: 1s;
+    }
+
+    .menu li:nth-child(3) {
+        order: 1;
+    }
+
+    .menu li:nth-child(2) {
+        order: 3;
+    }
+
+    .menu li:nth-child(1) {
+        order: 2;
+    }
+
+    .menu.menu-open {
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 80vw;
+
+        font-size: 3vw;
+        transform: translateX(0);
+        opacity: 1;
+        transition: 1s;
+    }
+
+    .opacity-0 {
+        opacity: 0;
+        transition: 0.75s;
+    }
+
+    li {
+        font-size: 3.25vw;
+    }
+
+    .hamburger {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 0;
+        right: 0;
+        cursor: pointer;
+        margin: 4.5vh 2rem;
+        z-index: 15;
+    }
 }

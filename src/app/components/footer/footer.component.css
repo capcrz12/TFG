@@ -41,3 +41,25 @@ h3, h4, a {
 img {
     width: 100%;
 }
+
+
+@media (max-width: 480px) {
+    h2 {
+        font-size: 5vw;
+    }   
+
+    h3, h4, a {
+        font-size: 3vw;
+    }
+
+    #main-info {
+        width: 80vw;
+        height: 20vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: start;
+        margin-top: 5vh;
+        padding-right: 2vw;
+    }
+}

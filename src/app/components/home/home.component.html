@@ -23,7 +23,7 @@
                     <img class="perfil" src="../../assets/images/perfil.png">
                 }
             </a>
-            <h3><a [routerLink]="['/perfil', dato['user']['id']]">{{dato['user']['nombre']}}</a></h3>
+            <h3><a class="nombre" [routerLink]="['/perfil', dato['user']['id']]">{{dato['user']['nombre']}}</a></h3>
         </div>
 
         <div id="ruta">
@@ -32,7 +32,7 @@
                 <p>{{ dato['ubication'] }}</p>
                 <p>{{ dato['km'] }} km</p>
             </div>
-            @if (dato['photo'] != '') {
+            @if (dato['photo']) {
                 <div id="image-primaria" [routerLink]="['/ruta',dato['id']]">
                     <img src="{{dato['photo']}}" alt="Logotipo">
                 </div>
@@ -49,7 +49,7 @@
     }
     @else if (dataLoaded) {
     <app-map id="map" [type]="1" [routes]="dataMapExplorar" [filters]="filters"></app-map>
-    <div class="map-overlay top">
+    <div [class.auth]="!isAuthenticated()" class="map-overlay top">
         <div class="map-overlay-inner">
             <nav id="nav-filter">
                 <div (click)="toggleFilter()" class="filter-header">
@@ -146,7 +146,7 @@
         </div>
     </div>
     <div class="busca">
-        <div class="buscadores"> 
+        <div class="buscadores titulo"> 
             <p class="busca-rutas title">Buscar rutas</p>
             <p class="busca-usuarios title">Buscar usuarios</p>
         </div>

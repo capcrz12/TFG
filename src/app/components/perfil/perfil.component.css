@@ -21,21 +21,11 @@ section {
     transition: 0.2s;
 }
 
-.clickable:hover {
-    font-size: 1.4vw;
-    transition: 0.2s;
-    color: black;
-}
 
 .cerrar {
     color: red;
 }
 
-.cerrar:hover {
-    font-size: 1.4vw;
-    transition: 0.2s;
-    color: red;
-}
 
 
 h2 {
@@ -72,10 +62,6 @@ h3 {
     transition: 0.2s;
 }
 
-.icono:hover {
-    transition: 0.2s;
-    width: 3vw;
-}
 
 .info {
     display: flex;
@@ -154,17 +140,6 @@ input {
     transition: 0.5s;
   }
 
-  .cancelar:hover {
-    background-color: #743838;
-    color: white;
-    transition: 0.5s;
-  }
-
-.enviar:hover, .boton-seguir:hover {
-    background-color: #738a48;
-    color: white;
-    transition: 0.5s;
-}
 
 .boton-seguir {
     background: #D1E7A8;
@@ -179,9 +154,8 @@ input {
     width: 10vw;
 }
 
-.red:hover {
-    background-color: #c24343;
-    transition: 0.5s;
+.red {
+    background-color: #ee7272;
 }
 
 .openModal {
@@ -262,12 +236,6 @@ p {
     }
 }
 
-.rutas:has(.ruta:hover) .ruta:not(:hover){
-    scale: 1;
-    opacity: 0.9;
-    filter: blur(4px);
-}
-
 /*.ruta:hover {
     transition: 0.5s;
     width: 110%;
@@ -329,4 +297,230 @@ p {
 
     -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: rgb(0, 0, 0);
+}
+
+@media (min-width: 769px) {
+    .clickable:hover {
+        font-size: 1.4vw;
+        transition: 0.2s;
+        color: black;
+    }
+
+    .cerrar:hover {
+        font-size: 1.4vw;
+        transition: 0.2s;
+        color: red;
+    }
+
+    .icono:hover {
+        transition: 0.2s;
+        width: 3vw;
+    }
+
+    .cancelar:hover {
+        background-color: #743838;
+        color: white;
+        transition: 0.5s;
+      }
+    
+    .enviar:hover, .boton-seguir:hover {
+        background-color: #738a48;
+        color: white;
+        transition: 0.5s;
+    }
+
+    .rutas:has(.ruta:hover) .ruta:not(:hover){
+        scale: 1;
+        opacity: 0.9;
+        filter: blur(4px);
+    }
+
+    .red:hover {
+        background-color: #c24343;
+        transition: 0.5s;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    h3, h2 {
+        font-size: 4vw;
+    }
+
+    .icono {
+        margin-left: 1rem;
+        width: 6vw;
+    }
+
+    .boton-seguir {
+        font-size: 2.5vw;
+        width: auto;
+        padding: 0.5rem 1rem;
+    }
+
+    p {
+        font-size: 3vw;
+    }
+
+    .info {
+        gap: 1vh;
+    }
+
+    .foto {
+        width: 35vw;
+        height: 35vw;
+    }
+
+    .caja {
+        width: 20vw;
+    }
+
+    input {
+        font-size: 3vw;
+    }
+
+    .password {
+        width: 30vw;
+    }
+
+    .botones {
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        top: 15vh;
+        right: 10vw;
+        gap: 2vw;
+
+        width: 30vw;
+    }
+
+    .boton {
+        font-size: 2.5vw;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .rutas {
+        gap: 3vw;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .ruta {
+        width: 27vw;
+        height: 27vw;
+    }
+
+    #nombre, #ubi, #kmFecha {
+        color: black;
+        font-size: 2.25vw;
+
+        -webkit-text-stroke-width: 0px;
+
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    #image {
+        border-radius: 10px;
+    }
+
+    .botRutas {
+        position: absolute;
+        top: 1vh;
+        right: 5%;
+        height: auto;
+        width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    h3, h2 {
+        font-size: 4vw;
+    }
+
+    .icono {
+        margin-left: 1rem;
+        width: 6vw;
+    }
+
+    .boton-seguir {
+        font-size: 2.5vw;
+        width: auto;
+        padding: 0.5rem 1rem;
+    }
+
+    p {
+        font-size: 3vw;
+    }
+
+    .info {
+        gap: 1vh;
+    }
+
+    .foto {
+        width: 35vw;
+        height: 35vw;
+    }
+
+    .caja {
+        width: 20vw;
+    }
+
+    input {
+        font-size: 3vw;
+    }
+
+    .password {
+        width: 30vw;
+    }
+
+    .botones {
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        top: 15vh;
+        right: 10vw;
+        gap: 2vw;
+
+        width: 30vw;
+    }
+
+    .boton {
+        font-size: 2.5vw;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .rutas {
+        gap: 3vw;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .ruta {
+        width: 27vw;
+        height: 27vw;
+    }
+
+    #nombre, #ubi, #kmFecha {
+        color: black;
+        font-size: 2.25vw;
+
+        -webkit-text-stroke-width: 0px;
+
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    #image {
+        border-radius: 10px;
+    }
+
+    .botRutas {
+        position: absolute;
+        top: 1vh;
+        right: 5%;
+        height: auto;
+        width: auto;
+    }
 }

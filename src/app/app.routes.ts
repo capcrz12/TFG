@@ -10,6 +10,7 @@ import { NuevaRutaComponent } from './components/nueva-ruta/nueva-ruta.component
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { EditarRutaComponent } from './components/editar-ruta/editar-ruta.component';
 import { editarRutaGuard } from './guards/editar-ruta.guard';
+import { notAccesoGuard } from './guards/not-acceso.guard';
 
 export const routes: Routes = [
     {
@@ -43,11 +44,13 @@ export const routes: Routes = [
     },
     {
       path: 'acceso',
-      component: AccesoComponent
+      component: AccesoComponent,
+      canActivate: [notAccesoGuard]
     },
     {
       path: 'registro',
-      component: RegistroComponent
+      component: RegistroComponent,
+      canActivate: [notAccesoGuard]
     },
     {
       path: 'privacy-policy',

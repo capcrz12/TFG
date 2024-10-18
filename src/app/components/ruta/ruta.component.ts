@@ -43,6 +43,9 @@ export class RutaComponent implements OnInit, OnChanges {
 
   slides: string[] = [];     // Array de URLs de las imágenes
 
+  isFullscreen: boolean = false;
+  fullscreenImage: string = '';
+
   constructor(private rutaService:RutaService, private perfilService:PerfilService, private accesoService:AccesoService) {
     this.dataMap = {};
     this.data = [];
@@ -286,4 +289,19 @@ export class RutaComponent implements OnInit, OnChanges {
   beforeChange(e: any) {
     console.log('beforeChange');
   }
+
+  openFullscreen(imageSrc: string) {
+    this.isFullscreen = true;
+    this.fullscreenImage = imageSrc;
+  }
+
+  // Cerrar la imagen en pantalla completa
+  closeFullscreen(event?: MouseEvent) {
+    if (event) {
+      event.stopPropagation(); // Evitar que se cierre al hacer clic en la imagen
+    }
+    this.isFullscreen = false;
+    this.fullscreenImage = '';
+  }
 }
+

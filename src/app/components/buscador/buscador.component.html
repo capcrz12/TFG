@@ -10,8 +10,9 @@
 </div>
 <div>
     @if (isRouteSearch) {
+        <div class="resultados">
         @for (res of resultados; track res['id']) {
-            <div class="resultados">
+            <div class="resultado">
                 <a id="resLink" routerLink="/ruta/{{res['id']}}">
                     <div class="info">
                         <p id="name">{{res['name']}}</p>
@@ -22,10 +23,12 @@
                 <hr width="100%">
             </div>
         }
+        </div>
     }
     @else {
+        <div class="resultados">
         @for (res of resultados; track res['id']) {
-            <div class="resultados">
+            <div class="resultado">
                 <a id="resLink" [routerLink]="['/perfil', res['id']]">
                     <div class="info">
                         @if (res['photo'] != '') {
@@ -40,5 +43,6 @@
                 <hr width="100%">
             </div>
         }
+        </div>
     }
 </div>

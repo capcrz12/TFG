@@ -44,13 +44,13 @@
                     </div>
                     <label>Cambiar Contraseña:</label>
                     @if (!passwordChecked) {
-                        <div class="caja">
-                            <input type="password" [(ngModel)]="passwordEdit" placeholder="Introduzca la contraseña actual">
+                        <div class="caja password">
+                            <input type="password" [(ngModel)]="passwordEdit" placeholder="Contraseña actual">
                             <button class="boton enviar" (click)="checkPassword()">Siguiente</button>
                         </div>
                     }
                     @else {
-                        <div class="caja">
+                        <div class="caja password">
                             <input type="password" [(ngModel)]="passwordEdit" placeholder="Introduzca la nueva contraseña">
                         </div>
                     }

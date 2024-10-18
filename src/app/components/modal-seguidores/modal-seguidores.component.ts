@@ -20,7 +20,6 @@ export class ModalSeguidoresComponent implements OnInit {
   constructor (private perfilService: PerfilService) {}
 
   ngOnInit(): void {
-    console.log(this.followeds, this.followers, this.modalFollowed);
   }
 
   closeModal() {

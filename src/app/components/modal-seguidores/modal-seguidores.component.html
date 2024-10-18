@@ -13,7 +13,7 @@
                     <img [routerLink]="['/perfil', user.id_usuario_seguido]" src="../../assets/images/perfil.png" class="user-photo">                
                 }
                 <span [routerLink]="['/perfil', user.id_usuario_seguido]">{{ user.user_name }}</span>
-                <button (click)="toggleFollow(user)" class="boton" [class.red]="!user.notFollowing">
+                <button (click)="toggleFollow(user)" class="boton seguimiento" [class.red]="!user.notFollowing">
                     {{ user.notFollowing ?'Seguir' : 'Dejar de seguir' }}
                 </button>
             </li>

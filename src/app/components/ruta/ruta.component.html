@@ -22,7 +22,8 @@
     <div class="seccion">
         <div id="map-grafica" [class.expanded]="slides.length === 0">
             @if (gpxData) {
-                <app-map [file]="'./assets/'+routeJSON['gpx']" 
+                <app-map id="map"
+                        [file]="'./assets/'+routeJSON['gpx']" 
                         [dataMap]="dataMap" 
                         [gpxData]="gpxData" 
                         [type]="0" 
@@ -37,7 +38,14 @@
         </div>
         @if (slides.length > 0) {
             <div id="image-primaria">
-                <img class="imagen" src="{{selectedImage}}" alt="Imagen">
+                <img class="imagen" (click)="openFullscreen(selectedImage)" src="{{selectedImage}}" alt="Imagen">
+
+                @if (isFullscreen) {
+                    <div class="fullscreen-overlay" (click)="closeFullscreen()">
+                        <span class="close-btn" (click)="closeFullscreen($event)">×</span>
+                        <img [src]="fullscreenImage" class="fullscreen-img" />
+                    </div>
+                }
 
                 <!-- Icono de información en la esquina superior derecha -->
                 <div class="info-icon">
@@ -72,21 +80,21 @@
     <!-- INFORMACION -->
     <div class="seccion info">
         <div class="column-info">
-            <p>Autor: </p>
+            <p class="label">Autor: </p>
             <p>{{dataMap['user']['nombre']}}</p>
         </div>
         <div class="column-info">
-            <p>Descripción: </p>
+            <p class="label">Descripción: </p>
             <p>{{dataMap['description']}}</p>
         </div>
         <div class="column-info">
-            <p>Ubicación: </p>
+            <p class="label">Ubicación: </p>
             <p>{{dataMap['ubication']}}</p>
         </div>
         <!--Aqui se pueden añadir tantos bloques de información como sean necesarios, siguiendo el siguiente esquema-->
         <!--
         <div class="column">
-            <p>Valoración: </p>
+            <p class="label">Valoración: </p>
             <p>{{dataMap['description']}}</p>
         </div>
         -->

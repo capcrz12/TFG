@@ -1,5 +1,5 @@
 <nav>
-    <div class="logotipo">
+    <div class="logotipo" [class.opacity-0]="isMenuOpen">
         <a routerLink="myFeed" class="logo">
             <img src="../../assets/images/localizador-de-mapas.png" alt="Logotipo">
         </a>
@@ -8,18 +8,17 @@
             <p class="slogan">Comparte rutas con otros senderistas</p>
         </a>
     </div>
-    <ul class="menu">
-        <!--
-        <app-buscador></app-buscador>
-        -->
-        <!--
-        <div class="buscador">
-            <img class="lupa" src="../../assets/images/lupa.png">
-            <div class="buscador">
-                <p>Buscar caminos . . .</p>
-            </div>
-        </div>
-        -->
+
+    <div class="hamburger" (click)="toggleMenu()">
+        @if (!isMenuOpen) {
+            <img src="../../assets/images/hamburguesa.png" alt="Menú" class="open-menu" />
+        }
+        @else {
+            <img src="../../assets/images/x.png" alt="Cerrar" class="close-menu" />        
+        }
+    </div>
+
+    <ul class="menu" [class.menu-open]="isMenuOpen">
         <li><a routerLink="myFeed">HOME</a></li>
         @if (isAuthenticated()) {
             <li><a routerLink="nuevaRuta">AÑADIR NUEVA RUTA</a></li>
