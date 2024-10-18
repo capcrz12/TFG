@@ -80,3 +80,38 @@
     align-items: center;
     justify-content: space-around;
 }
+
+@media (max-width: 480px) {
+  .modal-content {
+    width: 70vw;
+  }
+
+  span {
+    font-size: 4vw;
+  }
+
+  img {
+    width: 5vw;
+    height: 5vw;
+  }
+
+  .boton {
+    width: auto;
+    padding: 0.5rem 1rem;
+  }
+
+  ul {
+    width: 90%;
+    margin: 0 auto;
+    margin-right: 10vw;
+  }
+
+  li {
+    gap: 2vw;
+    margin-top: 2vh;
+  }
+
+  .seguimiento {
+    font-size: 2vw;
+  }
+}
