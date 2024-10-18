@@ -358,3 +358,35 @@ button:hover {
 .right {
     right: 5%;
 }
+
+
+@media (max-width: 480px) {
+
+    .seccion, .contenedor {
+        width: 90vw;
+        height: auto;
+    }
+
+    h2, .label, input, textarea {
+        font-size: 4vw;
+    }
+
+    textarea {
+        height: 80%;
+    }
+
+    .fila {
+        flex-direction: column;
+    }
+
+    button {
+        font-size: 4vw;
+        padding: 0.5rem 1rem;
+        margin-bottom: 3rem;
+    }
+
+    .caja {
+        width: 60vw;
+    }
+}
+
