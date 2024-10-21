@@ -462,6 +462,14 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * 
+   * Función para filtrar los datos por nombre y ubicación
+   * 
+   * @param data datos a filtrar
+   * @param filterCriteria cadena de filtro
+   * @returns Datos filtrados
+   */
   filterNameUbi(data: any, filterCriteria: any): any {
     const filteredFeatures = data.features.filter((feature: any) => {
       const name = feature.properties.name as String;
@@ -477,6 +485,14 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  /**
+   * 
+   * Función para aplicar los filtros a los datos estadísticos
+   * 
+   * @param data Datos a filtrar
+   * @param filters Filtros
+   * @returns Datos filtrados
+   */
   filterData(data: any, filters: any): any {
     // Se ignora el primer elemento del filtro ('all', 'any', etc)
     const filterType = filters[0];
