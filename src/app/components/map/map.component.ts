@@ -35,6 +35,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() pointHovered = -1;
   @Input() coordsSelected:any = {};
   @Input() filters: any = [];
+  @Input() filterName: any = [];
   @Input() filterCriteria: any;
 
 
@@ -357,7 +358,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         this.deleteImage();
     }
 
-    if (changes['filters']) {
+    if (changes['filterName'] || changes['filters']) {
       this.filterClusters();
     }
   }
@@ -436,24 +437,36 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   filterClusters() {
     if (this.map) {
       const source = this.map.getSource('routes') as maplibregl.GeoJSONSource;
+      let filteredData;
       if (source) {
-        if (this.filters.length > 0 && this.filterCriteria !== '') {
-          this.map.setFilter('unclustered-point', this.filters);
+        if (this.filterName.length > 0 && this.filterCriteria !== '') {
+          filteredData = this.filterNameUbi(this.routesGeoJson, this.filterCriteria);
+          
+          if (this.filters.length > 0) {
+            filteredData = this.filterData(filteredData, this.filters);
+          }
 
-          const filteredData = this.filterGeoJSON(this.routesGeoJson, this.filterCriteria);
           source.setData(filteredData);
         }
         else {
-          source.setData(this.routesGeoJson);
+          if (this.filters.length > 0) {
+            filteredData = this.filterData(this.routesGeoJson, this.filters);
+           
+            source.setData(filteredData);
+          }
+          else {
+            source.setData(this.routesGeoJson);
+          }
         }
       }
     }
   }
 
-  filterGeoJSON(data: any, filterCriteria: any): any {
+  filterNameUbi(data: any, filterCriteria: any): any {
     const filteredFeatures = data.features.filter((feature: any) => {
       const name = feature.properties.name as String;
       const ubi = feature.properties.ubication as String;
+      console.log(feature.properties);
 
       return name.toLowerCase().includes(filterCriteria) || ubi.toLowerCase().includes(filterCriteria);
     });
@@ -463,6 +476,57 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       features: filteredFeatures // Devuelve un GeoJSON con solo los datos filtrados
     };
   }
+
+  filterData(data: any, filters: any): any {
+    // Se ignora el primer elemento del filtro ('all', 'any', etc)
+    const filterType = filters[0];
+    const actualFilters = filters.slice(1); // Los filtros reales están a partir del índice 1
+  
+    const filteredFeatures = data.features.filter((feature: any) => {
+      const properties = feature.properties;
+  
+      const filterEvaluation = actualFilters.map((filter: any) => {
+        const operator = filter[0]; // El operador ('==', '>', '<', etc.)
+        const key = filter[1][1]; // La propiedad que está dentro de ['get', 'property']
+        const value = filter[2]; // El valor del filtro
+  
+        const propertyValue = properties[key];
+    
+        // Evaluamos el filtro según el operador
+        switch (operator) {
+          case '==':
+            return propertyValue == value;
+          case '>':
+            return propertyValue > value;
+          case '<':
+            return propertyValue < value;
+          default:
+            return false;
+        }
+      });
+  
+      // Si el filtro es 'all', todos los filtros deben cumplirse
+      if (filterType === 'all') {
+        return filterEvaluation.every(Boolean);
+      }
+  
+      // Si el filtro es 'any', al menos uno debe cumplirse
+      if (filterType === 'any') {
+        return filterEvaluation.some(Boolean);
+      }
+  
+      // Si el tipo de filtro no es reconocido, devolvemos false para no incluir el elemento
+      return false;
+    });
+  
+    // Devolvemos los datos originales pero con las características filtradas
+    return {
+      ...data,
+      features: filteredFeatures // Devuelve un GeoJSON con solo los datos filtrados
+    };
+  }
+  
+  
 
 
   /**

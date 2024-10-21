@@ -48,7 +48,7 @@
     }
     }
     @else if (dataLoaded) {
-    <app-map id="map" [type]="1" [routes]="dataMapExplorar" [filters]="filters" [filterCriteria]="filterCriteria"></app-map>
+    <app-map id="map" [type]="1" [routes]="dataMapExplorar" [filters]="filters" [filterName]="filterName" [filterCriteria]="filterCriteria"></app-map>
     <div [class.auth]="!isAuthenticated()" class="map-overlay top">
         <div class="map-overlay-inner">
             <nav id="nav-filter">
@@ -92,7 +92,7 @@
                                         <option value="<"><</option>
                                     </select>
                                     <br>
-                                    <label for="range-time">Desnivel:</label>
+                                    <label for="range-time">Horas:</label>
                                     <input type="number" id="range-time" name="range" value="1" min="0" max="24" (change)="applyFilter()" />
                                 </div>
                             </div>
