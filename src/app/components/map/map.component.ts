@@ -35,6 +35,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() pointHovered = -1;
   @Input() coordsSelected:any = {};
   @Input() filters: any = [];
+  @Input() filterCriteria: any;
 
 
   @Output() dataMapOut = new EventEmitter<Dictionary>();
@@ -188,9 +189,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
             paint: {
                 // Use step expressions (https://maplibre.org/maplibre-style-spec/#expressions-step)
                 // with three steps to implement three types of circles:
-                //   * Blue, 20px circles when point count is less than 100
-                //   * Yellow, 30px circles when point count is between 100 and 750
-                //   * Pink, 40px circles when point count is greater than or equal to 750
                 'circle-color': [
                     'step',
                     ['get', 'point_count'],
@@ -273,7 +271,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
           const coordinates = (e!.features![0] as any).geometry.coordinates.slice();
           const name = e!.features![0].properties['name'];
           const km = e!.features![0].properties['km'];
-          console.log(e!.features![0]);
           const user = e!.features![0].properties['user_name'];
 
           // Ensure that if the map is zoomed out such that
@@ -360,38 +357,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         this.deleteImage();
     }
 
-    if (changes['filters'] && this.filters.length > 0) {
-      if (this.map) {
-        const source = this.map.getSource('routes') as maplibregl.GeoJSONSource;
-  
-        if (source) {
-           // Aplica el filtro a los puntos sin agrupar
-          this.map.setFilter('unclustered-point', this.filters);
+    if (changes['filters']) {
+      this.filterClusters();
+    }
+  }
 
-  
-          // Reagrupar y actualizar el número en los clusters
-          this.updateClusters();
-        }
-      }
-    }
-  }
-  
-  /**
-   * 
-   * Función para actualizar los clusters después de aplicar filtros
-   * 
-   */  
-  updateClusters() {
-    if (this.map) {
-      const source = this.map.getSource('routes') as maplibregl.GeoJSONSource;
-  
-      // Recalcula los clusters para reflejar los cambios
-      if (source) {
-        // Simplemente vuelve a cargar la fuente para forzar la actualización de los clusters
-        this.map.triggerRepaint();
-      }
-    }
-  }
 
   /**
    *
@@ -457,6 +427,43 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         this.image.addTo(this.map);
     }
   }
+
+  /**
+   * 
+   * Función para aplicar el filtro en los clusters
+   * 
+   */
+  filterClusters() {
+    if (this.map) {
+      const source = this.map.getSource('routes') as maplibregl.GeoJSONSource;
+      if (source) {
+        if (this.filters.length > 0 && this.filterCriteria !== '') {
+          this.map.setFilter('unclustered-point', this.filters);
+
+          const filteredData = this.filterGeoJSON(this.routesGeoJson, this.filterCriteria);
+          source.setData(filteredData);
+        }
+        else {
+          source.setData(this.routesGeoJson);
+        }
+      }
+    }
+  }
+
+  filterGeoJSON(data: any, filterCriteria: any): any {
+    const filteredFeatures = data.features.filter((feature: any) => {
+      const name = feature.properties.name as String;
+      const ubi = feature.properties.ubication as String;
+
+      return name.toLowerCase().includes(filterCriteria) || ubi.toLowerCase().includes(filterCriteria);
+    });
+
+    return {
+      ...data,
+      features: filteredFeatures // Devuelve un GeoJSON con solo los datos filtrados
+    };
+  }
+
 
   /**
    * 
