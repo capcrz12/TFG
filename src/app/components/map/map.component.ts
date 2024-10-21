@@ -35,6 +35,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() pointHovered = -1;
   @Input() coordsSelected:any = {};
   @Input() filters: any = [];
+  @Input() filterName: any = [];
+  @Input() filterCriteria: any;
 
 
   @Output() dataMapOut = new EventEmitter<Dictionary>();
@@ -188,9 +190,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
             paint: {
                 // Use step expressions (https://maplibre.org/maplibre-style-spec/#expressions-step)
                 // with three steps to implement three types of circles:
-                //   * Blue, 20px circles when point count is less than 100
-                //   * Yellow, 30px circles when point count is between 100 and 750
-                //   * Pink, 40px circles when point count is greater than or equal to 750
                 'circle-color': [
                     'step',
                     ['get', 'point_count'],
@@ -273,7 +272,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
           const coordinates = (e!.features![0] as any).geometry.coordinates.slice();
           const name = e!.features![0].properties['name'];
           const km = e!.features![0].properties['km'];
-          console.log(e!.features![0]);
           const user = e!.features![0].properties['user_name'];
 
           // Ensure that if the map is zoomed out such that
@@ -360,38 +358,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         this.deleteImage();
     }
 
-    if (changes['filters'] && this.filters.length > 0) {
-      if (this.map) {
-        const source = this.map.getSource('routes') as maplibregl.GeoJSONSource;
-  
-        if (source) {
-           // Aplica el filtro a los puntos sin agrupar
-          this.map.setFilter('unclustered-point', this.filters);
+    if (changes['filterName'] || changes['filters']) {
+      this.filterClusters();
+    }
+  }
 
-  
-          // Reagrupar y actualizar el número en los clusters
-          this.updateClusters();
-        }
-      }
-    }
-  }
-  
-  /**
-   * 
-   * Función para actualizar los clusters después de aplicar filtros
-   * 
-   */  
-  updateClusters() {
-    if (this.map) {
-      const source = this.map.getSource('routes') as maplibregl.GeoJSONSource;
-  
-      // Recalcula los clusters para reflejar los cambios
-      if (source) {
-        // Simplemente vuelve a cargar la fuente para forzar la actualización de los clusters
-        this.map.triggerRepaint();
-      }
-    }
-  }
 
   /**
    *
@@ -457,6 +428,106 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         this.image.addTo(this.map);
     }
   }
+
+  /**
+   * 
+   * Función para aplicar el filtro en los clusters
+   * 
+   */
+  filterClusters() {
+    if (this.map) {
+      const source = this.map.getSource('routes') as maplibregl.GeoJSONSource;
+      let filteredData;
+      if (source) {
+        if (this.filterName.length > 0 && this.filterCriteria !== '') {
+          filteredData = this.filterNameUbi(this.routesGeoJson, this.filterCriteria);
+          
+          if (this.filters.length > 0) {
+            filteredData = this.filterData(filteredData, this.filters);
+          }
+
+          source.setData(filteredData);
+        }
+        else {
+          if (this.filters.length > 0) {
+            filteredData = this.filterData(this.routesGeoJson, this.filters);
+           
+            source.setData(filteredData);
+          }
+          else {
+            source.setData(this.routesGeoJson);
+          }
+        }
+      }
+    }
+  }
+
+  filterNameUbi(data: any, filterCriteria: any): any {
+    const filteredFeatures = data.features.filter((feature: any) => {
+      const name = feature.properties.name as String;
+      const ubi = feature.properties.ubication as String;
+      console.log(feature.properties);
+
+      return name.toLowerCase().includes(filterCriteria) || ubi.toLowerCase().includes(filterCriteria);
+    });
+
+    return {
+      ...data,
+      features: filteredFeatures // Devuelve un GeoJSON con solo los datos filtrados
+    };
+  }
+
+  filterData(data: any, filters: any): any {
+    // Se ignora el primer elemento del filtro ('all', 'any', etc)
+    const filterType = filters[0];
+    const actualFilters = filters.slice(1); // Los filtros reales están a partir del índice 1
+  
+    const filteredFeatures = data.features.filter((feature: any) => {
+      const properties = feature.properties;
+  
+      const filterEvaluation = actualFilters.map((filter: any) => {
+        const operator = filter[0]; // El operador ('==', '>', '<', etc.)
+        const key = filter[1][1]; // La propiedad que está dentro de ['get', 'property']
+        const value = filter[2]; // El valor del filtro
+  
+        const propertyValue = properties[key];
+    
+        // Evaluamos el filtro según el operador
+        switch (operator) {
+          case '==':
+            return propertyValue == value;
+          case '>':
+            return propertyValue > value;
+          case '<':
+            return propertyValue < value;
+          default:
+            return false;
+        }
+      });
+  
+      // Si el filtro es 'all', todos los filtros deben cumplirse
+      if (filterType === 'all') {
+        return filterEvaluation.every(Boolean);
+      }
+  
+      // Si el filtro es 'any', al menos uno debe cumplirse
+      if (filterType === 'any') {
+        return filterEvaluation.some(Boolean);
+      }
+  
+      // Si el tipo de filtro no es reconocido, devolvemos false para no incluir el elemento
+      return false;
+    });
+  
+    // Devolvemos los datos originales pero con las características filtradas
+    return {
+      ...data,
+      features: filteredFeatures // Devuelve un GeoJSON con solo los datos filtrados
+    };
+  }
+  
+  
+
 
   /**
    * 

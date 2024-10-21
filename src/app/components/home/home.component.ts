@@ -35,6 +35,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   dataLoaded: boolean = false;
 
   filters: any = [];  // Añadir propiedad para almacenar filtros
+  filterName: any = [];
+  filterCriteria: any;
 
   constructor(private router: Router,private homeService: HomeService, private accesoService: AccesoService) {
     this.name = ''
@@ -108,7 +110,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   /**
    * 
-   * Función para aplicar el filtro de nombre y ubicación
+   * Función para aplicar el filtro de nombre y ubicación de la barra de busqueda
    * 
    * - Comprueba si el nombre o la ubicación de las rutas incluyen la cadena filter
    * - Actualiza el filtro de Maplibre
@@ -117,11 +119,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
    *
    */
   onFilterApplied(filter: any) {
-    this.filters = [
-      'any', // Al menos una de las condiciones debe cumplirse
-      ['>', ['index-of', filter.toLowerCase(), ['downcase' , ['to-string', ['get', 'name']]]], -1],
-      ['>', ['index-of', filter.toLowerCase(), ['downcase' , ['to-string', ['get', 'ubication']]]], -1],
-    ];
+    this.filterCriteria = filter;
+    if (filter != '') {
+      this.filterName = [
+        'any', // Al menos una de las condiciones debe cumplirse
+        ['>', ['index-of', filter.toLowerCase(), ['downcase' , ['to-string', ['get', 'name']]]], -1],
+        ['>', ['index-of', filter.toLowerCase(), ['downcase' , ['to-string', ['get', 'ubication']]]], -1],
+      ];
+    }
+    else {
+      this.filterName = ['==', 1, 1]; // Siempre se cumple
+    }
   }
   
 
