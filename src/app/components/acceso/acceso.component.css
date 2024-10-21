@@ -47,6 +47,8 @@ h2 {
     border-radius: 60px;
 
     align-items: center;
+
+    box-shadow: 0 25px 30px 0 rgba(20, 20, 20, 0.3);
 }
 
 fieldset:first-child {
@@ -88,6 +90,8 @@ fieldset {
 
     background: white;
     transition: 0.5s;
+
+    box-shadow: 0px 5px 10px 0 rgba(20, 20, 20, 0.3);
 }
 
 input {
@@ -182,6 +186,7 @@ button {
     cursor: pointer;
     transition: 0.5s;
 
+    box-shadow: 0px 5px 10px 0 rgba(20, 20, 20, 0.3);
 }
 
 button:hover {

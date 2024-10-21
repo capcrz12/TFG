@@ -28,6 +28,8 @@ section {
     border-radius: 50%;
     background-color: grey;
     transition: 0.5s;
+
+    box-shadow: 0px 5px 10px 0 rgba(20, 20, 20, 0.3);
 }
 
 
@@ -41,6 +43,7 @@ section {
     cursor: pointer;
     transition: 0.5s;
 
+    box-shadow: 0px 5px 10px 0 rgba(20, 20, 20, 0.3);
 }
 
   .red {
@@ -131,6 +134,8 @@ h2 {
     border: 1px solid black;
     border-radius: 60px;
     cursor: zoom-in;
+
+    box-shadow: 0px 5px 10px 0 rgba(20, 20, 20, 0.3);
 }
 
 .carousel {

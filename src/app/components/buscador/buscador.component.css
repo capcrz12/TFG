@@ -17,6 +17,8 @@
     height: 20%;
     border-radius: 60px;
     border: 0.5px solid;
+
+    box-shadow: 0 10px 30px 0 rgba(20, 20, 20, 0.3);
 }
 
 .buscador:last-child {
