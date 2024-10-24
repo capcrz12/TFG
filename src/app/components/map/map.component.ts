@@ -117,10 +117,43 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     // Añadimos una capa nueva para introducir el raster 3D
     this.map.on('load', async () => {
       // Para mapas de ruta
+      let slopes;
       if (this.type == 0) {
+
+        const featuresWithSlopeSegments: any[] = [];
+        const coordinates = this.gpxData.features[0].geometry.coordinates;
+        slopes = this.getSlopes(this.gpxData);
+
+        for (let i = 0; i < coordinates.length - 1; i++) {
+          featuresWithSlopeSegments.push({
+            'type': 'Feature',
+            'geometry': {
+              'type': 'LineString',
+              'coordinates': [coordinates[i], coordinates[i + 1]] // Cada segmento
+            },
+            'properties': {
+              'slope': slopes[i] // Asociar pendiente a este segmento
+            }
+          });
+        }
+
+        const slopeSegmentsGeoJson: GeoJSON.FeatureCollection = {
+          'type': 'FeatureCollection',
+          'features': featuresWithSlopeSegments
+        };
+
+        this.map!.addSource('gpxSlopes', { 
+          type: 'geojson',
+          lineMetrics: true,
+          data: slopeSegmentsGeoJson
+        });
+
+        console.log(slopeSegmentsGeoJson);
+
         // Agregar capa para el archivo GPX
         this.map!.addSource('gpx', {
           type: 'geojson',
+          lineMetrics: true,
           data: this.gpxData // Usar datos convertidos de GPX
         });
       }
@@ -137,18 +170,22 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       // Para mapas de ruta
       if (this.type == 0) {
         this.map!.addLayer({
-          id: 'gpx-route',
-          type: 'line',
-          source: 'gpx',
-          layout: {
-            'line-join': 'round',
-            'line-cap': 'round'
+          'id': 'line-slope',
+          'type': 'line',
+          'source': 'gpxSlopes',
+          'paint': {
+          'line-color': [
+            'interpolate',
+            ['linear'],
+            ['get', 'slope'],
+            -1, '#0080ff', // Azul claro para pendiente negativa
+            0, '#FFFF00',    // Amarillo para plano
+            1, '#ff0000'     // Rojo para pendiente positiva
+          ],
+          'line-width': 4
           },
-          paint: {
-            'line-color': '#FF0000',
-            'line-width': 3
-          }
         });
+           
       
         this.coordinates = getExtremes(this.gpxData.features[0].geometry.coordinates);
 
@@ -542,7 +579,33 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
   
+  getSlopes(gpxData: any): any {
+    const coordinates = gpxData.features[0].geometry.coordinates;
+    const slopes = [];
   
+    for (let i = 0; i < coordinates.length - 1; i++) {
+      const [lng1, lat1, alt1] = coordinates[i];
+      const [lng2, lat2, alt2] = coordinates[i + 1];
+  
+      // Calcular la pendiente entre los puntos
+      const slope = alt2 - alt1;
+  
+      // Determinar si sube (1), baja (-1) o es plano (0)
+      if (slope > 0) {
+        slopes.push(1);  // Sube
+      } else if (slope < 0) {
+        slopes.push(-1); // Baja
+      } else {
+        slopes.push(0);  // Plano
+      }
+    }
+  
+    // Añadir un valor para el último punto del array
+    slopes.push(0); // Último punto no tiene un siguiente para comparar
+    
+    return slopes;
+  }
+    
 
 
   /**
