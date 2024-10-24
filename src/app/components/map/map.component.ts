@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Inp
 import { Map, MapStyle, Marker, config, FullscreenControl, geolocation, GeolocateControl, Popup } from '@maptiler/sdk';
 import '@maptiler/sdk/dist/maptiler-sdk.css';
 import { Dictionary } from '../../dictionary'; 
-import { getExtremes, calculateElevationProfile } from '../../utils/map';
+import { getExtremes, calculateElevationProfile, calculateDistance } from '../../utils/map';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 
@@ -123,6 +123,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         const featuresWithSlopeSegments: any[] = [];
         const coordinates = this.gpxData.features[0].geometry.coordinates;
         slopes = this.getSlopes(this.gpxData);
+        console.log(slopes);
 
         for (let i = 0; i < coordinates.length - 1; i++) {
           featuresWithSlopeSegments.push({
@@ -174,17 +175,11 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
           'type': 'line',
           'source': 'gpxSlopes',
           'paint': {
-          'line-color': [
-            'interpolate',
-            ['linear'],
-            ['get', 'slope'],
-            -1, '#0080ff', // Azul claro para pendiente negativa
-            0, '#FFFF00',    // Amarillo para plano
-            1, '#ff0000'     // Rojo para pendiente positiva
-          ],
-          'line-width': 4
-          },
+            'line-width': 4,
+            'line-color': '#f96313'
+          }
         });
+        
            
       
         this.coordinates = getExtremes(this.gpxData.features[0].geometry.coordinates);
@@ -582,22 +577,20 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   getSlopes(gpxData: any): any {
     const coordinates = gpxData.features[0].geometry.coordinates;
     const slopes = [];
-  
+    
     for (let i = 0; i < coordinates.length - 1; i++) {
-      const [lng1, lat1, alt1] = coordinates[i];
-      const [lng2, lat2, alt2] = coordinates[i + 1];
+      const [lon1, lat1, alt1] = coordinates[i];
+      const [lon2, lat2, alt2] = coordinates[i + 1];
+      
+      // Calcular la diferencia de altitud
+      const altitudeDiff = alt2 - alt1;
   
-      // Calcular la pendiente entre los puntos
-      const slope = alt2 - alt1;
+      // Calcular la distancia horizontal en el plano
+      const distance = calculateDistance(lat1, lon1, lat2, lon2);
+      // Calcular la pendiente como la proporción entre la diferencia de altitud y la distancia
+      const slope = distance !== 0 ? (altitudeDiff / distance) *0.1 : 0;
   
-      // Determinar si sube (1), baja (-1) o es plano (0)
-      if (slope > 0) {
-        slopes.push(1);  // Sube
-      } else if (slope < 0) {
-        slopes.push(-1); // Baja
-      } else {
-        slopes.push(0);  // Plano
-      }
+      slopes.push(slope); // Guardar el valor de pendiente continua
     }
   
     // Añadir un valor para el último punto del array
@@ -605,6 +598,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     
     return slopes;
   }
+  
     
 
 
