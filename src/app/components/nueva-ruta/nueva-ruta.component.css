@@ -305,60 +305,51 @@ button:hover {
     position: relative;
 
     width: 80vw;
-    height: 40vh;
+    height: 60vh;
 
     justify-self: center;
     align-self: center;
 
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 5vh;
     align-items: center;
     justify-content: baseline;
 }
 
-.carousel {
-    margin-top: 5%;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    border: 1px solid black;
-    background: rgba(128, 128, 128, 0.2);
-}
-
 .slide {
+    position: relative;
+    display: inline-block;
     width: 100%;
-    height: 100%;
-    border: 1px solid black;
-    display: flex;
+    height: 50vh;
+    border-radius: 60px;
+    justify-self: center;
+    align-self: center;
+
+    cursor: pointer;
+    transition: 
+        scale 0.3s ease-in,
+        opacity 0.3s ease-in,
+        filter 0.3s ease-in;
+
+    &:hover {
+        scale: 1.1;
+    }
 }
 
-.carouselImg {
+.imagen {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border: none;
-    cursor: pointer;
 }
 
-.arrow {
-    position: absolute;
-    bottom: 20%;
-    z-index: 10;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
+@media (min-width: 769px) {
+    #image-primaria:has(.slide:hover) .slide:not(:hover){
+        scale: 1;
+        opacity: 0.9;
+        filter: blur(4px);
+    }
 }
-
-.left {
-    left: 5%;
-}
-
-.right {
-    right: 5%;
-}
-
 
 @media (max-width: 480px) {
 
