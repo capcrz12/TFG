@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy, Inp
 import { Map, MapStyle, Marker, config, FullscreenControl, geolocation, GeolocateControl, Popup } from '@maptiler/sdk';
 import '@maptiler/sdk/dist/maptiler-sdk.css';
 import { Dictionary } from '../../dictionary'; 
-import { getExtremes, calculateElevationProfile } from '../../utils/map';
+import { getExtremes, calculateElevationProfile, calculateDistance } from '../../utils/map';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 
@@ -117,10 +117,44 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     // Añadimos una capa nueva para introducir el raster 3D
     this.map.on('load', async () => {
       // Para mapas de ruta
+      let slopes;
       if (this.type == 0) {
+
+        const featuresWithSlopeSegments: any[] = [];
+        const coordinates = this.gpxData.features[0].geometry.coordinates;
+        slopes = this.getSlopes(this.gpxData);
+        console.log(slopes);
+
+        for (let i = 0; i < coordinates.length - 1; i++) {
+          featuresWithSlopeSegments.push({
+            'type': 'Feature',
+            'geometry': {
+              'type': 'LineString',
+              'coordinates': [coordinates[i], coordinates[i + 1]] // Cada segmento
+            },
+            'properties': {
+              'slope': slopes[i] // Asociar pendiente a este segmento
+            }
+          });
+        }
+
+        const slopeSegmentsGeoJson: GeoJSON.FeatureCollection = {
+          'type': 'FeatureCollection',
+          'features': featuresWithSlopeSegments
+        };
+
+        this.map!.addSource('gpxSlopes', { 
+          type: 'geojson',
+          lineMetrics: true,
+          data: slopeSegmentsGeoJson
+        });
+
+        console.log(slopeSegmentsGeoJson);
+
         // Agregar capa para el archivo GPX
         this.map!.addSource('gpx', {
           type: 'geojson',
+          lineMetrics: true,
           data: this.gpxData // Usar datos convertidos de GPX
         });
       }
@@ -137,18 +171,16 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       // Para mapas de ruta
       if (this.type == 0) {
         this.map!.addLayer({
-          id: 'gpx-route',
-          type: 'line',
-          source: 'gpx',
-          layout: {
-            'line-join': 'round',
-            'line-cap': 'round'
-          },
-          paint: {
-            'line-color': '#FF0000',
-            'line-width': 3
+          'id': 'line-slope',
+          'type': 'line',
+          'source': 'gpxSlopes',
+          'paint': {
+            'line-width': 4,
+            'line-color': '#f96313'
           }
         });
+        
+           
       
         this.coordinates = getExtremes(this.gpxData.features[0].geometry.coordinates);
 
@@ -542,7 +574,32 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
   
+  getSlopes(gpxData: any): any {
+    const coordinates = gpxData.features[0].geometry.coordinates;
+    const slopes = [];
+    
+    for (let i = 0; i < coordinates.length - 1; i++) {
+      const [lon1, lat1, alt1] = coordinates[i];
+      const [lon2, lat2, alt2] = coordinates[i + 1];
+      
+      // Calcular la diferencia de altitud
+      const altitudeDiff = alt2 - alt1;
   
+      // Calcular la distancia horizontal en el plano
+      const distance = calculateDistance(lat1, lon1, lat2, lon2);
+      // Calcular la pendiente como la proporción entre la diferencia de altitud y la distancia
+      const slope = distance !== 0 ? (altitudeDiff / distance) *0.1 : 0;
+  
+      slopes.push(slope); // Guardar el valor de pendiente continua
+    }
+  
+    // Añadir un valor para el último punto del array
+    slopes.push(0); // Último punto no tiene un siguiente para comparar
+    
+    return slopes;
+  }
+  
+    
 
 
   /**
