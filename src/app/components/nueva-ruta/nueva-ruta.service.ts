@@ -27,7 +27,7 @@ export class NuevaRutaService {
 
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` }); // Angular establece automáticamente el multipart
 
-    return this.http.post<any>(`${environment.APIUrl}routes/add_route`, formData, { headers }).pipe(
+    return this.http.post<any>(`${process.env['API_URL']}routes/add_route`, formData, { headers }).pipe(
       catchError((error) => {
         console.error('Error en la solicitud: ', error);
         return throwError(() => new Error('Error en la solicitud: ' + error.message));
@@ -45,6 +45,6 @@ export class NuevaRutaService {
   
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
   
-    return this.http.post(`${environment.APIUrl}routes/upload_images/${routeId}`, images, { headers }).toPromise();
+    return this.http.post(`${process.env['API_URL']}routes/upload_images/${routeId}`, images, { headers }).toPromise();
   }
 }

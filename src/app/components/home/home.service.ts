@@ -18,11 +18,11 @@ export class HomeService {
   constructor(private http:HttpClient, private rutaService: RutaService) { }
 
   getRoutesSiguiendo(id: number): Observable<any> {
-    return this.http.get(environment.APIUrl+`routes/get_routes_followed/${id}`);
+    return this.http.get(process.env['API_URL']+`routes/get_routes_followed/${id}`);
   }
 
   getRoutesExplorar(): Observable<any> {
-    return this.http.get(environment.APIUrl+"routes/get_routes_and_user");
+    return this.http.get(process.env['API_URL']+"routes/get_routes_and_user");
   }
 
   /*
@@ -47,7 +47,7 @@ export class HomeService {
         const gpxPromises = routes.map((route: any) => {
             if (route.gpx !== '') {
                 // Construir la URL completa para la solicitud
-                const url = `${environment.APIUrl}routes/get_gpx/${route.gpx}`;
+                const url = `${process.env['API_URL']}routes/get_gpx/${route.gpx}`;
                 // Llamar a cargarGPX con la URL del backend
                 return cargarGPX(url);
             }

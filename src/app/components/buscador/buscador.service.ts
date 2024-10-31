@@ -10,11 +10,11 @@ export class BuscadorService {
   constructor(private http:HttpClient) { }
 
   getRoutes (busqueda:string) {
-    return this.http.get(`${environment.APIUrl}routes/get_routes/${busqueda}`);
+    return this.http.get(`${process.env['API_URL']}routes/get_routes/${busqueda}`);
   }  
 
   getUsers (busqueda:string) {
-    return this.http.get(`${environment.APIUrl}users/get_users/${busqueda}`);
+    return this.http.get(`${process.env['API_URL']}users/get_users/${busqueda}`);
   }  
 
 }

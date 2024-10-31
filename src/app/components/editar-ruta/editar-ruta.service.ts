@@ -26,7 +26,7 @@ export class EditarRutaService {
     console.log(ruta);
 
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); // Angular establece automáticamente el multipart
-    return this.http.post<FormData>(`${environment.APIUrl}routes/update_route`, ruta, { headers });
+    return this.http.post<FormData>(`${process.env['API_URL']}routes/update_route`, ruta, { headers });
   }
 
   deleteImage (image: string, id: number): Observable<any> {
@@ -41,6 +41,6 @@ export class EditarRutaService {
     const body = { id: id, image: image };
 
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); // Angular establece automáticamente el multipart
-    return this.http.post(`${environment.APIUrl}routes/delete_route_image`, body, { headers });
+    return this.http.post(`${process.env['API_URL']}routes/delete_route_image`, body, { headers });
   }
 }

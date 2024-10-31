@@ -21,7 +21,7 @@ export class AccesoService {
 
   login(usuario: { id: number, name: string, email: string, password: string }): Observable<string> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<{ access_token: string }>(`${environment.APIUrl}users/login`, usuario, { headers })
+    return this.http.post<{ access_token: string }>(`${process.env['API_URL']}users/login`, usuario, { headers })
     .pipe(
       map(response => {
         localStorage.setItem('auth_token', response.access_token); // Guarda el token en el dispositivo local del usuario
@@ -58,13 +58,13 @@ export class AccesoService {
     const usuario = {id: id, password: password};
     const token = this.getToken();
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); // Angular establece automáticamente el multipart
-    return this.http.post(`${environment.APIUrl}users/check_password`, usuario, {headers})
+    return this.http.post(`${process.env['API_URL']}users/check_password`, usuario, {headers})
   }
 
   getCurrentUser(): Observable<any> {
     const token = this.getToken();
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); // Angular establece automáticamente el multipart
-    return this.http.get(`${environment.APIUrl}users/get_current_user`, {headers})
+    return this.http.get(`${process.env['API_URL']}users/get_current_user`, {headers})
   }
   
 

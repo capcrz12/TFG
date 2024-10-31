@@ -12,6 +12,6 @@ export class RegistroService {
 
   register(usuario: {id: number, name: string, email: string, password: string }): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<any>(`${environment.APIUrl}users/register`, usuario, { headers }); 
+    return this.http.post<any>(`${process.env['API_URL']}users/register`, usuario, { headers }); 
   }
 }
