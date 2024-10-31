@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common'; 
- 
+import { environment } from '../../../environments/environments';
 
 @Component({
   selector: 'app-terminos',

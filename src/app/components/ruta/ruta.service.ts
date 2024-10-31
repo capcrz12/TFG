@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
- 
+import { environment } from '../../../environments/environments';
 import { Observable, of } from 'rxjs';
 import { switchMap, catchError, map } from 'rxjs/operators';
 import { cargarGPXObservable, getData, getStatistics } from '../../utils/map';
@@ -15,10 +15,10 @@ export class RutaService {
   constructor(private http: HttpClient, private accesoService: AccesoService, private router: Router) { }
 
   getData(id: string): Observable<any> {
-    return this.http.get(`${process.env['API_URL']}routes/get_route/${id}`).pipe(
+    return this.http.get(`${environment.APIUrl}routes/get_route/${id}`).pipe(
       switchMap((routeJSON: any) => {
         if (routeJSON.gpx !== '') {
-          const url = `${process.env['API_URL']}routes/get_gpx/${routeJSON.gpx}`;
+          const url = `${environment.APIUrl}routes/get_gpx/${routeJSON.gpx}`;
           return cargarGPXObservable(url).pipe(
             map(gpxData => {
               let dataMap: Dictionary = {};
@@ -56,7 +56,7 @@ export class RutaService {
 
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); // Angular establece automáticamente el multipart
 
-    return this.http.get<any>(`${process.env['API_URL']}routes/get_route_images/${id}`, { headers });
+    return this.http.get<any>(`${environment.APIUrl}routes/get_route_images/${id}`, { headers });
   }
   
   isAuthor(id: number): Observable<boolean> {
@@ -89,7 +89,7 @@ export class RutaService {
     const body = { id };
 
     const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}`}); // Angular establece automáticamente el multipart
-    return this.http.post(`${process.env['API_URL']}routes/delete_route`, body, { headers });
+    return this.http.post(`${environment.APIUrl}routes/delete_route`, body, { headers });
   }
   
   confirmDeleteRoute(): Observable<boolean> {

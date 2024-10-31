@@ -4,7 +4,7 @@ import '@maptiler/sdk/dist/maptiler-sdk.css';
 import { Dictionary } from '../../dictionary'; 
 import { getExtremes, calculateElevationProfile, calculateDistance } from '../../utils/map';
 import { Router } from '@angular/router';
- 
+import { environment } from '../../../environments/environments';
 
 @Component({
   selector: 'app-map',
@@ -74,7 +74,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
    *  
    */
   ngOnInit(): void {
-    config.apiKey = process.env['map_key']!;
+    config.apiKey = environment.mapKey;
     this.elevationProfile = calculateElevationProfile(this.gpxData);
     this.dataMapOut.emit(this.dataMap);
     this.elevationProfileOut.emit(this.elevationProfile);

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
- 
+import { environment } from '../../../environments/environments';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,6 @@ export class RegistroService {
 
   register(usuario: {id: number, name: string, email: string, password: string }): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<any>(`${process.env['API_URL']}users/register`, usuario, { headers }); 
+    return this.http.post<any>(`${environment.APIUrl}users/register`, usuario, { headers }); 
   }
 }
