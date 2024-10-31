@@ -4,7 +4,7 @@ import '@maptiler/sdk/dist/maptiler-sdk.css';
 import { Dictionary } from '../../dictionary'; 
 import { getExtremes, calculateElevationProfile, calculateDistance } from '../../utils/map';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
+ 
 
 @Component({
   selector: 'app-map',
