@@ -74,7 +74,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
    *  
    */
   ngOnInit(): void {
-    config.apiKey = environment.mapKey;
+    config.apiKey = process.env['map_key']!;
     this.elevationProfile = calculateElevationProfile(this.gpxData);
     this.dataMapOut.emit(this.dataMap);
     this.elevationProfileOut.emit(this.elevationProfile);
