@@ -21,8 +21,7 @@ export class AccesoService {
 
   login(usuario: { id: number, name: string, email: string, password: string }): Observable<string> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    //return this.http.post<{ access_token: string }>(`${environment.APIUrl}users/login`, usuario, { headers })
-    return this.http.post<{ access_token: string }>(`${process.env['API_URL']}users/login`, usuario, { headers })
+    return this.http.post<{ access_token: string }>(`${environment.APIUrl}users/login`, usuario, { headers })
     .pipe(
       map(response => {
         localStorage.setItem('auth_token', response.access_token); // Guarda el token en el dispositivo local del usuario
