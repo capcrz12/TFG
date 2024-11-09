@@ -3,7 +3,6 @@ import { RouterOutlet } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { NavComponent } from './components/nav/nav.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -17,5 +16,4 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent {
   title = 'sendaDigital';
-  env = environment.APIUrl;
 }
