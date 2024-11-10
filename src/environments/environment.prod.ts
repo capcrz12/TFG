@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    APIUrl: 'https://api-capcrz12-capcrz12s-projects.vercel.app/',
+    APIUrl: 'https://tfg-api-7wh8.onrender.com/',
     URL: 'http://localhost:4200/',
     mapKey: 'xkstedU79vEq8uEaVE2A'
   };
