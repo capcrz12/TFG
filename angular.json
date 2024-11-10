@@ -36,9 +36,6 @@
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/slick-carousel/slick/slick.min.js"
             ],
-            "allowedCommonJsDependencies": [
-              "maplibre-gl"
-            ],
             "server": "src/main.server.ts",
             "prerender": true,
             "ssr": {
