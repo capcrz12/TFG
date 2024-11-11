@@ -9,18 +9,8 @@ Repositorio que aloja documentación e implementación de mi Trabajo Fin de Grad
 ***
 
 
-## Índice
+## Memoria
 
-* [Objetivos](#objetivos)
-* [Recursos Externos](#recursos-externos)
+Puede consultar el PDF completo de la memoria de mi TFG aquí:
 
-***
-
-
-## Objetivos
-
-
-***
-
-
-## Recursos Externos
+[Descargar la Memoria PDF](docs/memoria_tfg.pdf)
