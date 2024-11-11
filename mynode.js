@@ -9,7 +9,15 @@ const envFile = `export const environment = {
     mapKey: '${process.env.mapKey}'
 };
 `;
-const targetPath = path.join(__dirname, './src/environments/environment.development.ts');
+
+const targetDir = path.join(__dirname, './src/environments');
+const targetPath = path.join(targetDir, 'environment.prod.ts');
+
+// Crear la carpeta 'environments' si no existe
+if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true });
+}
+
 fs.writeFile(targetPath, envFile, (err) => {
     if (err) {
         console.error(err);
