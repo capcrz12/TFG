@@ -10,7 +10,7 @@ const envFile = `export const environment = {
 };
 `;
 
-const targetDir = path.join(__dirname, './src/environments');
+const targetDir = path.join(__dirname, 'src/environments');
 const targetPath = path.join(targetDir, 'environment.prod.ts');
 
 // Crear la carpeta 'environments' si no existe
