@@ -1,6 +1,6 @@
 # TFG: SendaDigital
 
-![Badge en Desarrollo](https://img.shields.io/badge/STATUS-EN%20DESAROLLO-green)
+![Badge en Desarrollo](https://img.shields.io/badge/STATUS-Finalizado-success)
 
 Repositorio que aloja documentación e implementación de mi Trabajo Fin de Grado de la ETSIIT, Universidad de Granada
 
